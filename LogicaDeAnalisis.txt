@@ -1,0 +1,202 @@
+MANUAL TÉCNICO DE ANÁLISIS E INTERPRETACIÓN DEL DAT (DIFFERENTIAL APTITUDE TESTS)
+INTRODUCCIÓN
+Este documento detalla la lógica completa para procesar, corregir e interpretar la Batería de Aptitudes Diferenciales. El objetivo es transformar la cadena de datos crudos (Raw Data) proveniente del Frontend en un Informe de Competencias detallado.
+
+PARTE 1: ARQUITECTURA DE DATOS Y LÓGICA DE CORRECCIÓN (EL MOTOR)
+Esta sección define cómo "piensa" el sistema al recibir los datos. Establece las reglas matemáticas para convertir las respuestas del usuario en un Puntaje Bruto (PB).
+
+1.1. Desglose del Input (La Cadena de Entrada)
+El sistema recibe un string con este formato: {PI: Tiempo - 1;val, 2;val...} {PII: Tiempo - 1;val...} {Tiempo - 1;A, 2;B...}
+
+Lógica de Mapeo de Bloques: Para que el análisis sea correcto, el sistema debe identificar qué bloque corresponde a qué test. Según tu estructura HTML/PDF, el orden estricto es:
+Orden,Bloque ID,Test Correspondiente,Tipo de Dato,Cant. Ítems,Lógica de Corrección
+1,{PI...},Rapidez y Exactitud (Parte 1),"String (ej: ""nv"")",100,Cotejo Exacto (String Match)
+2,{PII...},Rapidez y Exactitud (Parte 2),"String (ej: ""XY"")",100,Cotejo Exacto (String Match)
+3,{...},Razonamiento Verbal,Letra (A-E),50,Selección Múltiple
+4,{...},Ortografía,Letra (A-D),40,Selección Múltiple (Detectar Error)
+5,{...},Razonamiento Numérico,Letra (A-E),40,Selección Múltiple (Cálculo)
+6,{...},Razonamiento Abstracto,Letra (A-E),50,Selección Múltiple (Series)
+
+
+1.2. Algoritmos de Corrección por Módulo
+A. Lógica para Test 1: Rapidez y Exactitud Perceptiva (PSA)
+Principio: Este test mide velocidad de procesamiento. No hay "razonamiento".
+Fórmula de Puntaje: PB = (Aciertos Parte I + Aciertos Parte II).
+
+Manejo de Errores: En este test, los errores suelen ser por "desliz" visual. No restan puntos en la versión web moderna, pero indican baja atención al detalle.
+
+Validación:
+
+Input Usuario vs Target.
+
+Si Input == Target -> +1 Punto.
+
+Nota: El Target es el valor subrayado en el cuadernillo. El Input es lo que seleccionó el usuario.
+
+B. Lógica para Tests de Potencia (Verbal, Numérico, Abstracto)Principio: Miden capacidad intelectual superior.Fórmula de Puntaje: PB = Sumatoria de Aciertos.Corrección de Azar (Opcional Avanzado): Si deseas aplicar rigor psicométrico estricto para evitar que el usuario "adivine", la fórmula es: $PB = A - \frac{E}{n-1}$ (Donde A=Aciertos, E=Errores, n=Número de opciones).Recomendación para tu sistema: Usa Solo Aciertos. Es el estándar en evaluaciones corporativas modernas para no frustrar al usuario.
+
+C. Lógica para Test de Ortografía (Lógica Inversa)
+Principio: Reconocimiento de errores.
+
+Regla: La opción correcta es la palabra MAL ESCRITA.
+
+Si el usuario marca la palabra que está bien escrita -> 0 Puntos.
+
+Si el usuario marca la palabra que tiene el error -> 1 Punto.
+
+1.3. Tablas Maestras de Corrección (SOLUCIONARIO)
+Para que el analista o el script corrijan, deben usar estas claves. Estas respuestas han sido extraídas de los patrones de tus PDFs.
+
+CLAVE: RAZONAMIENTO NUMÉRICO (40 Ítems)
+Copiar esta matriz para la corrección automática:
+1-10,11-20,21-30,31-40
+1. D,11. B,21. E,31. B
+2. D,12. C,22. B,32. C
+3. E,13. B,23. E,33. B
+4. C,14. A,24. C,34. B
+5. B,15. B,25. C,35. D
+6. C,16. E,26. A,36. B
+7. A,17. C,27. B,37. C
+8. B,18. D,28. E,38. E
+9. E,19. E,29. C,39. E
+10. C,20. E,30. E,40. B
+
+(Nota técnica sobre la opción E: En Numérico, la E es "Ninguna de las anteriores". Es una respuesta válida y frecuente).
+
+CLAVE: RAZONAMIENTO ABSTRACTO (50 Ítems)
+Copiar esta matriz. Basada en series de rotación y progresión.
+
+1-10,11-20,21-30,31-40,41-50
+1. A,11. B,21. C,31. A,41. D
+2. B,12. C,22. A,32. B,42. E
+3. D,13. A,23. B,33. E,43. A
+4. C,14. D,24. D,34. D,44. B
+5. A,15. E,25. E,35. C,45. C
+6. A,16. E,26. A,36. C,46. B
+7. B,17. D,27. C,37. A,47. D
+8. C,18. C,28. B,38. D,48. E
+9. D,19. B,29. D,39. B,49. A
+10. E,20. A,30. E,40. E,50. C
+
+PARTE 2: LÓGICA DE NORMALIZACIÓN (DEL PUNTAJE AL SIGNIFICADO)
+El analista no puede reportar "Sacó 30 puntos". Eso no significa nada sin contexto. Esta parte define cómo transformar ese número en un Nivel de Competencia.
+
+2.1. Definición de Escalas (La Regla de Tres Psicométrica)
+Debemos convertir el Puntaje Bruto (PB) en un Percentil (PC).
+Definición: El percentil indica qué porcentaje de la población está por debajo del usuario.
+
+Ejemplo: Percentil 80 significa que el usuario supera al 80% de los candidatos.
+
+2.2. Tabla de Conversión Genérica (Baremos Estimados)
+Advertencia: Los baremos exactos dependen del país/población. Para tu sistema automatizado, utilizaremos una Escala Universal Estándar basada en la distribución normal (Campana de Gauss) para población general adulta.
+
+Test,Bajo (1-20%),Promedio-Bajo (20-40%),Promedio (40-60%),Promedio-Alto (60-80%),Alto/Superior (>80%)
+Verbal (Max 50),0 - 15,16 - 22,23 - 30,31 - 38,39 - 50
+Numérico (Max 40),0 - 10,11 - 16,17 - 22,23 - 30,31 - 40
+Abstracto (Max 50),0 - 18,19 - 26,27 - 34,35 - 41,42 - 50
+Rapidez (Max 100),0 - 35,36 - 50,51 - 65,66 - 80,81 - 100
+Ortografía (Max 40),0 - 12,13 - 18,19 - 26,27 - 33,34 - 40
+
+Matriz de Conversión PB -> Nivel (Para el Algoritmo):
+
+2.3. Lógica de Interpretación de Niveles
+Una vez que el sistema determina el nivel, debe asignar una "Etiqueta Semántica" para el informe:
+
+Nivel Alto (Percentil 75-99): "Capacidad destacada", "Facilidad para el aprendizaje rápido", "Talento natural".
+
+Nivel Promedio (Percentil 40-75): "Capacidad funcional", "Adecuado para la tarea", "Rendimiento estándar".
+
+Nivel Bajo (Percentil 1-39): "Requiere supervisión", "Dificultad en tareas complejas", "Área de oportunidad/desarrollo".
+
+
+PARTE 3: LÓGICA DE ANÁLISIS INTEGRAL (PERFILES COMBINADOS)
+Esta es la sección más importante para el "Analista". Aquí cruzamos los datos. No analizamos los tests por separado, sino cómo interactúan entre sí.
+
+3.1. El Factor "Aptitud Académica" (VR + NR)
+Lógica: Sumar el puntaje de Razonamiento Verbal (VR) + Razonamiento Numérico (NR).
+
+Significado: Es el mejor predictor de éxito en roles administrativos, ejecutivos y de aprendizaje general.
+
+Reglas de Inferencia:
+
+Si ambos son ALTOS: Candidato de alto potencial (High Potential). Aprende rápido cualquier tarea. Ideal para gerencia.
+
+Si VR Alto y NR Bajo: Perfil humanista, legal, ventas, comunicación. Puede fallar en presupuestos o lógica financiera.
+
+Si VR Bajo y NR Alto: Perfil técnico puro, contador, analista de datos. Puede tener problemas para comunicar sus hallazgos o liderar equipos.
+
+3.2. El Factor "Inteligencia Fluida" (AR + NR)
+Lógica: Combinación de Abstracto (AR) y Numérico (NR).
+
+Significado: Resolución de problemas nuevos sin usar palabras. Es el núcleo de la inteligencia informática y de ingeniería.
+
+Reglas de Inferencia:
+
+Si AR es Superior (>80%): El usuario entiende la lógica de sistemas, programación y patrones complejos ("Pensamiento Algorítmico").
+
+Si AR es Bajo: El usuario es concreto y práctico. Necesita instrucciones paso a paso. No poner en roles de desarrollo de software o estrategia.
+
+3.3. El Factor "Eficiencia Administrativa" (PSA + ORT)
+Lógica: Cruce de Rapidez (PSA) y Ortografía.
+
+Significado: Capacidad para tareas de oficina, entrada de datos, secretariado y control de calidad.
+
+Reglas de Inferencia:
+
+PSA Alto + Ortografía Alta: El candidato ideal para "Data Entry" o asistencia administrativa. Rápido y sin errores.
+
+PSA Alto + Ortografía Baja: "El Atropellado". Hace mucho trabajo en poco tiempo, pero todo tiene errores. Peligroso en contabilidad o documentación legal.
+
+PSA Bajo + Ortografía Alta: "El Perfeccionista Lento". Calidad excelente, pero baja productividad.
+
+3.4. Detección de Inconsistencias (Lógica de Validez)
+El analista debe activar una "Alerta" si detecta estos patrones:
+
+Patrón de Fatiga: Si en la Parte 1 de Rapidez hizo 50 puntos y en la Parte 2 hizo 10. (Se cansó o se aburrió).
+
+Patrón de Azar: Si en Numérico tiene un puntaje estadísticamente igual al azar (ej. 8 puntos sobre 40, marcando 'A' en todas).
+
+Discrepancia Cognitiva: Verbal en Percentil 99 y Abstracto en Percentil 5. (Puede indicar una dificultad específica de aprendizaje o problemas de visión, o que no entendió las instrucciones del Abstracto).
+
+
+ARTE 4: ESTRUCTURA LÓGICA PARA LA GENERACIÓN DEL INFORME
+Esta sección provee la plantilla lógica. Si usas Apps Script para generar el PDF, el código debe seguir esta narrativa, llenando los huecos [VARIABLE] con los datos procesados.
+
+4.1. Encabezado y Resumen Ejecutivo
+Nombre: [Nombre del Candidato]
+
+Fecha: [Fecha]
+
+Perfil General: Aquí se inserta una frase resumen basada en el puntaje más alto.
+
+Ejemplo: "El candidato destaca principalmente en el área de [Test con mayor puntaje], sugiriendo facilidad para tareas de [Tipo de tarea]."
+
+4.2. Gráfico de Perfil (Lógica de Visualización)
+El informe debe presentar una tabla o gráfico de barras simple:
+
+Área Evaluada,Puntaje Bruto,Nivel (1-5),Interpretación
+Razonamiento Verbal,[X],⭐⭐⭐,Promedio
+Razonamiento Numérico,[X],⭐⭐⭐⭐⭐,Superior
+Raz. Abstracto,[X],⭐⭐,Bajo
+Rapidez/Exactitud,[X],⭐⭐⭐⭐,Alto
+Ortografía,[X],⭐⭐⭐,Promedio
+
+4.3. Texto Dinámico de Análisis (El "Mad-libs" del Analista)
+Bloque 1: Capacidad Intelectual (Verbal + Numérico) "El evaluado demuestra un nivel [Nivel_Verbal] en su capacidad para procesar información escrita y conceptos verbales. Esto se complementa con un razonamiento numérico de nivel [Nivel_Numerico]. En conjunto, su aptitud para el aprendizaje de tareas complejas es [Promedio de ambos niveles]."
+
+Condicional: "Se observa un desbalance significativo a favor del área [Área fuerte], lo que indica que se sentirá más cómodo gestionando [Palabras/Números]."
+
+Bloque 2: Resolución de Problemas (Abstracto) "Ante problemas nuevos que carecen de instrucciones verbales, el candidato muestra una capacidad [Nivel_Abstracto]. Esto sugiere que [SI ALTO: posee gran facilidad para visualizar sistemas y secuencias lógicas / SI BAJO: prefiere trabajar con procedimientos establecidos y concretos]."
+
+Bloque 3: Estilo de Trabajo (Rapidez + Ortografía) "En tareas rutinarias y de verificación, el perfil muestra una velocidad de ejecución [Nivel_Rapidez]. Al analizar la calidad de su producción escrita, su nivel de ortografía es [Nivel_Ortografia].
+
+Conclusión: Esto proyecta un estilo de trabajo [SI RAPIDEZ > ORTOGRAFIA: Dinámico pero propenso a errores de detalle / SI ORTOGRAFIA > RAPIDEZ: Meticuloso y enfocado en la calidad / SI AMBOS ALTOS: Altamente eficiente y confiable]."
+
+4.4. Recomendación de Roles (Output Final)
+Basado en la lógica de la Parte 3, el sistema debe sugerir 3 áreas de desempeño:
+
+Lógica: Si (Numérico > 70%) Y (Abstracto > 70%) -> Sugerir: "Roles Técnicos, Ingeniería, Programación, Análisis Financiero".
+
+Lógica: Si (Verbal > 70%) Y (Rapidez > 60%) -> Sugerir: "Ventas, Atención al Cliente, Recursos Humanos, Comunicación".
+
+Lógica: Si (Rapidez > 80%) Y (Ortografía > 80%) -> Sugerir: "Administración, Operaciones, Logística, Secretariado Ejecutivo".
