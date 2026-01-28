@@ -1170,7 +1170,7 @@
       fila: filaOrdenada
     };
     
-    console.log("Enviando a Google Sheets:", payload);
+    console.log("Enviando a la base de datos:", payload);
     
     // URL DE TU GOOGLE APPS SCRIPT
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9NEZBERCkboIciHVd1Ffx0X2M7nLbKdN7oVqUETraRlFcg_6lJ8ZBsPb724msrdScRQ/exec';
@@ -1184,7 +1184,7 @@
       body: JSON.stringify(payload) 
     })
     .then(() => {
-      document.getElementById('loadingMsg').innerText = "¡Datos guardados correctamente en Google Sheets!";
+      document.getElementById('loadingMsg').innerText = "¡Datos guardados correctamente!";
       document.getElementById('loadingMsg').style.color = "green";
     })
     .catch(error => {

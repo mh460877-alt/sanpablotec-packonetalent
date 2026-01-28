@@ -1,0 +1,18 @@
+.test-badge{
+  display:inline-block;
+  padding:.3rem .7rem;
+  font-size:.75rem;
+  border-radius:999px;
+  font-weight:800;
+  color: rgba(254,254,255,.92);
+  border:1px solid rgba(198,201,215,.18);
+  background: rgba(254,254,255,.06);
+  backdrop-filter: blur(10px);
+}
+
+.test-badge-1{ box-shadow: 0 0 0 1px rgba(228,199,106,.18), 0 0 28px rgba(228,199,106,.10); }
+.test-badge-2{ box-shadow: 0 0 0 1px rgba(107,225,227,.18), 0 0 28px rgba(107,225,227,.10); }
+.test-badge-3{ box-shadow: 0 0 0 1px rgba(225,123,215,.18), 0 0 28px rgba(225,123,215,.10); }
+.test-badge-4{ box-shadow: 0 0 0 1px rgba(164,168,192,.20), 0 0 24px rgba(164,168,192,.08); }
+.test-badge-5{ box-shadow: 0 0 0 1px rgba(228,199,106,.16), 0 0 24px rgba(225,123,215,.08); }
+.test-badge-6{ box-shadow: 0 0 0 1px rgba(107,225,227,.16), 0 0 24px rgba(228,199,106,.08); }

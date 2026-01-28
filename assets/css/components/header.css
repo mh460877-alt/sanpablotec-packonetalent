@@ -1,0 +1,69 @@
+/* Header estilo ONE (para dashboard/usuarios) */
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(0,0,0,.30);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(198,201,215,.10);
+}
+
+.header-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: .9rem 1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+}
+
+@keyframes logoPulse{
+  0%,100%{
+    box-shadow: 0 0 0 1px rgba(198,201,215,.18), 0 0 40px rgba(107,225,227,.18);
+    transform: scale(1);
+  }
+  50%{
+    box-shadow: 0 0 0 1px rgba(198,201,215,.22), 0 0 55px rgba(225,123,215,.22);
+    transform: scale(1.03);
+  }
+}
+
+.brand-logo{
+  width:45px;
+  height:45px;
+  border-radius:999px;
+  background-image: url('./img/comodin.png');
+  background-size: cover;
+  background-position:center;
+  box-shadow: 0 0 0 1px rgba(198,201,215,.18), 0 0 40px rgba(107,225,227,.18);
+  animation: logoPulse 4.5s ease-in-out infinite;
+  position:relative;
+  overflow:hidden;
+}
+
+.brand-logo::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at 30% 30%, rgba(254,254,255,.14), transparent 55%);
+  pointer-events:none;
+}
+
+.brand-text-main{
+  font-family: var(--font-title);
+  font-size:1.05rem;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+
+.brand-text-sub{
+  font-size:.82rem;
+  color: rgba(198,201,215,.82);
+}

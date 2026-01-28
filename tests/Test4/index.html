@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WAIS-IV - Escala de Inteligencia para Adultos de Wechsler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* === ESTILOS GLOBALES === */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background-image: url('./img/fondo-escencial.jpg'); 
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 24px;
+      color: #1e293b;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #e2e8f0;
+    }
+    .header h1 { color: #0f172a; font-size: 20px; font-weight: 700; }
+    .timer-badge {
+      background: #0b4a6e; color: white; padding: 8px 16px; border-radius: 12px;
+      font-size: 18px; font-weight: 700; box-shadow: 0 4px 6px rgba(11, 74, 110, 0.2);
+    }
+    .part-badge {
+      background: #059669; color: white; padding: 6px 12px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; margin-left: 10px;
+    }
+    
+    /* SECCIONES */
+    .section { display: none; animation: fadeIn 0.4s ease-in-out; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* FORMULARIOS */
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #475569; }
+    .form-input {
+      width: 100%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 10px;
+      font-size: 16px; transition: 0.3s;
+    }
+    .form-input:focus { border-color: #0b4a6e; outline: none; box-shadow: 0 0 0 3px rgba(11, 74, 110, 0.1); }
+
+    /* BOTONES */
+    .btn {
+      background: linear-gradient(135deg, #0b4a6e 0%, #020f27 100%);
+      color: white; border: none; padding: 14px 28px; border-radius: 10px;
+      font-size: 16px; font-weight: 600; cursor: pointer; width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(11, 74, 110, 0.3); }
+    .btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+
+    /* INSTRUCCIONES */
+    .instructions-box {
+      background: #f1f5f9; padding: 25px; border-radius: 12px; border-left: 5px solid #0b4a6e;
+      margin-bottom: 25px; line-height: 1.7; font-size: 15px; text-align: justify;
+    }
+    .instructions-box ul { margin-left: 20px; margin-top: 10px; }
+    .instructions-box li { margin-bottom: 5px; }
+
+    /* TEST WRAPPER */
+    .test-wrapper {
+      max-height: 520px; overflow-y: auto; padding-right: 10px;
+      scroll-behavior: smooth;
+    }
+    .test-wrapper::-webkit-scrollbar { width: 8px; }
+    .test-wrapper::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .test-wrapper::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .test-wrapper::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* PREGUNTAS WAIS */
+    .question-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 16px 12px;
+      transition: background 0.2s;
+    }
+    .question-item:hover { background: #f8fafc; }
+    .question-item:nth-child(even) { background: #fafbfc; }
+    .question-item:nth-child(even):hover { background: #f1f5f9; }
+    .question-item.answered { border-left: 3px solid #0b4a6e; }
+    
+    .q-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .q-number {
+      font-weight: bold;
+      color: #0b4a6e;
+      font-size: 0.85rem;
+      min-width: 32px;
+      text-align: center;
+      padding-top: 2px;
+    }
+    .q-text {
+      flex: 1;
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    /* Opciones múltiples */
+    .options-multiple {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-left: 44px;
+    }
+    .opt-radio {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: white;
+    }
+    .opt-radio:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+    .opt-radio.selected {
+      border-color: #0b4a6e;
+      background: #e0f2fe;
+    }
+    .opt-radio input {
+      display: none;
+    }
+    .opt-radio .radio-circle {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #cbd5e1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .opt-radio.selected .radio-circle {
+      border-color: #0b4a6e;
+      background: #0b4a6e;
+    }
+    .opt-radio.selected .radio-circle::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+    }
+    .opt-radio .opt-text {
+      font-size: 0.9rem;
+      color: #475569;
+    }
+    .opt-radio.selected .opt-text {
+      color: #0b4a6e;
+      font-weight: 600;
+    }
+
+    /* ESTADO INTERMEDIO */
+    .intermission { text-align: center; padding: 40px; }
+    .intermission h2 { color: #0b4a6e; margin-bottom: 15px; }
+
+    /* PROGRESS BAR */
+    .progress-container {
+      margin-bottom: 15px;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0b4a6e, #1e88e5);
+      transition: width 0.3s;
+      border-radius: 5px;
+    }
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .progress-text {
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .progress-percentage {
+      font-size: 13px;
+      color: #0b4a6e;
+      font-weight: 700;
+    }
+
+    /* ÍNDICES INFO */
+    .index-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+    .index-badge {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .index-icv { background: #dbeafe; color: #1e40af; }
+    .index-irp { background: #dcfce7; color: #166534; }
+    .index-imt { background: #fef3c7; color: #92400e; }
+    .index-ivp { background: #fce7f3; color: #9d174d; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .container { padding: 20px; }
+      .header h1 { font-size: 16px; }
+      .question-item { padding: 12px 8px; }
+      .options-multiple { margin-left: 0; }
+      .q-header { flex-wrap: wrap; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <h1 id="pageTitle">WAIS-IV - Escala de Inteligencia para Adultos de Wechsler</h1>
+    <div id="timerDisplay" class="timer-badge" style="display:none">00:00</div>
+  </div>
+
+  <!-- ========== REGISTRO ========== -->
+  <div id="loginSection" class="section active">
+    <h2 style="margin-bottom: 20px; color: #0f172a;">Registro del Evaluado</h2>
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" id="userName" class="form-input" placeholder="Ingrese su nombre">
+    </div>
+    <div class="form-group">
+      <label>Apellido</label>
+      <input type="text" id="userLast" class="form-input" placeholder="Ingrese su apellido">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="userEmail" class="form-input" placeholder="Ingrese su correo">
+    </div>
+    <button class="btn" onclick="goToInstructions()">Continuar</button>
+  </div>
+
+  <!-- ========== INSTRUCCIONES ========== -->
+  <div id="instSection" class="section">
+    <h2 style="margin-bottom: 20px; color: #0f172a;">Instrucciones Generales</h2>
+    <div class="instructions-box">
+      <p>La <strong>WAIS-IV (Escala de Inteligencia para Adultos de Wechsler – Cuarta Edición)</strong> es un instrumento que evalúa el funcionamiento intelectual a través de diferentes procesos cognitivos.</p>
+      <br>
+      <p>Este test evalúa <strong>cuatro índices cognitivos principales</strong>:</p>
+      <br>
+      <div class="index-info" style="justify-content: center;">
+        <span class="index-badge index-icv">ICV - Comprensión Verbal</span>
+        <span class="index-badge index-irp">IRP - Razonamiento Perceptivo</span>
+        <span class="index-badge index-imt">IMT - Memoria de Trabajo</span>
+        <span class="index-badge index-ivp">IVP - Velocidad de Procesamiento</span>
+      </div>
+      <br>
+      <p>El test se divide en <strong>dos partes (PI y PII)</strong> con diferentes tipos de tareas.</p>
+      <br>
+      <p><strong>Recomendaciones:</strong></p>
+      <ul>
+        <li>Seleccione la mejor respuesta para cada pregunta</li>
+        <li>No hay respuestas correctas ni incorrectas en términos absolutos</li>
+        <li>Trabaje con atención y concentración</li>
+        <li>Si no está seguro, elija la opción que considere más adecuada</li>
+        <li>Tiempo estimado: 25-35 minutos</li>
+      </ul>
+    </div>
+    <button class="btn" onclick="startPart1()">COMENZAR PARTE I</button>
+  </div>
+
+  <!-- ========== TEST PARTE I ========== -->
+  <div id="testPart1Section" class="section">
+    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+      <h3 style="color: #0f172a;">Parte I</h3>
+      <span class="part-badge">Comprensión Verbal & Razonamiento</span>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar"><div id="progressBar1" class="progress-fill" style="width: 0%"></div></div>
+      <div class="progress-info">
+        <span class="progress-text">Respondidas: <span id="progressCount1">0</span> / 50</span>
+        <span class="progress-percentage" id="progressPercent1">0%</span>
+      </div>
+    </div>
+    <div class="index-info">
+      <span class="index-badge index-icv">ICV - Comprensión Verbal</span>
+      <span class="index-badge index-irp">IRP - Razonamiento Perceptivo</span>
+    </div>
+    <div id="questionsContainer1" class="test-wrapper"></div>
+    <button class="btn" style="margin-top: 20px;" onclick="finishPart1()">FINALIZAR PARTE I</button>
+  </div>
+
+  <!-- ========== INTERMEDIO ========== -->
+  <div id="intermissionSection" class="section intermission">
+    <h2>¡Parte I Completada!</h2>
+    <div style="font-size: 50px; margin: 20px 0;">✅</div>
+    <p>Ha completado la primera parte del test.</p>
+    <p style="margin-top: 10px; color: #64748b;">La Parte II evaluará <strong>Memoria de Trabajo</strong> y <strong>Velocidad de Procesamiento</strong>.</p>
+    <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">Tiempo utilizado en Parte I: <span id="timePart1">--:--</span></p>
+    <button class="btn" style="margin-top: 25px; max-width: 300px; margin-left: auto; margin-right: auto;" onclick="startPart2()">COMENZAR PARTE II</button>
+  </div>
+
+  <!-- ========== TEST PARTE II ========== -->
+  <div id="testPart2Section" class="section">
+    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+      <h3 style="color: #0f172a;">Parte II</h3>
+      <span class="part-badge" style="background: #d97706;">Memoria & Velocidad</span>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar"><div id="progressBar2" class="progress-fill" style="width: 0%"></div></div>
+      <div class="progress-info">
+        <span class="progress-text">Respondidas: <span id="progressCount2">0</span> / 50</span>
+        <span class="progress-percentage" id="progressPercent2">0%</span>
+      </div>
+    </div>
+    <div class="index-info">
+      <span class="index-badge index-imt">IMT - Memoria de Trabajo</span>
+      <span class="index-badge index-ivp">IVP - Velocidad de Procesamiento</span>
+    </div>
+    <div id="questionsContainer2" class="test-wrapper"></div>
+    <button class="btn" style="margin-top: 20px;" onclick="finishTest()">FINALIZAR TEST</button>
+  </div>
+
+  <!-- ========== FINAL ========== -->
+  <div id="finalSection" class="section intermission">
+    <h2 style="color: #059669;">¡Test WAIS-IV Completado!</h2>
+    <div style="font-size: 60px; margin: 20px 0;">✅</div>
+    <p>Ha completado la Escala de Inteligencia para Adultos de Wechsler.</p>
+    <p style="margin-top: 10px;">Sus respuestas han sido registradas correctamente.</p>
+    <div id="loadingMsg" style="margin-top:20px; color:#0b4a6e; font-weight:bold;">Guardando datos...</div>
+  </div>
+
+</div>
+
+<script>
+  // ========== DATOS: ÍTEMS WAIS-IV - TODAS OPCIONES MÚLTIPLES CON RESPUESTA CORRECTA ==========
+  // Formato: { id, text, options: [a, b, c, d], correct: "X", indice, subtest }
+  // correct = letra de la opción correcta (a, b, c, d)
+  
+  // PARTE I: Comprensión Verbal (ICV) y Razonamiento Perceptivo (IRP)
+  const ITEMS_PART1 = [
+    // === ICV - SEMEJANZAS (1-12) ===
+    { id: 1, text: "¿En qué se parecen NARANJA y MANZANA?", options: ["Ambas tienen semillas", "Ambas son frutas", "Ambas son redondas", "Ambas son dulces"], correct: "b", indice: "ICV", subtest: "Semejanzas" },
+    { id: 2, text: "¿En qué se parecen PERRO y LEÓN?", options: ["Ambos tienen pelo", "Ambos son animales/mamíferos", "Ambos tienen cuatro patas", "Ambos son carnívoros"], correct: "b", indice: "ICV", subtest: "Semejanzas" },
+    { id: 3, text: "¿En qué se parecen BARCO y AVIÓN?", options: ["Ambos tienen motor", "Ambos son rápidos", "Ambos son medios de transporte", "Ambos llevan pasajeros"], correct: "c", indice: "ICV", subtest: "Semejanzas" },
+    { id: 4, text: "¿En qué se parecen OJO y OÍDO?", options: ["Ambos están en la cara", "Ambos son órganos de los sentidos", "Ambos son pares", "Ambos captan información"], correct: "b", indice: "ICV", subtest: "Semejanzas" },
+    { id: 5, text: "¿En qué se parecen POEMA y ESCULTURA?", options: ["Ambos son creativos", "Ambos expresan belleza", "Ambos son formas de arte", "Ambos requieren talento"], correct: "c", indice: "ICV", subtest: "Semejanzas" },
+    { id: 6, text: "¿En qué se parecen LIBERTAD y JUSTICIA?", options: ["Ambas son importantes", "Ambas son valores/ideales", "Ambas son difíciles de lograr", "Ambas son derechos"], correct: "b", indice: "ICV", subtest: "Semejanzas" },
+    { id: 7, text: "¿En qué se parecen SEMILLA y HUEVO?", options: ["Ambos son pequeños", "Ambos son frágiles", "Ambos contienen vida potencial/origen de vida", "Ambos son orgánicos"], correct: "c", indice: "ICV", subtest: "Semejanzas" },
+    { id: 8, text: "¿En qué se parecen RECOMPENSA y CASTIGO?", options: ["Ambos modifican conducta/son consecuencias", "Ambos vienen de autoridades", "Ambos son justos", "Ambos son necesarios"], correct: "a", indice: "ICV", subtest: "Semejanzas" },
+    { id: 9, text: "¿En qué se parecen HIBERNACIÓN y MIGRACIÓN?", options: ["Ambas ocurren en invierno", "Ambas las hacen animales", "Ambas son adaptaciones para sobrevivir", "Ambas implican descanso"], correct: "c", indice: "ICV", subtest: "Semejanzas" },
+    { id: 10, text: "¿En qué se parecen DEMOCRACIA y MONARQUÍA?", options: ["Ambas tienen líderes", "Ambas son antiguas", "Ambas son sistemas de gobierno", "Ambas tienen leyes"], correct: "c", indice: "ICV", subtest: "Semejanzas" },
+    { id: 11, text: "¿En qué se parecen PRIMER MINISTRO y PRESIDENTE?", options: ["Ambos son políticos", "Ambos gobiernan países", "Ambos son jefes de gobierno/Estado", "Ambos son elegidos"], correct: "c", indice: "ICV", subtest: "Semejanzas" },
+    { id: 12, text: "¿En qué se parecen VENGANZA y PERDÓN?", options: ["Ambos son emocionales", "Ambos son respuestas a una ofensa", "Ambos son difíciles", "Ambos involucran a otros"], correct: "b", indice: "ICV", subtest: "Semejanzas" },
+
+    // === ICV - VOCABULARIO/CONOCIMIENTO (13-25) ===
+    { id: 13, text: "¿Qué significa REPARAR?", options: ["Destruir algo", "Arreglar o componer algo dañado", "Construir algo nuevo", "Limpiar algo sucio"], correct: "b", indice: "ICV", subtest: "Vocabulario" },
+    { id: 14, text: "¿Qué significa OBSTÁCULO?", options: ["Un camino largo", "Algo que impide o dificulta", "Una oportunidad", "Un descanso"], correct: "b", indice: "ICV", subtest: "Vocabulario" },
+    { id: 15, text: "¿Qué significa COMPASIÓN?", options: ["Sentir alegría por otros", "Sentir envidia", "Sentir el sufrimiento ajeno y querer aliviarlo", "Sentir indiferencia"], correct: "c", indice: "ICV", subtest: "Vocabulario" },
+    { id: 16, text: "¿Qué significa TENAZ?", options: ["Débil y frágil", "Persistente y firme", "Rápido y ágil", "Tranquilo y calmado"], correct: "b", indice: "ICV", subtest: "Vocabulario" },
+    { id: 17, text: "¿Qué significa TANGIBLE?", options: ["Invisible", "Que se puede tocar o percibir", "Muy grande", "Muy pequeño"], correct: "b", indice: "ICV", subtest: "Vocabulario" },
+    { id: 18, text: "¿Qué significa EFÍMERO?", options: ["Eterno y duradero", "De corta duración", "Muy importante", "Muy costoso"], correct: "b", indice: "ICV", subtest: "Vocabulario" },
+    { id: 19, text: "¿Qué significa PRAGMÁTICO?", options: ["Teórico e idealista", "Práctico y realista", "Soñador", "Pesimista"], correct: "b", indice: "ICV", subtest: "Vocabulario" },
+    { id: 20, text: "¿Cuántos días tiene una semana?", options: ["5 días", "6 días", "7 días", "8 días"], correct: "c", indice: "ICV", subtest: "Información" },
+    { id: 21, text: "¿En qué continente se encuentra Brasil?", options: ["Europa", "Asia", "América", "África"], correct: "c", indice: "ICV", subtest: "Información" },
+    { id: 22, text: "¿Quién escribió 'Don Quijote de la Mancha'?", options: ["Shakespeare", "Cervantes", "Borges", "García Márquez"], correct: "b", indice: "ICV", subtest: "Información" },
+    { id: 23, text: "¿Cuál es el planeta más grande del sistema solar?", options: ["Marte", "Saturno", "Júpiter", "Neptuno"], correct: "c", indice: "ICV", subtest: "Información" },
+    { id: 24, text: "¿En qué año comenzó la Segunda Guerra Mundial?", options: ["1935", "1939", "1941", "1945"], correct: "b", indice: "ICV", subtest: "Información" },
+    { id: 25, text: "¿Cuál es la capital de Australia?", options: ["Sídney", "Melbourne", "Canberra", "Brisbane"], correct: "c", indice: "ICV", subtest: "Información" },
+
+    // === IRP - MATRICES/SERIES (26-38) ===
+    { id: 26, text: "Complete la serie: 2, 4, 6, 8, ___", options: ["9", "10", "11", "12"], correct: "b", indice: "IRP", subtest: "Matrices" },
+    { id: 27, text: "Complete la serie: 1, 4, 9, 16, ___", options: ["20", "23", "25", "30"], correct: "c", indice: "IRP", subtest: "Matrices" },
+    { id: 28, text: "Complete la serie: 3, 6, 12, 24, ___", options: ["36", "42", "48", "52"], correct: "c", indice: "IRP", subtest: "Matrices" },
+    { id: 29, text: "Complete la serie: A, C, E, G, ___", options: ["H", "I", "J", "K"], correct: "b", indice: "IRP", subtest: "Matrices" },
+    { id: 30, text: "Complete la serie: 1, 1, 2, 3, 5, 8, ___", options: ["10", "11", "12", "13"], correct: "d", indice: "IRP", subtest: "Matrices" },
+    { id: 31, text: "Complete la serie: 100, 81, 64, 49, ___", options: ["25", "30", "36", "40"], correct: "c", indice: "IRP", subtest: "Matrices" },
+    { id: 32, text: "Complete la serie: 2, 6, 18, 54, ___", options: ["108", "162", "216", "324"], correct: "b", indice: "IRP", subtest: "Matrices" },
+    { id: 33, text: "Complete la serie: Z, X, V, T, ___", options: ["Q", "R", "S", "P"], correct: "b", indice: "IRP", subtest: "Matrices" },
+    { id: 34, text: "Complete la serie: 1, 8, 27, 64, ___", options: ["100", "125", "150", "216"], correct: "b", indice: "IRP", subtest: "Matrices" },
+    { id: 35, text: "Complete la serie: 5, 11, 23, 47, ___", options: ["71", "83", "95", "99"], correct: "c", indice: "IRP", subtest: "Matrices" },
+    { id: 36, text: "Complete la serie: 2, 3, 5, 7, 11, ___", options: ["12", "13", "14", "15"], correct: "b", indice: "IRP", subtest: "Matrices" },
+    { id: 37, text: "Complete la serie: 1, 2, 4, 7, 11, ___", options: ["14", "15", "16", "17"], correct: "c", indice: "IRP", subtest: "Matrices" },
+    { id: 38, text: "Complete la serie: 64, 32, 16, 8, ___", options: ["2", "4", "6", "0"], correct: "b", indice: "IRP", subtest: "Matrices" },
+
+    // === IRP - ANALOGÍAS/RAZONAMIENTO (39-50) ===
+    { id: 39, text: "ALTO es a BAJO como LARGO es a:", options: ["Ancho", "Corto", "Grande", "Pequeño"], correct: "b", indice: "IRP", subtest: "Razonamiento" },
+    { id: 40, text: "DOCTOR es a PACIENTE como PROFESOR es a:", options: ["Escuela", "Libro", "Estudiante", "Clase"], correct: "c", indice: "IRP", subtest: "Razonamiento" },
+    { id: 41, text: "PÁJARO es a NIDO como PERSONA es a:", options: ["Cama", "Casa", "Ciudad", "Trabajo"], correct: "b", indice: "IRP", subtest: "Razonamiento" },
+    { id: 42, text: "MAÑANA es a DESAYUNO como NOCHE es a:", options: ["Almuerzo", "Merienda", "Cena", "Comida"], correct: "c", indice: "IRP", subtest: "Razonamiento" },
+    { id: 43, text: "AGUA es a SED como COMIDA es a:", options: ["Hambre", "Comer", "Cocina", "Plato"], correct: "a", indice: "IRP", subtest: "Razonamiento" },
+    { id: 44, text: "LIBRO es a LEER como CANCIÓN es a:", options: ["Música", "Escuchar", "Cantar", "Bailar"], correct: "b", indice: "IRP", subtest: "Razonamiento" },
+    { id: 45, text: "PINTOR es a PINCEL como ESCRITOR es a:", options: ["Libro", "Papel", "Pluma/Bolígrafo", "Historia"], correct: "c", indice: "IRP", subtest: "Razonamiento" },
+    { id: 46, text: "INVIERNO es a FRÍO como VERANO es a:", options: ["Sol", "Playa", "Calor", "Vacaciones"], correct: "c", indice: "IRP", subtest: "Razonamiento" },
+    { id: 47, text: "DEDO es a MANO como HOJA es a:", options: ["Papel", "Verde", "Árbol", "Bosque"], correct: "c", indice: "IRP", subtest: "Razonamiento" },
+    { id: 48, text: "CAUSA es a EFECTO como PREGUNTA es a:", options: ["Duda", "Respuesta", "Problema", "Solución"], correct: "b", indice: "IRP", subtest: "Razonamiento" },
+    { id: 49, text: "KILÓMETRO es a DISTANCIA como KILOGRAMO es a:", options: ["Volumen", "Peso/Masa", "Tiempo", "Temperatura"], correct: "b", indice: "IRP", subtest: "Razonamiento" },
+    { id: 50, text: "MICROSCOPIO es a PEQUEÑO como TELESCOPIO es a:", options: ["Grande", "Lejano", "Cercano", "Brillante"], correct: "b", indice: "IRP", subtest: "Razonamiento" }
+  ];
+
+  // PARTE II: Memoria de Trabajo (IMT) y Velocidad de Procesamiento (IVP)
+  const ITEMS_PART2 = [
+    // === IMT - DÍGITOS/SECUENCIAS (1-15) ===
+    { id: 1, text: "Vio la secuencia: 5-8-2. ¿Cuál es el orden CORRECTO?", options: ["528", "852", "285", "582"], correct: "a", indice: "IMT", subtest: "Dígitos" },
+    { id: 2, text: "Vio la secuencia: 6-9-4. ¿Cuál es el orden CORRECTO?", options: ["496", "694", "946", "649"], correct: "b", indice: "IMT", subtest: "Dígitos" },
+    { id: 3, text: "Vio la secuencia: 7-2-8-6. ¿Cuál es el orden CORRECTO?", options: ["7826", "7286", "2786", "6827"], correct: "b", indice: "IMT", subtest: "Dígitos" },
+    { id: 4, text: "Vio la secuencia: 3-8-2-9. ¿Cuál es el orden INVERSO?", options: ["9283", "3829", "2938", "8329"], correct: "a", indice: "IMT", subtest: "Dígitos Inverso" },
+    { id: 5, text: "Vio la secuencia: 5-1-7-4. ¿Cuál es el orden INVERSO?", options: ["4715", "5174", "7154", "1547"], correct: "a", indice: "IMT", subtest: "Dígitos Inverso" },
+    { id: 6, text: "Vio la secuencia: 9-2-6-3. ¿Cuál es el orden INVERSO?", options: ["3629", "9263", "6329", "2369"], correct: "a", indice: "IMT", subtest: "Dígitos Inverso" },
+    { id: 7, text: "Ordene de MENOR a MAYOR: 7, 2, 9, 4", options: ["2479", "2497", "4279", "7924"], correct: "a", indice: "IMT", subtest: "Secuenciación" },
+    { id: 8, text: "Ordene de MENOR a MAYOR: 8, 1, 5, 3", options: ["1358", "1385", "3158", "5138"], correct: "a", indice: "IMT", subtest: "Secuenciación" },
+    { id: 9, text: "Ordene de MENOR a MAYOR: 6, 2, 9, 1, 4", options: ["12469", "12496", "14269", "21469"], correct: "a", indice: "IMT", subtest: "Secuenciación" },
+    { id: 10, text: "¿Cuántos números hay entre 3 y 9 (sin incluirlos)?", options: ["4", "5", "6", "7"], correct: "b", indice: "IMT", subtest: "Secuenciación" },
+    { id: 11, text: "Si cuento de 2 en 2 desde 3: 3, 5, 7... ¿cuál sigue?", options: ["8", "9", "10", "11"], correct: "b", indice: "IMT", subtest: "Secuenciación" },
+    { id: 12, text: "En la secuencia 4-7-2-9-5, ¿qué número está en el medio?", options: ["4", "7", "2", "9"], correct: "c", indice: "IMT", subtest: "Secuenciación" },
+    { id: 13, text: "¿Cuál es la suma de: 8 + 5 + 7?", options: ["18", "19", "20", "21"], correct: "c", indice: "IMT", subtest: "Aritmética Mental" },
+    { id: 14, text: "¿Cuál es la suma de: 15 + 27 + 8?", options: ["48", "49", "50", "51"], correct: "c", indice: "IMT", subtest: "Aritmética Mental" },
+    { id: 15, text: "¿Cuál es: 100 - 37?", options: ["63", "67", "73", "77"], correct: "a", indice: "IMT", subtest: "Aritmética Mental" },
+
+    // === IMT - ARITMÉTICA (16-25) ===
+    { id: 16, text: "Si tiene 3 manzanas y le dan 5 más, ¿cuántas tiene?", options: ["6", "7", "8", "9"], correct: "c", indice: "IMT", subtest: "Aritmética" },
+    { id: 17, text: "¿Cuánto es 15 + 27?", options: ["40", "41", "42", "43"], correct: "c", indice: "IMT", subtest: "Aritmética" },
+    { id: 18, text: "Si un libro cuesta $45 y tiene $100, ¿cuánto le sobra?", options: ["$45", "$55", "$65", "$75"], correct: "b", indice: "IMT", subtest: "Aritmética" },
+    { id: 19, text: "¿Cuánto es 8 × 7?", options: ["54", "56", "58", "63"], correct: "b", indice: "IMT", subtest: "Aritmética" },
+    { id: 20, text: "Si reparte 24 caramelos entre 6 niños, ¿cuántos le tocan a cada uno?", options: ["3", "4", "5", "6"], correct: "b", indice: "IMT", subtest: "Aritmética" },
+    { id: 21, text: "¿Cuánto es 156 - 89?", options: ["57", "67", "77", "87"], correct: "b", indice: "IMT", subtest: "Aritmética" },
+    { id: 22, text: "Si un tren viaja a 80 km/h, ¿cuántos km recorre en 3 horas?", options: ["200", "220", "240", "260"], correct: "c", indice: "IMT", subtest: "Aritmética" },
+    { id: 23, text: "¿Cuánto es el 25% de 200?", options: ["25", "50", "75", "100"], correct: "b", indice: "IMT", subtest: "Aritmética" },
+    { id: 24, text: "Si 5 lápices cuestan $35, ¿cuánto cuesta cada lápiz?", options: ["$5", "$6", "$7", "$8"], correct: "c", indice: "IMT", subtest: "Aritmética" },
+    { id: 25, text: "¿Cuánto es (12 + 8) × 3?", options: ["50", "54", "60", "66"], correct: "c", indice: "IMT", subtest: "Aritmética" },
+
+    // === IVP - BÚSQUEDA/DISCRIMINACIÓN (26-38) ===
+    { id: 26, text: "¿Cuál NO pertenece al grupo? MESA, SILLA, CAMA, PERRO", options: ["MESA", "SILLA", "CAMA", "PERRO"], correct: "d", indice: "IVP", subtest: "Búsqueda" },
+    { id: 27, text: "¿Cuál NO pertenece al grupo? ROJO, VERDE, CÍRCULO, AZUL", options: ["ROJO", "VERDE", "CÍRCULO", "AZUL"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 28, text: "¿Cuál NO pertenece al grupo? MANZANA, PERA, ZANAHORIA, UVA", options: ["MANZANA", "PERA", "ZANAHORIA", "UVA"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 29, text: "¿Cuál NO pertenece al grupo? CUCHARA, TENEDOR, PLATO, CUCHILLO", options: ["CUCHARA", "TENEDOR", "PLATO", "CUCHILLO"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 30, text: "¿Cuál NO pertenece al grupo? ENERO, LUNES, MARZO, MAYO", options: ["ENERO", "LUNES", "MARZO", "MAYO"], correct: "b", indice: "IVP", subtest: "Búsqueda" },
+    { id: 31, text: "¿Cuál NO pertenece al grupo? GUITARRA, PIANO, LIBRO, VIOLÍN", options: ["GUITARRA", "PIANO", "LIBRO", "VIOLÍN"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 32, text: "¿Cuál NO pertenece al grupo? ARGENTINA, CHILE, EUROPA, BRASIL", options: ["ARGENTINA", "CHILE", "EUROPA", "BRASIL"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 33, text: "¿Cuál NO pertenece al grupo? CORRER, SALTAR, PENSAR, NADAR", options: ["CORRER", "SALTAR", "PENSAR", "NADAR"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 34, text: "¿Cuál NO pertenece al grupo? MÉDICO, HOSPITAL, ENFERMERO, CIRUJANO", options: ["MÉDICO", "HOSPITAL", "ENFERMERO", "CIRUJANO"], correct: "b", indice: "IVP", subtest: "Búsqueda" },
+    { id: 35, text: "¿Cuál NO pertenece al grupo? 2, 4, 7, 8", options: ["2", "4", "7", "8"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 36, text: "¿Cuál NO pertenece al grupo? ROSA, TULIPÁN, ROBLE, MARGARITA", options: ["ROSA", "TULIPÁN", "ROBLE", "MARGARITA"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 37, text: "¿Cuál NO pertenece al grupo? FELIZ, TRISTE, ALTO, ENOJADO", options: ["FELIZ", "TRISTE", "ALTO", "ENOJADO"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+    { id: 38, text: "¿Cuál NO pertenece al grupo? SEGUNDO, MINUTO, METRO, HORA", options: ["SEGUNDO", "MINUTO", "METRO", "HORA"], correct: "c", indice: "IVP", subtest: "Búsqueda" },
+
+    // === IVP - CODIFICACIÓN/VELOCIDAD (39-50) ===
+    { id: 39, text: "Si A=1, B=2, C=3... ¿Cuánto vale CAB?", options: ["5", "6", "7", "8"], correct: "b", indice: "IVP", subtest: "Codificación" },
+    { id: 40, text: "Si A=1, B=2, C=3, D=4... ¿Cuánto vale BAD?", options: ["5", "6", "7", "8"], correct: "c", indice: "IVP", subtest: "Codificación" },
+    { id: 41, text: "Si ◆=2, ●=3, ▲=5... ¿Cuánto vale ◆+●+▲?", options: ["8", "9", "10", "11"], correct: "c", indice: "IVP", subtest: "Codificación" },
+    { id: 42, text: "Si ★=4, ◇=6... ¿Cuánto vale ★×◇÷2?", options: ["10", "12", "14", "24"], correct: "b", indice: "IVP", subtest: "Codificación" },
+    { id: 43, text: "¿Cuántas letras 'A' hay en: ABRACADABRA?", options: ["4", "5", "6", "7"], correct: "b", indice: "IVP", subtest: "Codificación" },
+    { id: 44, text: "¿Cuántos números pares hay entre 1 y 10 (incluyendo)?", options: ["4", "5", "6", "7"], correct: "b", indice: "IVP", subtest: "Codificación" },
+    { id: 45, text: "Si HOY es MIÉRCOLES, ¿qué día fue ANTEAYER?", options: ["DOMINGO", "LUNES", "MARTES", "SÁBADO"], correct: "b", indice: "IVP", subtest: "Codificación" },
+    { id: 46, text: "¿Cuál es la siguiente letra después de M en el alfabeto?", options: ["L", "N", "O", "P"], correct: "b", indice: "IVP", subtest: "Codificación" },
+    { id: 47, text: "Si invertimos ROMA obtenemos:", options: ["AMOR", "MORA", "RAMO", "ARMO"], correct: "a", indice: "IVP", subtest: "Codificación" },
+    { id: 48, text: "¿Cuántas vocales hay en MURCIÉLAGO?", options: ["3", "4", "5", "6"], correct: "c", indice: "IVP", subtest: "Codificación" },
+    { id: 49, text: "En 'PSICOLOGÍA', ¿cuántas letras hay en total?", options: ["9", "10", "11", "12"], correct: "b", indice: "IVP", subtest: "Codificación" },
+    { id: 50, text: "¿Qué número continúa? Lunes=1, Martes=2, Miércoles=3, Jueves=?", options: ["3", "4", "5", "6"], correct: "b", indice: "IVP", subtest: "Codificación" }
+  ];
+
+  // ========== ESTADO GLOBAL ==========
+  let user = {};
+  let answersPart1 = {};
+  let answersPart2 = {};
+  let timeStartPart1 = 0, timeEndPart1 = 0;
+  let timeStartPart2 = 0, timeEndPart2 = 0;
+  let timerInterval;
+  let elapsedSeconds = 0;
+  let currentPart = 0;
+
+  // ========== NAVEGACIÓN ==========
+  function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function goToInstructions() {
+    const n = document.getElementById('userName').value.trim();
+    const l = document.getElementById('userLast').value.trim();
+    const e = document.getElementById('userEmail').value.trim();
+    if(!n || !l || !e) return alert("Complete todos los campos");
+    user = { name: n, lastname: l, email: e };
+    showSection('instSection');
+  }
+
+  // ========== PARTE I ==========
+  function startPart1() {
+    currentPart = 1;
+    timeStartPart1 = Date.now();
+    renderQuestionsPart1();
+    showSection('testPart1Section');
+    document.getElementById('timerDisplay').style.display = 'block';
+    elapsedSeconds = 0;
+    startTimer();
+  }
+
+  function renderQuestionsPart1() {
+    const container = document.getElementById('questionsContainer1');
+    container.innerHTML = '';
+    
+    ITEMS_PART1.forEach(q => {
+      const div = document.createElement('div');
+      div.className = 'question-item';
+      div.id = 'q1-' + q.id;
+      
+      let optionsHtml = '<div class="options-multiple">';
+      const letters = ['a', 'b', 'c', 'd'];
+      q.options.forEach((opt, idx) => {
+        const letter = letters[idx];
+        optionsHtml += `
+          <label class="opt-radio" onclick="selectOptionPart1(${q.id}, '${letter}', this)">
+            <input type="radio" name="q1-${q.id}" value="${letter}">
+            <span class="radio-circle"></span>
+            <span class="opt-text">${letter.toUpperCase()}) ${opt}</span>
+          </label>
+        `;
+      });
+      optionsHtml += '</div>';
+      
+      div.innerHTML = `
+        <div class="q-header">
+          <span class="q-number">${q.id}</span>
+          <span class="q-text">${q.text}</span>
+        </div>
+        ${optionsHtml}
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function selectOptionPart1(qId, val, labelElem) {
+    answersPart1[qId] = val;
+    
+    const parent = labelElem.parentElement;
+    Array.from(parent.children).forEach(child => {
+      child.classList.remove('selected');
+    });
+    labelElem.classList.add('selected');
+    
+    document.getElementById('q1-' + qId).classList.add('answered');
+    updateProgressPart1();
+  }
+
+  function updateProgressPart1() {
+    const answered = Object.keys(answersPart1).length;
+    const total = 50;
+    const percent = Math.round((answered / total) * 100);
+    
+    document.getElementById('progressBar1').style.width = percent + '%';
+    document.getElementById('progressCount1').innerText = answered;
+    document.getElementById('progressPercent1').innerText = percent + '%';
+  }
+
+  function finishPart1() {
+    const answered = Object.keys(answersPart1).length;
+    if(answered < 50) {
+      if(!confirm(`Ha respondido ${answered} de 50 preguntas en la Parte I.\n\n¿Desea continuar a la Parte II de todos modos?`)) {
+        return;
+      }
+    }
+    clearInterval(timerInterval);
+    timeEndPart1 = Date.now();
+    
+    const timePart1Str = formatTimeUsed(timeStartPart1, timeEndPart1);
+    document.getElementById('timePart1').innerText = timePart1Str;
+    
+    showSection('intermissionSection');
+  }
+
+  // ========== PARTE II ==========
+  function startPart2() {
+    currentPart = 2;
+    timeStartPart2 = Date.now();
+    renderQuestionsPart2();
+    showSection('testPart2Section');
+    document.getElementById('timerDisplay').style.display = 'block';
+    elapsedSeconds = 0;
+    startTimer();
+  }
+
+  function renderQuestionsPart2() {
+    const container = document.getElementById('questionsContainer2');
+    container.innerHTML = '';
+    
+    ITEMS_PART2.forEach(q => {
+      const div = document.createElement('div');
+      div.className = 'question-item';
+      div.id = 'q2-' + q.id;
+      
+      let optionsHtml = '<div class="options-multiple">';
+      const letters = ['a', 'b', 'c', 'd'];
+      q.options.forEach((opt, idx) => {
+        const letter = letters[idx];
+        optionsHtml += `
+          <label class="opt-radio" onclick="selectOptionPart2(${q.id}, '${letter}', this)">
+            <input type="radio" name="q2-${q.id}" value="${letter}">
+            <span class="radio-circle"></span>
+            <span class="opt-text">${letter.toUpperCase()}) ${opt}</span>
+          </label>
+        `;
+      });
+      optionsHtml += '</div>';
+      
+      div.innerHTML = `
+        <div class="q-header">
+          <span class="q-number">${q.id}</span>
+          <span class="q-text">${q.text}</span>
+        </div>
+        ${optionsHtml}
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function selectOptionPart2(qId, val, labelElem) {
+    answersPart2[qId] = val;
+    
+    const parent = labelElem.parentElement;
+    Array.from(parent.children).forEach(child => {
+      child.classList.remove('selected');
+    });
+    labelElem.classList.add('selected');
+    
+    document.getElementById('q2-' + qId).classList.add('answered');
+    updateProgressPart2();
+  }
+
+  function updateProgressPart2() {
+    const answered = Object.keys(answersPart2).length;
+    const total = 50;
+    const percent = Math.round((answered / total) * 100);
+    
+    document.getElementById('progressBar2').style.width = percent + '%';
+    document.getElementById('progressCount2').innerText = answered;
+    document.getElementById('progressPercent2').innerText = percent + '%';
+  }
+
+  function finishTest() {
+    const answered = Object.keys(answersPart2).length;
+    if(answered < 50) {
+      if(!confirm(`Ha respondido ${answered} de 50 preguntas en la Parte II.\n\n¿Desea finalizar de todos modos?`)) {
+        return;
+      }
+    }
+    clearInterval(timerInterval);
+    timeEndPart2 = Date.now();
+    document.getElementById('timerDisplay').style.display = 'none';
+    showSection('finalSection');
+    
+    sendResults();
+  }
+
+  // ========== ENVIAR RESULTADOS ==========
+  function sendResults() {
+    const tiempoP1 = formatTimeUsed(timeStartPart1, timeEndPart1);
+    const tiempoP2 = formatTimeUsed(timeStartPart2, timeEndPart2);
+    
+    const respP1 = formatAnswers(answersPart1);
+    const respP2 = formatAnswers(answersPart2);
+    
+    // Formato final de respuestas igual al ejemplo
+    const respuestasFinal = `{PI: ${tiempoP1} - ${respP1}} {PII: ${tiempoP2} - ${respP2}}`;
+
+    // Fecha y hora actual
+    const now = new Date();
+    const fechaHora = now.toLocaleString('es-AR', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+    });
+
+    // Formato de fila para Google Sheets
+    const filaOrdenada = [
+      user.name || "SinNombre",
+      user.lastname || "SinApellido",
+      user.email || "SinEmail",
+      fechaHora,
+      respuestasFinal
+    ];
+
+    const payload = {
+      nombreHoja: "Respuestas",
+      fila: filaOrdenada
+    };
+
+    console.log("Enviando a la base de datos:", payload);
+
+    // URL DE GOOGLE APPS SCRIPT
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7WfG6i-1Wgw-XOV8Q-gcrJSIC1shdqP5IIXkjcVAeJLqZFcAIgtsEJ75ErED6aiHK7Q/exec';
+    
+    fetch(GOOGLE_SCRIPT_URL, { 
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload) 
+    })
+    .then(() => {
+      document.getElementById('loadingMsg').innerText = "¡Datos guardados correctamente!";
+      document.getElementById('loadingMsg').style.color = "#059669";
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('loadingMsg').innerText = "⚠️ Error de conexión, avise al administrador.";
+      document.getElementById('loadingMsg').style.color = "orange";
+    });
+  }
+
+  // ========== FUNCIONES DE UTILIDAD ==========
+  function formatTimeUsed(startTime, endTime) {
+    if(!startTime || !endTime) return "0m 0s";
+    const diffMs = endTime - startTime;
+    const totalSeconds = Math.floor(diffMs / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}m ${seconds}s`;
+  }
+
+  function formatAnswers(answers) {
+    const sortedIds = Object.keys(answers).map(Number).sort((a, b) => a - b);
+    // Formato: id;respuesta (letra seleccionada)
+    const formatted = sortedIds.map(id => `${id};${answers[id]}`).join(', ');
+    return formatted || "Sin respuestas";
+  }
+
+  // ========== TIMER ==========
+  function startTimer() {
+    updateTimer();
+    timerInterval = setInterval(() => {
+      elapsedSeconds++;
+      updateTimer();
+    }, 1000);
+  }
+
+  function updateTimer() {
+    const m = Math.floor(elapsedSeconds / 60).toString().padStart(2,'0');
+    const s = (elapsedSeconds % 60).toString().padStart(2,'0');
+    document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+  }
+
+  // ========== CLAVES DE RESPUESTAS (Para evaluación automática) ==========
+  // Estas claves pueden usarse para calcular puntajes automáticamente
+  
+  const CLAVES_PART1 = {
+    1: "b", 2: "b", 3: "c", 4: "b", 5: "c", 6: "b", 7: "c", 8: "a", 9: "c", 10: "c",
+    11: "c", 12: "b", 13: "b", 14: "b", 15: "c", 16: "b", 17: "b", 18: "b", 19: "b",
+    20: "c", 21: "c", 22: "b", 23: "c", 24: "b", 25: "c",
+    26: "b", 27: "c", 28: "c", 29: "b", 30: "d", 31: "c", 32: "b", 33: "b", 34: "b",
+    35: "c", 36: "b", 37: "c", 38: "b",
+    39: "b", 40: "c", 41: "b", 42: "c", 43: "a", 44: "b", 45: "c", 46: "c", 47: "c",
+    48: "b", 49: "b", 50: "b"
+  };
+  
+  const CLAVES_PART2 = {
+    1: "a", 2: "b", 3: "b", 4: "a", 5: "a", 6: "a", 7: "a", 8: "a", 9: "a", 10: "b",
+    11: "b", 12: "c", 13: "c", 14: "c", 15: "a",
+    16: "c", 17: "c", 18: "b", 19: "b", 20: "b", 21: "b", 22: "c", 23: "b", 24: "c", 25: "c",
+    26: "d", 27: "c", 28: "c", 29: "c", 30: "b", 31: "c", 32: "c", 33: "c", 34: "b",
+    35: "c", 36: "c", 37: "c", 38: "c",
+    39: "b", 40: "c", 41: "c", 42: "b", 43: "b", 44: "b", 45: "b", 46: "b", 47: "a",
+    48: "c", 49: "b", 50: "b"
+  };
+
+  // Distribución de ítems por índice (para calcular puntajes por área)
+  const INDICES_PART1 = {
+    ICV: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25], // 25 ítems
+    IRP: [26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50] // 25 ítems
+  };
+  
+  const INDICES_PART2 = {
+    IMT: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25], // 25 ítems
+    IVP: [26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50] // 25 ítems
+  };
+
+</script>
+</body>
+</html>

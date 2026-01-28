@@ -1,0 +1,38 @@
+/* Fondo ONE (bg + hex + stars) */
+.bg{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-2;
+}
+
+.bg::before{
+  content:"";
+  position:absolute;
+  inset:-10%;
+  background:
+    radial-gradient(circle at 25% 20%, rgba(107,225,227,.12), transparent 40%),
+    radial-gradient(circle at 80% 35%, rgba(225,123,215,.12), transparent 38%),
+    radial-gradient(circle at 55% 85%, rgba(228,199,106,.10), transparent 45%);
+  filter: blur(18px);
+  opacity:.95;
+  transform: translateZ(0);
+}
+
+.hex{
+  position:absolute;
+  inset:-20%;
+  opacity:.16;
+  filter: drop-shadow(0 0 12px rgba(107,225,227,.15));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='150' viewBox='0 0 260 150'%3E%3Cg fill='none' stroke='%23c6c9d7' stroke-opacity='0.85' stroke-width='1'%3E%3Cpath d='M50 20l20-12 20 12v24l-20 12-20-12z'/%3E%3Cpath d='M120 20l20-12 20 12v24l-20 12-20-12z'/%3E%3Cpath d='M190 20l20-12 20 12v24l-20 12-20-12z'/%3E%3Cpath d='M85 55l20-12 20 12v24l-20 12-20-12z'/%3E%3Cpath d='M155 55l20-12 20 12v24l-20 12-20-12z'/%3E%3Cpath d='M50 90l20-12 20 12v24l-20 12-20-12z'/%3E%3Cpath d='M120 90l20-12 20 12v24l-20 12-20-12z'/%3E%3Cpath d='M190 90l20-12 20 12v24l-20 12-20-12z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 260px 150px;
+  background-repeat: repeat;
+  transform: rotate(-8deg);
+  mix-blend-mode: screen;
+}
+
+canvas#stars{
+  position:absolute;
+  inset:0;
+  opacity:1;
+}

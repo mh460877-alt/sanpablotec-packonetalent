@@ -1,0 +1,71 @@
+/* Inputs (dashboard) */
+.field-group{ margin-bottom:1.5rem; }
+.field-group label{
+  display:block;
+  font-size:.9rem;
+  font-weight:600;
+  color: rgba(198,201,215,.88);
+  margin-bottom:.5rem;
+}
+
+.field-group input[type="text"],
+.field-group input[type="password"],
+.field-group select{
+  width:100%;
+  padding:.9rem 1rem;
+  font-size:.95rem;
+  background: rgba(254,254,255,.06);
+  border: 1px solid rgba(198,201,215,.22);
+  border-radius: var(--radius-md);
+  color: var(--c-white);
+  outline:none;
+  backdrop-filter: blur(12px);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.field-group input:focus,
+.field-group select:focus{
+  border-color: rgba(107,225,227,.55);
+  box-shadow: 0 0 0 3px rgba(107,225,227,.14);
+  background: rgba(254,254,255,.075);
+}
+
+.field-group select{
+  appearance:none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='white' height='12' width='12' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
+}
+.field-group select option{ background-color:#151318; color:var(--c-white); }
+
+/* Inputs (usuarios) */
+.form-group{ margin-bottom:1.5rem; }
+.form-label{
+  display:block;
+  font-size:.9rem;
+  font-weight:700;
+  color: rgba(198,201,215,.88);
+  margin-bottom:.5rem;
+}
+
+.form-input{
+  width:100%;
+  padding:.9rem 1rem;
+  font-size:.95rem;
+  background: rgba(254,254,255,.06);
+  border: 1px solid rgba(198,201,215,.22);
+  border-radius: var(--radius-md);
+  color: var(--c-white);
+  outline:none;
+  backdrop-filter: blur(12px);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.form-input:focus{
+  border-color: rgba(107,225,227,.55);
+  box-shadow: 0 0 0 3px rgba(107,225,227,.14);
+  background: rgba(254,254,255,.075);
+}
+
+.form-input::placeholder{ color: rgba(198,201,215,.55); }
