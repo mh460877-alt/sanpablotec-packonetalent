@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DAT - Test Completo de Aptitudes (6 Módulos)</title>
+  <title>DAT - Test Completo de Aptitudes (4 Módulos)</title>
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* === ESTILOS GLOBALES === */
@@ -194,71 +194,6 @@
       margin-bottom: 5px;
       display: block;
     }
-
-    /* PREGUNTAS VISUALES (ABSTRACTO/ESPACIAL) */
-    .question-visual {
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      background: #fafafa;
-    }
-    .question-visual img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 10px auto;
-    }
-    .visual-options {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 15px;
-    }
-    .visual-opt-btn {
-      width: 60px;
-      height: 60px;
-      border: 2px solid #cbd5e1;
-      border-radius: 10px;
-      background: white;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .visual-opt-btn:hover {
-      border-color: #0b4a6e;
-      background: #f0f9ff;
-    }
-    .visual-opt-btn.selected {
-      background: #0b4a6e;
-      color: white;
-      border-color: #0b4a6e;
-    }
-
-    /* PROGRESS BAR */
-    .progress-container {
-      margin-bottom: 20px;
-    }
-    .progress-bar {
-      height: 8px;
-      background: #e2e8f0;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #0b4a6e, #1e88e5);
-      transition: width 0.3s;
-    }
-    .progress-text {
-      font-size: 12px;
-      color: #64748b;
-      margin-top: 5px;
-      text-align: right;
-    }
-
   </style>
 </head>
 <body>
@@ -429,78 +364,6 @@
   <div id="testSection4" class="section">
     <div id="questionsContainer4" class="test-wrapper"></div>
     <button class="btn" style="margin-top: 20px;" onclick="finishTest4()">FINALIZAR TEST 4</button>
-  </div>
-
-  <!-- ========== TRANSICIÓN TEST 4 → TEST 5 ========== -->
-  <div id="transitionSection4to5" class="section intermission">
-    <h2>✓ Test 4 Completado</h2>
-    <p>Ha finalizado el Test de Razonamiento Numérico.</p>
-    <p>A continuación comenzará el Test 5: Razonamiento Abstracto.</p>
-    <br>
-    <button class="btn" onclick="showInstructions5()">CONTINUAR AL TEST 5</button>
-  </div>
-
-  <!-- ========== TEST 5: RAZONAMIENTO ABSTRACTO - INSTRUCCIONES ========== -->
-  <div id="instSection5" class="section">
-    <h2>Test 5: Razonamiento Abstracto</h2>
-    <div class="instructions-box">
-      <p>En esta prueba se trata de apreciar la capacidad para razonar con figuras y dibujos. En cada fila hay cuatro figuras llamadas PROBLEMA y cinco llamadas RESPUESTA.</p>
-      <p><strong>Tarea:</strong> Las figuras PROBLEMA forman una serie porque están ordenadas siguiendo una ley. Su tarea consiste en elegir, entre las figuras RESPUESTA, la que debiera ir a continuación (es decir, la que sería la número cinco de la serie).</p>
-      <p><strong>IMPORTANTE:</strong> Debe tener el cuadernillo de imágenes junto a usted para ver las figuras de cada pregunta.</p>
-    </div>
-
-    <div class="instructions-box">
-      <span class="example-label">Ejemplo</span>
-      <p>En el ejemplo E1, la flecha gira 90º en el sentido de las agujas del reloj de un recuadro a otro. La respuesta correcta es A porque la posición siguiente de la flecha debería ser vertical hacia arriba.</p>
-    </div>
-
-    <button class="btn" onclick="startTest5()">COMENZAR TEST 5 (25 MIN)</button>
-  </div>
-
-  <!-- ========== TEST 5: RAZONAMIENTO ABSTRACTO ========== -->
-  <div id="testSection5" class="section">
-    <div class="progress-container">
-      <div class="progress-bar"><div id="progress5" class="progress-fill" style="width: 0%"></div></div>
-      <div class="progress-text"><span id="progressText5">0</span> / 50</div>
-    </div>
-    <div id="questionsContainer5" class="test-wrapper"></div>
-    <button class="btn" style="margin-top: 20px;" onclick="finishTest5()">FINALIZAR TEST 5</button>
-  </div>
-
-  <!-- ========== TRANSICIÓN TEST 5 → TEST 6 ========== -->
-  <div id="transitionSection5to6" class="section intermission">
-    <h2>✓ Test 5 Completado</h2>
-    <p>Ha finalizado el Test de Razonamiento Abstracto.</p>
-    <p>A continuación comenzará el Test 6: Relaciones Espaciales.</p>
-    <br>
-    <button class="btn" onclick="showInstructions6()">CONTINUAR AL TEST 6</button>
-  </div>
-
-  <!-- ========== TEST 6: RELACIONES ESPACIALES - INSTRUCCIONES ========== -->
-  <div id="instSection6" class="section">
-    <h2>Test 6: Relaciones Espaciales</h2>
-    <div class="instructions-box">
-      <p>Esta prueba consta de 50 ejercicios. En cada uno de ellos se presenta un modelo o patrón en el que algunas zonas están sombreadas.</p>
-      <p><strong>Tarea:</strong> A la derecha de cada modelo se ofrecen cuatro figuras de tres dimensiones. Su tarea consiste en averiguar cuál de esas figuras es la <strong>única</strong> que ha podido formarse a partir del modelo. El modelo siempre presenta la parte exterior de la figura.</p>
-      <p><strong>IMPORTANTE:</strong> Debe tener el cuadernillo de imágenes junto a usted para ver las figuras de cada pregunta.</p>
-    </div>
-
-    <div class="instructions-box">
-      <span class="example-label">Ejemplo</span>
-      <p>En el ejemplo E1, el modelo formará una caja rectangular con las dos caras mayores y una de las pequeñas laterales sombreadas. La respuesta correcta es D porque la cara superior y uno de los laterales cortos están sombreados.</p>
-    </div>
-
-    <button class="btn" onclick="startTest6()">COMENZAR TEST 6 (25 MIN)</button>
-  </div>
-
-  <!-- ========== TEST 6: RELACIONES ESPACIALES ========== -->
-  <div id="testSection6" class="section">
-    <div class="progress-container">
-      <div class="progress-bar"><div id="progress6" class="progress-fill" style="width: 0%"></div></div>
-      <div class="progress-text"><span id="progressText6">0</span> / 50</div>
-    </div>
-    <div id="questionsContainer6" class="test-wrapper"></div>
-    <button class="btn" style="margin-top: 20px;" onclick="finishTest6()">FINALIZAR TEST 6</button>
   </div>
 
   <!-- ========== FINAL ========== -->
@@ -715,26 +578,6 @@
     { id: 40, text: "Diagrama de flujo: Si introduce el número 2, ¿cuántas veces pasará por el paso 4 para llegar al final?", options: ["1", "2", "3", "4", "Ninguna de ellas"] }
   ];
 
-  // ========== DATOS TEST 5: RAZONAMIENTO ABSTRACTO (50 preguntas) ==========
-  // Las respuestas correctas según el solucionario
-  const ANSWERS_TEST5 = {
-    1:"A", 2:"B", 3:"D", 4:"C", 5:"A", 6:"A", 7:"B", 8:"C", 9:"D", 10:"E",
-    11:"B", 12:"C", 13:"A", 14:"D", 15:"E", 16:"E", 17:"D", 18:"C", 19:"B", 20:"A",
-    21:"C", 22:"A", 23:"B", 24:"D", 25:"E", 26:"A", 27:"C", 28:"B", 29:"D", 30:"E",
-    31:"A", 32:"B", 33:"E", 34:"D", 35:"C", 36:"C", 37:"A", 38:"D", 39:"B", 40:"E",
-    41:"D", 42:"E", 43:"A", 44:"B", 45:"C", 46:"B", 47:"D", 48:"E", 49:"A", 50:"C"
-  };
-
-  // ========== DATOS TEST 6: RELACIONES ESPACIALES (50 preguntas) ==========
-  // Las respuestas se definen como A, B, C o D
-  const ANSWERS_TEST6 = {
-    1:"C", 2:"D", 3:"A", 4:"B", 5:"B", 6:"A", 7:"A", 8:"D", 9:"B", 10:"C",
-    11:"A", 12:"D", 13:"C", 14:"B", 15:"D", 16:"A", 17:"B", 18:"C", 19:"D", 20:"B",
-    21:"C", 22:"A", 23:"B", 24:"D", 25:"D", 26:"A", 27:"A", 28:"D", 29:"C", 30:"B",
-    31:"A", 32:"B", 33:"C", 34:"D", 35:"A", 36:"C", 37:"A", 38:"B", 39:"D", 40:"B",
-    41:"C", 42:"A", 43:"B", 44:"C", 45:"D", 46:"B", 47:"D", 48:"A", 49:"A", 50:"C"
-  };
-
   // ========== ESTADO GLOBAL ==========
   let user = {};
   let currentTest1Part = 1;
@@ -743,8 +586,6 @@
   let answersT2 = {};
   let answersT3 = {};
   let answersT4 = {};
-  let answersT5 = {};
-  let answersT6 = {};
   let timerInterval;
   let timeLeft = 180;
 
@@ -754,8 +595,6 @@
   let timeTest2Start = 0, timeTest2End = 0;
   let timeTest3Start = 0, timeTest3End = 0;
   let timeTest4Start = 0, timeTest4End = 0;
-  let timeTest5Start = 0, timeTest5End = 0;
-  let timeTest6Start = 0, timeTest6End = 0;
 
   // ========== NAVEGACIÓN ==========
   function showSection(sectionId) {
@@ -996,141 +835,20 @@
     clearInterval(timerInterval);
     timeTest4End = Date.now();
     document.getElementById('timerDisplay').style.display = 'none';
-    showSection('transitionSection4to5');
+    // Antes iba a transición 4→5; ahora finaliza y envía
+    finishAllAfterTest4();
   }
 
-  // ========== TEST 5: RAZONAMIENTO ABSTRACTO ==========
-  function showInstructions5() {
-    showSection('instSection5');
-    document.getElementById('pageTitle').innerText = 'Test 5: Razonamiento Abstracto';
-  }
-
-  function startTest5() {
-    timeTest5Start = Date.now();
-    renderTest5Questions();
-    showSection('testSection5');
-    document.getElementById('timerDisplay').style.display = 'block';
-    timeLeft = 1500; // 25 minutos
-    startTimer();
-  }
-
-  function renderTest5Questions() {
-    const container = document.getElementById('questionsContainer5');
-    container.innerHTML = '';
-    const LETTERS = ['A', 'B', 'C', 'D', 'E'];
-
-    for(let i = 1; i <= 40; i++) {
-      const div = document.createElement('div');
-      div.className = 'question-visual';
-      
-      let optionsHtml = '<div class="visual-options">';
-      LETTERS.forEach(letter => {
-        optionsHtml += `<button class="visual-opt-btn" onclick="selectOptT5(${i}, '${letter}', this)">${letter}</button>`;
-      });
-      optionsHtml += '</div>';
-
-      div.innerHTML = `
-        <div class="q-number">Pregunta ${i}</div>
-        <p style="text-align:center; color:#64748b; margin: 10px 0;">📄 Ver figura ${i} en el cuadernillo de imágenes</p>
-        <img src="./img/abstracto/p${i}.png" alt="Pregunta ${i}" onerror="this.style.display='none'">
-        ${optionsHtml}
-      `;
-      container.appendChild(div);
-    }
-    updateProgress5();
-  }
-
-  function selectOptT5(qId, val, btnElem) {
-    answersT5[qId] = val;
-    const parent = btnElem.parentElement;
-    Array.from(parent.children).forEach(child => child.classList.remove('selected'));
-    btnElem.classList.add('selected');
-    updateProgress5();
-  }
-
-  function updateProgress5() {
-    const answered = Object.keys(answersT5).length;
-    document.getElementById('progress5').style.width = (answered / 50 * 100) + '%';
-    document.getElementById('progressText5').innerText = answered;
-  }
-
-  function finishTest5() {
-    clearInterval(timerInterval);
-    timeTest5End = Date.now();
-    document.getElementById('timerDisplay').style.display = 'none';
-    showSection('transitionSection5to6');
-  }
-
-  // ========== TEST 6: RELACIONES ESPACIALES ==========
-  function showInstructions6() {
-    showSection('instSection6');
-    document.getElementById('pageTitle').innerText = 'Test 6: Relaciones Espaciales';
-  }
-
-  function startTest6() {
-    timeTest6Start = Date.now();
-    renderTest6Questions();
-    showSection('testSection6');
-    document.getElementById('timerDisplay').style.display = 'block';
-    timeLeft = 1500; // 25 minutos
-    startTimer();
-  }
-
-  function renderTest6Questions() {
-    const container = document.getElementById('questionsContainer6');
-    container.innerHTML = '';
-    const LETTERS = ['A', 'B', 'C', 'D'];
-
-    for(let i = 1; i <= 50; i++) {
-      const div = document.createElement('div');
-      div.className = 'question-visual';
-      
-      let optionsHtml = '<div class="visual-options">';
-      LETTERS.forEach(letter => {
-        optionsHtml += `<button class="visual-opt-btn" onclick="selectOptT6(${i}, '${letter}', this)">${letter}</button>`;
-      });
-      optionsHtml += '</div>';
-
-      div.innerHTML = `
-        <div class="q-number">Pregunta ${i}</div>
-        <p style="text-align:center; color:#64748b; margin: 10px 0;">📄 Ver figura ${i} en el cuadernillo de imágenes</p>
-        <img src="./img/espacial/p${i}.png" alt="Pregunta ${i}" onerror="this.style.display='none'">
-        ${optionsHtml}
-      `;
-      container.appendChild(div);
-    }
-    updateProgress6();
-  }
-
-  function selectOptT6(qId, val, btnElem) {
-    answersT6[qId] = val;
-    const parent = btnElem.parentElement;
-    Array.from(parent.children).forEach(child => child.classList.remove('selected'));
-    btnElem.classList.add('selected');
-    updateProgress6();
-  }
-
-  function updateProgress6() {
-    const answered = Object.keys(answersT6).length;
-    document.getElementById('progress6').style.width = (answered / 50 * 100) + '%';
-    document.getElementById('progressText6').innerText = answered;
-  }
-
-  // ========== FINALIZAR TEST 6 Y ENVIAR TODOS LOS DATOS ==========
-  function finishTest6() {
-    clearInterval(timerInterval);
-    timeTest6End = Date.now();
-    document.getElementById('timerDisplay').style.display = 'none';
+  // ========== FINALIZAR TODO DESPUÉS DEL TEST 4 Y ENVIAR DATOS ==========
+  function finishAllAfterTest4() {
     showSection('finalSection');
-    
+
     // Calcular tiempos usados
     const tiempoTest1P1 = formatTimeUsed(timeTest1P1Start, timeTest1P1End);
     const tiempoTest1P2 = formatTimeUsed(timeTest1P2Start, timeTest1P2End);
     const tiempoTest2 = formatTimeUsed(timeTest2Start, timeTest2End);
     const tiempoTest3 = formatTimeUsed(timeTest3Start, timeTest3End);
     const tiempoTest4 = formatTimeUsed(timeTest4Start, timeTest4End);
-    const tiempoTest5 = formatTimeUsed(timeTest5Start, timeTest5End);
-    const tiempoTest6 = formatTimeUsed(timeTest6Start, timeTest6End);
 
     // Formatear respuestas
     const respuestasT1P1 = formatAnswers(answersT1P1);
@@ -1139,8 +857,6 @@
     const respuestasTest2 = `{${tiempoTest2} - ${formatAnswers(answersT2)}}`;
     const respuestasTest3 = `{${tiempoTest3} - ${formatAnswers(answersT3)}}`;
     const respuestasTest4 = `{${tiempoTest4} - ${formatAnswers(answersT4)}}`;
-    const respuestasTest5 = `{${tiempoTest5} - ${formatAnswers(answersT5)}}`;
-    const respuestasTest6 = `{${tiempoTest6} - ${formatAnswers(answersT6)}}`;
 
     // Fecha y hora actual
     const now = new Date();
@@ -1149,9 +865,7 @@
       hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
     });
 
-    // ============================================================
-    // FORMATO CORREGIDO: Usamos ARRAY (fila) como espera el Script
-    // ============================================================
+    // ARRAY (fila) como espera el Script (hasta Test 4)
     const filaOrdenada = [
       user.name || "SinNombre",       // Columna A: Nombre
       user.lastname || "SinApellido", // Columna B: Apellido
@@ -1160,9 +874,7 @@
       respuestasTest1,                // Columna E: Respuestas Prueba 1 (Rapidez)
       respuestasTest2,                // Columna F: Respuestas Prueba 2 (Verbal)
       respuestasTest3,                // Columna G: Respuestas Prueba 3 (Ortografia)
-      respuestasTest4,                // Columna H: Respuestas Prueba 4 (Numerico)
-      respuestasTest5,                // Columna I: Respuestas Prueba 5 (Abstracto)
-      respuestasTest6                 // Columna J: Respuestas Prueba 6 (Espacial)
+      respuestasTest4                 // Columna H: Respuestas Prueba 4 (Numerico)
     ];
 
     const payload = {
@@ -1217,7 +929,6 @@
       timeLeft--;
       updateTimer();
       if(timeLeft <= 0) {
-        // Auto-finalizar según el test activo
         if(document.getElementById('testSection1').classList.contains('active')) {
           finishTest1Part();
         } else if(document.getElementById('testSection2').classList.contains('active')) {
@@ -1226,10 +937,6 @@
           finishTest3();
         } else if(document.getElementById('testSection4').classList.contains('active')) {
           finishTest4();
-        } else if(document.getElementById('testSection5').classList.contains('active')) {
-          finishTest5();
-        } else if(document.getElementById('testSection6').classList.contains('active')) {
-          finishTest6();
         }
       }
     }, 1000);
@@ -1240,7 +947,6 @@
     const s = (timeLeft % 60).toString().padStart(2,'0');
     document.getElementById('timerDisplay').innerText = `${m}:${s}`;
   }
-
 </script>
 </body>
 </html>

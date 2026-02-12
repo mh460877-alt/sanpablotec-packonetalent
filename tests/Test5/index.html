@@ -18,7 +18,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
                 'Ubuntu', 'Cantarell', 'sans-serif';
-            background-image: url('../../img/fondo-escencial.jpg'); 
+            background-image: url('../../img/fondo-escencial.jpg');
             min-height: 100vh;
             padding: 20px;
             position: relative;
@@ -722,6 +722,7 @@
             white-space: nowrap;
             border: 0;
         }
+
         .btn-back {
             position: fixed;
             top: 20px;
@@ -767,9 +768,11 @@
                 font-size: 12px;
             }
         }
-        
+
         @media print {
-            .btn-back { display: none !important; }
+            .btn-back {
+                display: none !important;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -955,7 +958,7 @@
 
         // URL de Apps Script que guarda en la hoja "Domino D48"
         const SAVE_RESULTS_URL =
-            "https://script.google.com/macros/s/AKfycbzu75VHnTqYyz0SGB6LfvfpF5oXp4NVED3ixnmukDZruMHB45Dhvfx9eTfpfWYielqpGA/exec";
+            "https://script.google.com/macros/s/AKfycbzHuXCmk5H-eydShhghEvrMB397xaJAWKKXzr7fHUzp9OBUgLIG9DBPD80zta06exlUYQ/exec";
 
         // ========================
         // ÍTEMS
@@ -1576,28 +1579,37 @@
                 respuestasString += `${i + 1}:${value}`;
                 if (i < ITEMS.length - 1) respuestasString += ",";
             }
-
-            const payload = {
-                accion: "guardar",
-                nombre: participant.name,
-                apellido: participant.lastname,
-                email: adminEmail,            // el correo que se guarda en la hoja
-                emailUser: participant.email, // correo del usuario
-                respuestas: respuestasString
+            const datosRecibidos = {
+                fila: [
+                    participant.name,
+                    participant.lastname,
+                    adminEmail,            // el correo que se guarda en la hoja
+                    new Date().toISOString(), // fecha y hora de la prueba
+                    respuestasString
+                ]
             };
+            // const payload = {
+            //     accion: "guardar",
+            //     nombre: participant.name,
+            //     apellido: participant.lastname,
+            //     email: adminEmail,            // el correo que se guarda en la hoja
+            //     emailUser: participant.email, // correo del usuario
+            //     respuestas: respuestasString
+            // };
 
             try {
-                const params = new URLSearchParams(payload);
-                const resp = await fetch(`${SAVE_RESULTS_URL}?${params.toString()}`, {
-                    method: "GET",
-                    redirect: "follow"
+                const resp = await fetch(SAVE_RESULTS_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(datosRecibidos),
                 });
 
-                const result = await resp.json();
-                console.log("Respuesta Apps Script:", result);
+                const text = await resp.text();
+                console.log("Respuesta Apps Script:", text);
 
-                if (result.status !== "success") {
-                    console.error("Error al guardar en Apps Script:", result.mensaje);
+
+                if (!resp.ok || !/^Guardado/i.test(text.trim())) {
+                    throw new Error("Apps Script respondió: " + text);
                 }
             } catch (err) {
                 console.error("Error de red al guardar resultados:", err);
