@@ -42,7 +42,7 @@ body[data-page="index"] .brand{
 body[data-page="index"] .brand .mark{
   width:40px;height:40px;
   border-radius:999px;
-  background-image: url('./img/comodin.png');
+  background-image: url('../../../img/jim.png');
   background-size: cover;
   background-position:center;
   box-shadow: 0 0 0 1px rgba(198,201,215,.18), 0 0 40px rgba(107,225,227,.18);
