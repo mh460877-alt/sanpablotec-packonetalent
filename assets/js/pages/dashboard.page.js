@@ -6,18 +6,8 @@ import { showMessage } from '../components/toast.js';
 import { setItem, getItem, removeItem } from '../utils/storage.js';
 import { escapeHtml, normalize } from '../utils/format.js';
 
-const EYE_ICON = `
-<svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
-  <ellipse cx="12" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" stroke-width="1.8" />
-  <circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" />
-</svg>`;
-
-const EYE_OFF_ICON = `
-<svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
-  <ellipse cx="12" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" stroke-width="1.8" />
-  <circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" />
-  <line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-</svg>`;
+const EYE_ICON = `<svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>`;
+const EYE_OFF_ICON = `<svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>`;
 
 let users = [];
 let filteredUsers = [];
@@ -75,6 +65,15 @@ const enterEditMode = (user) => {
   $('#userPassword').type = 'text';
   $('#userPuesto').value = user.puesto && user.puesto !== '-' ? user.puesto : '';
   setSelectedTests(user.tests || []);
+
+  // --- NUEVO: Cargar estado del checkbox Reenvío ---
+  const valReenvio = user.reenvio || user.reenvioSimultaneo || user['Reenvío Simultaneo'] || "NO";
+  const chkReenvio = $('#chkReenvio');
+  if (chkReenvio) {
+    chkReenvio.checked = (valReenvio === "SI");
+  }
+  // -------------------------------------------------
+
   $('#submit-button').innerHTML = '<span><span class="btn-icon">💾</span> Guardar cambios</span>';
   $('#form-error').textContent = '';
   $('#form-status').textContent = '';
@@ -92,6 +91,11 @@ const exitEditMode = () => {
   $('#userName').disabled = false;
   $('#user-form').reset();
   setSelectedTests([]);
+
+  // Resetear checkbox
+  const chkReenvio = $('#chkReenvio');
+  if (chkReenvio) chkReenvio.checked = false;
+
   $('#submit-button').innerHTML = '<span><span class="btn-icon">＋</span> Guardar usuario</span>';
   $('#form-error').textContent = '';
   $('#form-status').textContent = '';
@@ -102,13 +106,7 @@ const renderUsers = (list) => {
   const tbody = $('#user-table-body');
   tbody.innerHTML = '';
   if (data.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5" style="text-align: center; padding: 2rem; color: rgba(198,201,215,.75);">
-          ${users.length === 0 ? 'No hay usuarios registrados aún' : 'No se encontraron resultados'}
-        </td>
-      </tr>
-    `;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem; color: rgba(198,201,215,.75);">${users.length === 0 ? 'No hay usuarios registrados aún' : 'No se encontraron resultados'}</td></tr>`;
     const q = $('#user-search').value.trim();
     $('#user-count-text').textContent = users.length === 0 ? '0 usuarios registrados' : `0 resultados de ${users.length}`;
     return;
@@ -126,16 +124,12 @@ const renderUsers = (list) => {
       <td class="col-password">
         <span class="password-mask">••••••••</span>
         <span class="password-text hidden">${escapeHtml(user.userPassword || '')}</span>
-        <button type="button" class="btn btn-small btn-eye" data-action="toggle-password" aria-pressed="false" title="Ver contraseña">
-          ${EYE_ICON}
-        </button>
+        <button type="button" class="btn btn-small btn-eye" data-action="toggle-password" aria-pressed="false" title="Ver contraseña">${EYE_ICON}</button>
       </td>
       <td style="color: rgba(198,201,215,.8); font-size: 0.9rem;">${escapeHtml(user.puesto || '-')}</td>
       <td class="col-tests">${testsDisplay}</td>
       <td class="col-actions">
-        <button class="btn btn-small btn-edit" data-action="edit" data-username="${escapeHtml(user.userName)}">
-          <span>Editar</span>
-        </button>
+        <button class="btn btn-small btn-edit" data-action="edit" data-username="${escapeHtml(user.userName)}"><span>Editar</span></button>
       </td>
     `;
     tbody.appendChild(row);
@@ -162,6 +156,9 @@ export const initDashboardPage = async () => {
     try {
       const result = await validateAdmin(user, pass);
       if (result.estado === 'exito' && result.valido) {
+        const datosAdmin = result.datos || { nombre: user };
+        console.log('✅ Admin validado:', datosAdmin);
+        localStorage.setItem('adminData', JSON.stringify(datosAdmin));
         showView('panel');
         showMessage('Bienvenido, Administrador', 'success');
         $('#admin-login-form').reset();
@@ -192,6 +189,12 @@ export const initDashboardPage = async () => {
     const userPasswordValue = $('#userPassword').value.trim();
     const userPuestoValue = $('#userPuesto').value.trim();
     const selectedTests = getSelectedTests();
+
+    // --- NUEVO: Capturar valor del checkbox ---
+    const chkReenvio = $('#chkReenvio');
+    const valorReenvio = (chkReenvio && chkReenvio.checked) ? "SI" : "NO";
+    // ------------------------------------------
+
     if (!userNameValue || !userPuestoValue) {
       $('#form-error').textContent = 'Por favor completa Usuario y Puesto.';
       return;
@@ -200,9 +203,19 @@ export const initDashboardPage = async () => {
       $('#form-error').textContent = 'Debes seleccionar al menos un test habilitado.';
       return;
     }
+
+    // MODO EDICIÓN
     if (isEditMode) {
-      const updatePayload = { username: editingUsername, puesto: userPuestoValue, tests: selectedTests };
+      const updatePayload = {
+        username: editingUsername,
+        puesto: userPuestoValue,
+        tests: selectedTests,
+        reenvio: valorReenvio,
+        reenvioSimultaneo: valorReenvio, // ✅ compat
+      };
+
       if (userPasswordValue) updatePayload.password = userPasswordValue;
+
       $('#submit-button').disabled = true;
       $('#submit-button').textContent = 'Guardando...';
       $('#form-status').textContent = 'Actualizando usuario en Google Sheets...';
@@ -221,19 +234,31 @@ export const initDashboardPage = async () => {
       }
       return;
     }
+
+    // MODO CREACIÓN
     if (!userPasswordValue) {
       $('#form-error').textContent = 'Por favor completa Contraseña.';
       return;
     }
-    const userExists = users.some(u => u.userName.toLowerCase() === userNameValue.toLowerCase());
+    const userExists = users.some(u => String(u.userName || '').toLowerCase() === String(userNameValue).toLowerCase());
     if (userExists) {
       $('#form-error').textContent = 'Ya existe un usuario con ese nombre de usuario.';
       return;
     }
-    const newUser = { username: userNameValue, password: userPasswordValue, puesto: userPuestoValue, tests: selectedTests };
+
+    const newUser = {
+      username: userNameValue,
+      password: userPasswordValue,
+      puesto: userPuestoValue,
+      tests: selectedTests,
+      idAdmin: getItem('adminData')?.id || null,
+      reenvio: valorReenvio // Enviamos el valor SI/NO
+    };
+
     $('#submit-button').disabled = true;
     $('#submit-button').textContent = 'Enviando...';
     $('#form-status').textContent = 'Guardando usuario en Google Sheets...';
+
     try {
       await saveUser(newUser);
     } catch (error) {
@@ -248,16 +273,27 @@ export const initDashboardPage = async () => {
       $('#submit-button').innerHTML = '<span><span class="btn-icon">＋</span> Guardar usuario</span>';
       return;
     }
+
     try {
       const adminData = getItem('adminData');
       let admin = { nombre: 'Desconocido' };
       if (adminData) admin = adminData;
-      const userWithExtras = { ...newUser, pack: 2, admin: admin.nombre };
+
+      const userWithExtras = {
+        ...newUser,
+        pack: 2,
+        admin: admin.nombre,
+        reenvio: valorReenvio // Para el backup también
+      };
+
       await saveUserToDB(userWithExtras);
       showMessage('Usuario registrado exitosamente', 'success');
       users = await fetchAllUsers();
       $('#user-form').reset();
       setSelectedTests([]);
+
+      if (chkReenvio) chkReenvio.checked = false;
+
       $('#form-status').textContent = '';
       applySearch();
     } catch (error) {

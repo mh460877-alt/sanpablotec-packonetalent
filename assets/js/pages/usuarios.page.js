@@ -14,8 +14,10 @@ const showPanel = (user) => {
   const userPuesto = user.puesto || '';
   $('#user-name-pill').textContent = userName;
   $('#user-greeting').textContent = `${userName}${userPuesto !== '-' ? ' - ' + userPuesto : ''}, aquí están tus evaluaciones habilitadas.`;
+  
   let enabledTests = user.tests || [];
   document.querySelectorAll('.eval-card').forEach(card => card.classList.remove('visible'));
+  
   if (enabledTests.length > 0) {
     enabledTests.forEach(testNumber => {
       const testCard = $(`#test-${testNumber}`);
@@ -36,6 +38,7 @@ const showError = (message) => {
 const clearSession = () => {
   removeItem('sessionLoggedIn');
   removeItem('sessionUser');
+  removeItem('PERMISO_REENVIO'); // Limpiamos también el permiso
 };
 
 const restoreSessionIfAny = () => {
@@ -62,21 +65,42 @@ export const initUsuariosPage = () => {
       showError('Por favor completa todos los campos');
       return;
     }
+    
     $('#login-btn').disabled = true;
     $('#login-btn').textContent = 'Verificando...';
     $('#error-message').classList.remove('show');
     $('#loading-message').classList.add('show');
+    
     try {
+      // 1. Obtenemos TODOS los datos del Sheet (incluido reenvioSimultaneo y adminEmail)
       const users = await fetchAllUsers();
+      
       const authenticatedUser = validateUser(username, password, users);
+      
       if (authenticatedUser) {
+        
+        // 2. Extraemos el permiso (asegurando un valor por defecto)
+        const permiso = authenticatedUser.reenvioSimultaneo || "NO";
+        const idAdmin = authenticatedUser.idAdmin || "";
+
+        // 3. Guardamos en sesión incluyendo los nuevos campos
         const sessionUser = {
           userName: authenticatedUser.userName,
           puesto: authenticatedUser.puesto,
-          tests: authenticatedUser.tests
+          tests: authenticatedUser.tests,
+          reenvioSimultaneo: permiso,
+          idAdmin: idAdmin,
+          // --- AQUÍ ESTÁ LA LÍNEA CLAVE QUE FALTABA ---
+          adminEmail: authenticatedUser.adminEmail 
+          // -------------------------------------------
         };
+
         setItem('sessionUser', sessionUser);
         setItem('sessionLoggedIn', '1');
+        
+        // GUARDAR LA LLAVE MAESTRA QUE LEERÁN LOS TESTS
+        setItem('PERMISO_REENVIO', permiso);
+
         showPanel(authenticatedUser);
       } else {
         showError('Usuario o contraseña incorrectos');
@@ -85,6 +109,7 @@ export const initUsuariosPage = () => {
         $('#loading-message').classList.remove('show');
       }
     } catch (error) {
+      console.error(error);
       showError('Error al conectar con el servidor. Intenta nuevamente.');
       $('#login-btn').disabled = false;
       $('#login-btn').innerHTML = '<span>Iniciar sesión</span>';

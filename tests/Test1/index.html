@@ -427,18 +427,26 @@
     lines.forEach(line => {
       const tokens = line.split(/\s+/).filter(t => t.trim() !== '');
       let i = 0;
-      while(i < tokens.length) {
-        if(tokens[i].match(/^\d+$/)) {
+      while (i < tokens.length) {
+        if (tokens[i].match(/^\d+$/)) {
           const id = parseInt(tokens[i]);
-          if(i+5 < tokens.length) {
-            const opts = tokens.slice(i+1, i+6);
-            qs.push({ id: id, target: opts[0], options: opts.sort(() => Math.random() - 0.5) }); 
+          if (i + 5 < tokens.length) {
+            const opts = tokens.slice(i + 1, i + 6);
+            qs.push({
+              id: id,
+              target: opts[0],
+              options: opts.sort(() => Math.random() - 0.5)
+            });
             i += 6;
-          } else { i++; }
-        } else { i++; }
+          } else {
+            i++;
+          }
+        } else {
+          i++;
+        }
       }
     });
-    return qs.sort((a,b) => a.id - b.id);
+    return qs.sort((a, b) => a.id - b.id);
   }
 
   const DB_TEST1 = {
@@ -596,6 +604,9 @@
   let timeTest3Start = 0, timeTest3End = 0;
   let timeTest4Start = 0, timeTest4End = 0;
 
+  // URL DE GOOGLE APPS SCRIPT (la misma que ya tenías)
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwtRjfalEt9fuktj3gCUKRr66HoOSRvUdswRGmDPTKDbjknAAke4Umw9bTBR4OhzKPHyw/exec';
+
   // ========== NAVEGACIÓN ==========
   function showSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -606,7 +617,7 @@
     const n = document.getElementById('userName').value.trim();
     const l = document.getElementById('userLast').value.trim();
     const e = document.getElementById('userEmail').value.trim();
-    if(!n || !l || !e) return alert("Complete todos los campos");
+    if (!n || !l || !e) return alert("Complete todos los campos");
     user = { name: n, lastname: l, email: e };
     showSection('instSection1');
   }
@@ -614,19 +625,19 @@
   // ========== TEST 1: RAPIDEZ ==========
   function startTest1Part(partNum) {
     currentTest1Part = partNum;
-    timeLeft = 180; 
-    
-    if(partNum === 1) { timeTest1P1Start = Date.now(); }
-    else { timeTest1P2Start = Date.now(); }
-    
+    timeLeft = 180;
+
+    if (partNum === 1) timeTest1P1Start = Date.now();
+    else timeTest1P2Start = Date.now();
+
     const grid = document.getElementById('testGrid1');
     grid.innerHTML = '';
     const qs = DB_TEST1[partNum];
-    
+
     qs.forEach(q => {
       const row = document.createElement('div');
       row.className = 'test-row';
-      
+
       let optsHtml = '';
       q.options.forEach(opt => {
         optsHtml += `<button class="opt-btn" onclick="selectOptT1(${q.id}, '${opt}', this)">${opt}</button>`;
@@ -644,23 +655,23 @@
     document.getElementById('partTitle1').innerText = "PARTE " + (partNum === 1 ? "I" : "II");
     document.getElementById('timerDisplay').style.display = 'block';
     document.getElementById('pageTitle').innerText = 'Test 1: Rapidez y Exactitud Perceptiva';
-    
+
     startTimer();
   }
 
   function selectOptT1(qId, val, btn) {
-    if(currentTest1Part === 1) answersT1P1[qId] = val;
+    if (currentTest1Part === 1) answersT1P1[qId] = val;
     else answersT1P2[qId] = val;
-    
+
     const siblings = btn.parentElement.children;
-    for(let s of siblings) s.classList.remove('selected');
+    for (let s of siblings) s.classList.remove('selected');
     btn.classList.add('selected');
   }
 
   function finishTest1Part() {
     clearInterval(timerInterval);
-    
-    if(currentTest1Part === 1) {
+
+    if (currentTest1Part === 1) {
       timeTest1P1End = Date.now();
       showSection('intermissionSection1');
     } else {
@@ -693,7 +704,7 @@
     QUESTIONS_TEST2.forEach((q, index) => {
       const div = document.createElement('div');
       div.className = 'question-item';
-      
+
       let optionsHtml = '';
       q.options.forEach((optText, i) => {
         optionsHtml += `
@@ -749,7 +760,7 @@
     QUESTIONS_TEST3.forEach((q, index) => {
       const div = document.createElement('div');
       div.className = 'question-item-ortografia';
-      
+
       let optionsHtml = '<div class="options-grid">';
       q.options.forEach((optText, i) => {
         optionsHtml += `
@@ -793,7 +804,7 @@
     renderTest4Questions();
     showSection('testSection4');
     document.getElementById('timerDisplay').style.display = 'block';
-    timeLeft = 1800; // 30 minutos
+    timeLeft = 1800;
     startTimer();
   }
 
@@ -805,7 +816,7 @@
     QUESTIONS_TEST4.forEach((q, index) => {
       const div = document.createElement('div');
       div.className = 'question-item';
-      
+
       let optionsHtml = '';
       q.options.forEach((optText, i) => {
         optionsHtml += `
@@ -835,80 +846,93 @@
     clearInterval(timerInterval);
     timeTest4End = Date.now();
     document.getElementById('timerDisplay').style.display = 'none';
-    // Antes iba a transición 4→5; ahora finaliza y envía
-    finishAllAfterTest4();
+    // finaliza y envía
+    finishTest();
   }
 
-  // ========== FINALIZAR TODO DESPUÉS DEL TEST 4 Y ENVIAR DATOS ==========
-  function finishAllAfterTest4() {
-    showSection('finalSection');
+  // ============================================================
+  // ✅ UNIFICACIÓN DE NOMBRES (como IPP):
+  // - finishTest()  -> finaliza y llama sendResults()
+  // - sendResults() -> envía a Google Sheets
+  // - formatTimeUsed(), formatAnswers() iguales
+  // ============================================================
 
-    // Calcular tiempos usados
+  function finishTest() {
+    showSection('finalSection');
+    sendResults();
+  }
+
+  async function sendResults() {
+    // tiempos
     const tiempoTest1P1 = formatTimeUsed(timeTest1P1Start, timeTest1P1End);
     const tiempoTest1P2 = formatTimeUsed(timeTest1P2Start, timeTest1P2End);
     const tiempoTest2 = formatTimeUsed(timeTest2Start, timeTest2End);
     const tiempoTest3 = formatTimeUsed(timeTest3Start, timeTest3End);
     const tiempoTest4 = formatTimeUsed(timeTest4Start, timeTest4End);
 
-    // Formatear respuestas
+    // respuestas en el MISMO FORMATO STRING que pediste:
+    // {0m 26s - 2;A, 3;D, ...}
+    // y para test 1 se conserva tu formato con PI/PII dentro de un solo string
     const respuestasT1P1 = formatAnswers(answersT1P1);
     const respuestasT1P2 = formatAnswers(answersT1P2);
     const respuestasTest1 = `{PI: ${tiempoTest1P1} - ${respuestasT1P1}} {PII: ${tiempoTest1P2} - ${respuestasT1P2}}`;
+
     const respuestasTest2 = `{${tiempoTest2} - ${formatAnswers(answersT2)}}`;
     const respuestasTest3 = `{${tiempoTest3} - ${formatAnswers(answersT3)}}`;
     const respuestasTest4 = `{${tiempoTest4} - ${formatAnswers(answersT4)}}`;
 
-    // Fecha y hora actual
-    const now = new Date();
-    const fechaHora = now.toLocaleString('es-AR', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-    });
+    // fecha (igual que IPP/Kuder: solo fecha)
+    const today = new Date();
+    const fecha = today.toLocaleDateString("es-ES", { year: "numeric", month: "2-digit", day: "2-digit" });
 
-    // ARRAY (fila) como espera el Script (hasta Test 4)
+    // permiso + email admin (igual que Kuder/IPP actualizado)
+    const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
+    const permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
+    const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
+
+    // ✅ fila estilo Kuder + respuestas como strings
+    // (ajustado a “mismo patrón” que IPP actualizado: fecha primero y adminEmail condicional)
     const filaOrdenada = [
-      user.name || "SinNombre",       // Columna A: Nombre
-      user.lastname || "SinApellido", // Columna B: Apellido
-      user.email || "SinEmail",       // Columna C: Email
-      fechaHora,                      // Columna D: Fecha/Hora
-      respuestasTest1,                // Columna E: Respuestas Prueba 1 (Rapidez)
-      respuestasTest2,                // Columna F: Respuestas Prueba 2 (Verbal)
-      respuestasTest3,                // Columna G: Respuestas Prueba 3 (Ortografia)
-      respuestasTest4                 // Columna H: Respuestas Prueba 4 (Numerico)
+      user.name || "SinNombre",
+      user.lastname || "SinApellido",
+      user.email || "SinEmail",
+      permisoRaw === "SI" ? emailAdmin : "",
+      fecha,
+      respuestasTest1,
+      respuestasTest2,
+      respuestasTest3,
+      respuestasTest4
     ];
 
     const payload = {
       nombreHoja: "Respuestas",
       fila: filaOrdenada
     };
-    
+
     console.log("Enviando a la base de datos:", payload);
-    
-    // URL ACTUALIZADA DE GOOGLE APPS SCRIPT
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtRjfalEt9fuktj3gCUKRr66HoOSRvUdswRGmDPTKDbjknAAke4Umw9bTBR4OhzKPHyw/exec';
-    
-    fetch(GOOGLE_SCRIPT_URL, { 
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload) 
-    })
-    .then(() => {
+
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      const txt = await res.text().catch(() => "");
+      console.log("GAS Response:", txt);
+
       document.getElementById('loadingMsg').innerText = "¡Datos guardados correctamente!";
-      document.getElementById('loadingMsg').style.color = "green";
-    })
-    .catch(error => {
-      console.error('Error:', error);
+      document.getElementById('loadingMsg').style.color = "#059669";
+    } catch (error) {
+      console.error("Error enviando a Google Sheets:", error);
       document.getElementById('loadingMsg').innerText = "⚠️ Error de conexión, avise al administrador.";
       document.getElementById('loadingMsg').style.color = "orange";
-    });
+    }
   }
 
-  // ========== FUNCIONES DE UTILIDAD ==========
+  // ========== FUNCIONES DE UTILIDAD (mismos nombres que IPP) ==========
   function formatTimeUsed(startTime, endTime) {
-    if(!startTime || !endTime) return "0m 0s";
+    if (!startTime || !endTime) return "0m 0s";
     const diffMs = endTime - startTime;
     const totalSeconds = Math.floor(diffMs / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -916,9 +940,11 @@
     return `${minutes}m ${seconds}s`;
   }
 
-  function formatAnswers(answers) {
-    const sortedIds = Object.keys(answers).map(Number).sort((a, b) => a - b);
-    const formatted = sortedIds.map(id => `${id};${answers[id]}`).join(', ');
+  // Mantiene: "2;A, 3;D, ..."
+  // Ordenado ascendente y SOLO respondidas (como tu ejemplo)
+  function formatAnswers(answersObj) {
+    const sortedIds = Object.keys(answersObj).map(Number).sort((a, b) => a - b);
+    const formatted = sortedIds.map(id => `${id};${answersObj[id]}`).join(', ');
     return formatted || "Sin respuestas";
   }
 
@@ -928,14 +954,14 @@
     timerInterval = setInterval(() => {
       timeLeft--;
       updateTimer();
-      if(timeLeft <= 0) {
-        if(document.getElementById('testSection1').classList.contains('active')) {
+      if (timeLeft <= 0) {
+        if (document.getElementById('testSection1').classList.contains('active')) {
           finishTest1Part();
-        } else if(document.getElementById('testSection2').classList.contains('active')) {
+        } else if (document.getElementById('testSection2').classList.contains('active')) {
           finishTest2();
-        } else if(document.getElementById('testSection3').classList.contains('active')) {
+        } else if (document.getElementById('testSection3').classList.contains('active')) {
           finishTest3();
-        } else if(document.getElementById('testSection4').classList.contains('active')) {
+        } else if (document.getElementById('testSection4').classList.contains('active')) {
           finishTest4();
         }
       }
@@ -943,10 +969,12 @@
   }
 
   function updateTimer() {
-    const m = Math.floor(timeLeft / 60).toString().padStart(2,'0');
-    const s = (timeLeft % 60).toString().padStart(2,'0');
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
     document.getElementById('timerDisplay').innerText = `${m}:${s}`;
   }
 </script>
+
+
 </body>
 </html>

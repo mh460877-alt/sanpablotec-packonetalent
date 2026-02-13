@@ -4,17 +4,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panel de Administrador - JIM Juvenil Instituto Moderno</title>
+    <title>Panel de Administrador - Universidad de San Pablo-T</title>
 
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="./img/favicon.png" sizes="32x32">
     <link rel="shortcut icon" href="./img/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="./img/favicon.png">
 
+    <!-- EXO 2 (Títulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/main.css">
+
+
 </head>
+
+
 
 <body data-page="dashboard">
     <div class="bg" aria-hidden="true">
@@ -24,11 +30,12 @@
 
     <div id="message-box"></div>
 
+    <!-- LOGIN -->
     <div id="admin-login-view">
         <div class="login-card">
             <div class="login-logo"></div>
             <h1 class="login-title">Panel de Administración</h1>
-            <p class="login-subtitle">Ingresa tus credenciales para acceder al sistema de JIM</p>
+            <p class="login-subtitle">Ingresa tus credenciales para acceder al sistema</p>
 
             <form id="admin-login-form">
                 <div class="field-group">
@@ -47,13 +54,14 @@
         </div>
     </div>
 
+    <!-- PANEL -->
     <div id="admin-panel-view" class="page hidden">
         <header class="header">
             <div class="header-inner">
                 <div class="brand">
                     <div class="brand-logo"></div>
                     <div>
-                        <div class="brand-text-main">JIM Juvenil Instituto Moderno</div>
+                        <div class="brand-text-main">Universidad de San Pablo-T</div>
                         <div class="brand-text-sub">Panel de Administración</div>
                     </div>
                 </div>
@@ -70,7 +78,7 @@
             <section>
                 <h1 class="section-title">Gestión de Usuarios</h1>
                 <p class="section-subtitle">
-                    Administra los usuarios participantes y sus test vocacional habilitados.
+                    Administra los usuarios participantes y sus tests habilitados.
                 </p>
 
                 <div class="panel">
@@ -79,10 +87,11 @@
                         <span class="panel-meta" id="user-count-text">0 usuarios registrados</span>
                     </div>
 
+                    <!-- NUEVO: toolbar con buscador -->
                     <div class="toolbar">
-                        <div class="search-wrap" title="Buscar por usuario, promoción o test">
+                        <div class="search-wrap" title="Buscar por usuario, puesto o test">
                             <div class="search-icon">🔎</div>
-                            <input id="user-search" type="text" placeholder="Buscar por usuario, promoción o test..."
+                            <input id="user-search" type="text" placeholder="Buscar por usuario, puesto o test..."
                                 autocomplete="off" />
                         </div>
                         <button class="btn btn-ghost btn-clear" id="clear-search"><span>Limpiar</span></button>
@@ -94,7 +103,7 @@
                                 <tr>
                                     <th class="col-username">Usuario</th>
                                     <th class="col-password">Contraseña</th>
-                                    <th class="col-puesto">Promoción</th>
+                                    <th class="col-puesto">Puesto</th>
                                     <th class="col-tests">Tests Habilitados</th>
                                     <th class="col-actions">Acciones</th>
                                 </tr>
@@ -109,7 +118,8 @@
                 <div class="form-panel">
                     <h2 class="form-title" id="form-title">Agregar nuevo usuario</h2>
                     <p class="form-subtitle" id="form-subtitle">
-                        Completa los datos para crear un nuevo usuario participante y selecciona los test vocacional que tendrá
+                        Completa los datos para crear un nuevo usuario participante y selecciona los test vocacional que
+                        tendrá
                         habilitados.
                     </p>
 
@@ -167,6 +177,19 @@
                             </div>
                         </div>
 
+                        <div
+                            style="margin: 15px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #e9ecef;">
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="chkReenvio" style="width: 18px; height: 18px;">
+                                <span style="font-weight: 600; color: #444;">Reenvío Simultáneo</span>
+                            </label>
+                            <p style="font-size: 0.8rem; color: #666; margin: 5px 0 0 28px;">
+                                Al hacer click, acepta que el informe sea recibido por ambos, de lo contrario solo lo
+                                recibira
+                                el administrador.
+                            </p>
+                        </div>
+
                         <div class="error-text" id="form-error"></div>
                         <div class="status-text" id="form-status"></div>
 
@@ -190,8 +213,8 @@
         </main>
 
         <footer class="page-footer">
-            <span>© 2026 JIM Juvenil Instituto Moderno</span>
-            <span>Plataforma automatizada para administración de test vocacional.</span>
+            <span>© 2026 ONE · Panel de Administración.</span>
+            <span>Plataforma automatizada para administración de usuarios y evaluaciones.</span>
         </footer>
     </div>
 

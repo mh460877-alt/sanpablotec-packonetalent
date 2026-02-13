@@ -331,9 +331,7 @@
 
 <script>
   // ========== DATOS: 108 ÍTEMS (6 por cada uno de los 18 campos) ==========
-  // Mezclados entre actividades y profesiones para mayor dinamismo
   const ITEMS_IPP = [
-    // CAMPO 1: CIENTÍFICO (C)
     { id: 1, text: "Investigar las causas de una enfermedad", campo: "C" },
     { id: 2, text: "Realizar experimentos en un laboratorio", campo: "C" },
     { id: 3, text: "Biólogo/a o Químico/a", campo: "C" },
@@ -341,7 +339,6 @@
     { id: 5, text: "Investigador/a científico/a", campo: "C" },
     { id: 6, text: "Estudiar el funcionamiento del cuerpo humano", campo: "C" },
 
-    // CAMPO 2: TÉCNICO (T)
     { id: 7, text: "Reparar aparatos electrónicos o mecánicos", campo: "T" },
     { id: 8, text: "Diseñar planos técnicos", campo: "T" },
     { id: 9, text: "Ingeniero/a mecánico/a o industrial", campo: "T" },
@@ -349,7 +346,6 @@
     { id: 11, text: "Técnico/a electrónico/a", campo: "T" },
     { id: 12, text: "Supervisar procesos de fabricación", campo: "T" },
 
-    // CAMPO 3: SANITARIO (S)
     { id: 13, text: "Atender pacientes enfermos", campo: "S" },
     { id: 14, text: "Realizar primeros auxilios y curaciones", campo: "S" },
     { id: 15, text: "Médico/a o Enfermero/a", campo: "S" },
@@ -357,7 +353,6 @@
     { id: 17, text: "Fisioterapeuta o Nutricionista", campo: "S" },
     { id: 18, text: "Trabajar en urgencias hospitalarias", campo: "S" },
 
-    // CAMPO 4: CIENTÍFICO-SOCIAL (CS)
     { id: 19, text: "Investigar problemas sociales", campo: "CS" },
     { id: 20, text: "Estudiar el comportamiento de grupos humanos", campo: "CS" },
     { id: 21, text: "Psicólogo/a o Sociólogo/a", campo: "CS" },
@@ -365,7 +360,6 @@
     { id: 23, text: "Antropólogo/a o Historiador/a", campo: "CS" },
     { id: 24, text: "Analizar tendencias económicas y sociales", campo: "CS" },
 
-    // CAMPO 5: LITERARIO (L)
     { id: 25, text: "Escribir cuentos, novelas o artículos", campo: "L" },
     { id: 26, text: "Corregir textos y revisar ortografía", campo: "L" },
     { id: 27, text: "Escritor/a o Periodista", campo: "L" },
@@ -373,7 +367,6 @@
     { id: 29, text: "Editor/a o Guionista", campo: "L" },
     { id: 30, text: "Redactar discursos o contenido web", campo: "L" },
 
-    // CAMPO 6: ARTÍSTICO-PLÁSTICO (AP)
     { id: 31, text: "Pintar cuadros o crear ilustraciones", campo: "AP" },
     { id: 32, text: "Diseñar logotipos y marcas", campo: "AP" },
     { id: 33, text: "Diseñador/a gráfico/a o Ilustrador/a", campo: "AP" },
@@ -381,7 +374,6 @@
     { id: 35, text: "Arquitecto/a o Diseñador/a de interiores", campo: "AP" },
     { id: 36, text: "Crear animaciones y efectos visuales", campo: "AP" },
 
-    // CAMPO 7: MUSICAL (M)
     { id: 37, text: "Tocar un instrumento musical", campo: "M" },
     { id: 38, text: "Componer melodías y canciones", campo: "M" },
     { id: 39, text: "Músico/a profesional o Cantante", campo: "M" },
@@ -389,7 +381,6 @@
     { id: 41, text: "Productor/a musical o DJ", campo: "M" },
     { id: 42, text: "Grabar y mezclar música en estudio", campo: "M" },
 
-    // CAMPO 8: SOCIAL-ASISTENCIAL (SA)
     { id: 43, text: "Ayudar a personas con problemas personales", campo: "SA" },
     { id: 44, text: "Trabajar con comunidades vulnerables", campo: "SA" },
     { id: 45, text: "Trabajador/a social o Educador/a social", campo: "SA" },
@@ -397,7 +388,6 @@
     { id: 47, text: "Orientador/a familiar o Mediador/a", campo: "SA" },
     { id: 48, text: "Defender derechos de grupos vulnerables", campo: "SA" },
 
-    // CAMPO 9: ECONÓMICO-EMPRESARIAL (EE)
     { id: 49, text: "Gestionar presupuestos y finanzas", campo: "EE" },
     { id: 50, text: "Crear planes de negocio", campo: "EE" },
     { id: 51, text: "Administrador/a de empresas o Contador/a", campo: "EE" },
@@ -405,7 +395,6 @@
     { id: 53, text: "Gerente o Director/a financiero/a", campo: "EE" },
     { id: 54, text: "Analizar mercados e inversiones", campo: "EE" },
 
-    // CAMPO 10: PERSUASIVO-COMERCIAL (PC)
     { id: 55, text: "Vender productos o servicios", campo: "PC" },
     { id: 56, text: "Convencer a otros de una idea", campo: "PC" },
     { id: 57, text: "Vendedor/a profesional o Ejecutivo/a comercial", campo: "PC" },
@@ -413,7 +402,6 @@
     { id: 59, text: "Director/a de marketing o Publicista", campo: "PC" },
     { id: 60, text: "Captar y fidelizar clientes", campo: "PC" },
 
-    // CAMPO 11: ADMINISTRATIVO (A)
     { id: 61, text: "Organizar archivos y documentos", campo: "A" },
     { id: 62, text: "Gestionar agenda y coordinar reuniones", campo: "A" },
     { id: 63, text: "Secretario/a ejecutivo/a o Asistente", campo: "A" },
@@ -421,7 +409,6 @@
     { id: 65, text: "Auxiliar contable o Recepcionista", campo: "A" },
     { id: 66, text: "Realizar trámites y gestiones administrativas", campo: "A" },
 
-    // CAMPO 12: JURÍDICO-POLÍTICO (JP)
     { id: 67, text: "Defender casos ante tribunales", campo: "JP" },
     { id: 68, text: "Redactar contratos y documentos legales", campo: "JP" },
     { id: 69, text: "Abogado/a o Juez/a", campo: "JP" },
@@ -429,7 +416,6 @@
     { id: 71, text: "Político/a o Diplomático/a", campo: "JP" },
     { id: 72, text: "Asesorar sobre temas legales o normativos", campo: "JP" },
 
-    // CAMPO 13: COMUNICACIÓN-INFORMACIÓN (CI)
     { id: 73, text: "Presentar noticias en radio o televisión", campo: "CI" },
     { id: 74, text: "Realizar entrevistas a personajes", campo: "CI" },
     { id: 75, text: "Presentador/a de TV o Locutor/a", campo: "CI" },
@@ -437,7 +423,6 @@
     { id: 77, text: "Productor/a audiovisual o Community Manager", campo: "CI" },
     { id: 78, text: "Editar videos y contenido multimedia", campo: "CI" },
 
-    // CAMPO 14: ENSEÑANZA (E)
     { id: 79, text: "Explicar conceptos a estudiantes", campo: "E" },
     { id: 80, text: "Preparar materiales didácticos", campo: "E" },
     { id: 81, text: "Maestro/a o Profesor/a", campo: "E" },
@@ -445,7 +430,6 @@
     { id: 83, text: "Orientador/a educativo/a o Pedagogo/a", campo: "E" },
     { id: 84, text: "Diseñar programas de formación", campo: "E" },
 
-    // CAMPO 15: SEGURIDAD (SE)
     { id: 85, text: "Patrullar y vigilar zonas", campo: "SE" },
     { id: 86, text: "Investigar escenas de crímenes", campo: "SE" },
     { id: 87, text: "Policía o Detective", campo: "SE" },
@@ -453,7 +437,6 @@
     { id: 89, text: "Bombero/a o Militar", campo: "SE" },
     { id: 90, text: "Proteger personas o custodiar bienes", campo: "SE" },
 
-    // CAMPO 16: DEPORTIVO (D)
     { id: 91, text: "Entrenar a deportistas", campo: "D" },
     { id: 92, text: "Planificar programas de entrenamiento", campo: "D" },
     { id: 93, text: "Entrenador/a deportivo/a o Preparador/a físico/a", campo: "D" },
@@ -461,7 +444,6 @@
     { id: 95, text: "Deportista profesional o Árbitro/a", campo: "D" },
     { id: 96, text: "Organizar eventos deportivos", campo: "D" },
 
-    // CAMPO 17: AGROPECUARIO-AMBIENTAL (AA)
     { id: 97, text: "Cultivar plantas y vegetales", campo: "AA" },
     { id: 98, text: "Proteger espacios naturales", campo: "AA" },
     { id: 99, text: "Ingeniero/a agrónomo/a o ambiental", campo: "AA" },
@@ -469,7 +451,6 @@
     { id: 101, text: "Veterinario/a de campo o Guardaparques", campo: "AA" },
     { id: 102, text: "Gestionar recursos naturales y reciclaje", campo: "AA" },
 
-    // CAMPO 18: INFORMÁTICO (I)
     { id: 103, text: "Programar aplicaciones o páginas web", campo: "I" },
     { id: 104, text: "Administrar bases de datos y redes", campo: "I" },
     { id: 105, text: "Programador/a o Desarrollador/a web", campo: "I" },
@@ -485,6 +466,9 @@
   let timerInterval;
   let elapsedSeconds = 0;
 
+  // URL DE GOOGLE APPS SCRIPT
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxLRAX-cem_fiEI4GykIsKscoUy6Nfr_wABLR6xv-U2z91yuiyZJfEJ-lnDrkh1e0F6Rg/exec";
+
   // ========== NAVEGACIÓN ==========
   function showSection(sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -496,7 +480,7 @@
     const n = document.getElementById('userName').value.trim();
     const l = document.getElementById('userLast').value.trim();
     const e = document.getElementById('userEmail').value.trim();
-    if(!n || !l || !e) return alert("Complete todos los campos");
+    if (!n || !l || !e) return alert("Complete todos los campos");
     user = { name: n, lastname: l, email: e };
     showSection('instSection');
   }
@@ -514,7 +498,7 @@
   function renderQuestions() {
     const container = document.getElementById('questionsContainer');
     container.innerHTML = '';
-    
+
     ITEMS_IPP.forEach(q => {
       const div = document.createElement('div');
       div.className = 'question-item';
@@ -534,17 +518,14 @@
 
   function selectAnswer(qId, val, btnElem) {
     answers[qId] = val;
-    
-    // Actualizar estilos del botón
+
     const parent = btnElem.parentElement;
     Array.from(parent.children).forEach(child => {
       child.classList.remove('selected-a', 'selected-i', 'selected-d');
     });
     btnElem.classList.add('selected-' + val.toLowerCase());
-    
-    // Marcar pregunta como respondida
+
     document.getElementById('q-' + qId).classList.add('answered');
-    
     updateProgress();
   }
 
@@ -552,48 +533,51 @@
     const answered = Object.keys(answers).length;
     const total = 108;
     const percent = Math.round((answered / total) * 100);
-    
+
     document.getElementById('progressBar').style.width = percent + '%';
     document.getElementById('progressCount').innerText = answered;
     document.getElementById('progressPercent').innerText = percent + '%';
   }
 
   function finishTest() {
-    const answered = Object.keys(answers).length;
-    if(answered < 108) {
-      if(!confirm(`Ha respondido ${answered} de 108 preguntas.\n\n¿Desea finalizar de todos modos?`)) {
-        return;
-      }
+    const answeredCount = Object.keys(answers).length;
+    if (answeredCount < 108) {
+      if (!confirm(`Ha respondido ${answeredCount} de 108 preguntas.\n\n¿Desea finalizar de todos modos?`)) return;
     }
     clearInterval(timerInterval);
     timeEnd = Date.now();
     document.getElementById('timerDisplay').style.display = 'none';
     showSection('finalSection');
-    
     sendResults();
   }
 
-  // ========== ENVIAR RESULTADOS ==========
-  function sendResults() {
+  // ========== ENVIAR RESULTADOS (RESPUESTAS EN FORMATO STRING ORIGINAL) ==========
+  async function sendResults() {
     const tiempoUsado = formatTimeUsed(timeStart, timeEnd);
+
+    // Respuestas formateadas como: "2;A, 3;D, ..."
     const respuestasFormateadas = formatAnswers(answers);
-    
-    // Formato final de respuestas
+
+    // ✅ FORMATO EXACTO solicitado:
+    // "{0m 26s - 2;A, 3;D, ...}"
     const respuestasFinal = `{${tiempoUsado} - ${respuestasFormateadas}}`;
 
-    // Fecha y hora actual
-    const now = new Date();
-    const fechaHora = now.toLocaleString('es-AR', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-    });
+    // Fecha (igual estilo Kuder: solo fecha)
+    const today = new Date();
+    const fecha = today.toLocaleDateString("es-ES", { year: "numeric", month: "2-digit", day: "2-digit" });
 
-    // Formato de fila para Google Sheets
+    // Permiso + email admin (igual que Kuder)
+    const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
+    const permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
+    const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
+
+    // ✅ Fila estilo Kuder, pero con respuestasFinal como string en la última columna
     const filaOrdenada = [
       user.name || "SinNombre",
       user.lastname || "SinApellido",
       user.email || "SinEmail",
-      fechaHora,
+      permisoRaw == "SI" ? emailAdmin : "",
+      fecha,
       respuestasFinal
     ];
 
@@ -604,31 +588,28 @@
 
     console.log("Enviando a la base de datos:", payload);
 
-    // URL DE GOOGLE APPS SCRIPT
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJj_7uFx4R6rsS737YsgWt-EqmPCyLofj-ZsFjjdi32DezcaUE9PF0yPzvJKTm5r09bw/exec';
-    
-    fetch(GOOGLE_SCRIPT_URL, { 
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload) 
-    })
-    .then(() => {
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      const txt = await res.text().catch(() => "");
+      console.log("GAS Response:", txt);
+
       document.getElementById('loadingMsg').innerText = "¡Datos guardados correctamente!";
       document.getElementById('loadingMsg').style.color = "#059669";
-    })
-    .catch(error => {
-      console.error('Error:', error);
+    } catch (error) {
+      console.error("Error enviando a Google Sheets:", error);
       document.getElementById('loadingMsg').innerText = "⚠️ Error de conexión, avise al administrador.";
       document.getElementById('loadingMsg').style.color = "orange";
-    });
+    }
   }
 
-  // ========== FUNCIONES DE UTILIDAD ==========
+  // ========== UTILIDADES ==========
   function formatTimeUsed(startTime, endTime) {
-    if(!startTime || !endTime) return "0m 0s";
+    if (!startTime || !endTime) return "0m 0s";
     const diffMs = endTime - startTime;
     const totalSeconds = Math.floor(diffMs / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -636,9 +617,10 @@
     return `${minutes}m ${seconds}s`;
   }
 
-  function formatAnswers(answers) {
-    const sortedIds = Object.keys(answers).map(Number).sort((a, b) => a - b);
-    const formatted = sortedIds.map(id => `${id};${answers[id]}`).join(', ');
+
+  function formatAnswers(answersObj) {
+    const sortedIds = Object.keys(answersObj).map(Number).sort((a, b) => a - b);
+    const formatted = sortedIds.map(id => `${id};${answersObj[id]}`).join(', ');
     return formatted || "Sin respuestas";
   }
 
@@ -652,11 +634,12 @@
   }
 
   function updateTimer() {
-    const m = Math.floor(elapsedSeconds / 60).toString().padStart(2,'0');
-    const s = (elapsedSeconds % 60).toString().padStart(2,'0');
+    const m = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+    const s = (elapsedSeconds % 60).toString().padStart(2, '0');
     document.getElementById('timerDisplay').innerText = `${m}:${s}`;
   }
-
 </script>
+
+
 </body>
 </html>

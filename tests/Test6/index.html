@@ -26,7 +26,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
             min-height: 100vh;
             padding: 24px;
-            background-image: url('../../img/fondo-escencial.jpg'); 
+            background-image: url('../../img/fondo-escencial.jpg');
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -842,7 +842,7 @@
                 <button class="btn" onclick="restartTest()">🔄 Realizar el Test Nuevamente</button>
             </div>
         </div>
-    
+
     </div>
 
     <script>
@@ -1304,18 +1304,13 @@
                 originalAnswers.push(answers[i] || 0); // Respuestas originales del usuario
             }
 
-            const adminData = localStorage.getItem('adminData');
-            let admin;
-            if (adminData) {
-                admin = JSON.parse(adminData);
-                console.log("Admin logueado:", admin.nombre);
-            } else {
-                console.log("No hay admin logueado.");
-            }
+            const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
+            const permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
+            const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
 
-            userData= localStorage.getItem("sessionUser")
-            let user 
-            if(userData){
+            userData = localStorage.getItem("sessionUser")
+            let user
+            if (userData) {
                 user = JSON.parse(userData);
                 console.log("Usuario", user)
             }
@@ -1325,10 +1320,10 @@
                 fecha: new Date().toLocaleDateString('es-AR'), // Solo fecha sin hora
                 nombre: userFirstName,
                 apellido: userLastName,
-                user : user?.Usuario ?? "Desconocido",
-                email: userEmail,                 
-                email_admin: admin?.email || 'escencialconsult@gmail.com',  
-                respuestas: originalAnswers       
+                // user: user?.Usuario ?? "Desconocido",
+                email: userEmail,
+                email_admin: emailAdmin,
+                respuestas: originalAnswers
             };
 
 
@@ -1613,37 +1608,45 @@
         }
 
         async function sendToGoogleSheets(data) {
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycby6r4o-4DrGUY6HRdaPoV_ue6n-y9eAwX9Qcy16HjUSZoepXgjQX3S5c2s1tmMHsdQx/exec';
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwphfOTu06OzmVud3Sh3MzFzSK8CDapEI6yo8pgfyDuNNDzumSUhwBrAoEpYrRvsWXa/exec';
+
+            const respuestasCSV = Array.isArray(data.respuestas)
+                ? data.respuestas.join(',')
+                : String(data.respuestas || '');
+
+            const payload = {
+                nombreHoja: 'RespuestasBigFive',
+                fila: [
+                    new Date().toLocaleString('es-AR', {
+                        day: '2-digit', month: '2-digit', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit', second: '2-digit',
+                        hour12: false
+                    }),
+                    data.nombre || '',
+                    data.apellido || '',
+                    data.email || '',
+                    data.email_admin || '',
+                    respuestasCSV
+                ]
+            };
 
             try {
-                // Convertir array de 50 respuestas a "5,4,3,..."
-                const respuestasString = Array.isArray(data.respuestas)
-                    ? data.respuestas.join(',')
-                    : String(data.respuestas || '');
-
-                const params = new URLSearchParams({
-                    accion: 'guardar',
-                    fecha: data.fecha || '',
-                    nombre: data.nombre || '',
-                    apellido: data.apellido || '',
-                    usuario: data.user || '',
-                    email: data.email || '',                 // ✅ email usuario
-                    email_admin: data.email_admin || '',     // ✅ email admin
-                    respuestas: respuestasString             // ✅ "5,4,3,..."
+                const res = await fetch(scriptUrl, {
+                    method: 'POST',
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload)
                 });
 
+                // Si tu Apps Script devuelve JSON, podés leerlo:
+                // const out = await res.json();
 
-                const fullUrl = `${scriptUrl}?${params.toString()}`;
-
-                await fetch(fullUrl, { method: 'GET', mode: 'no-cors' });
-
-                console.log('✅ Petición enviada (no-cors).');
                 return true;
-            } catch (error) {
-                console.error('❌ Error al enviar datos a Google Sheets:', error);
+            } catch (err) {
+                console.error('❌ Error POST:', err);
                 return false;
             }
         }
+
 
 
         function exportResults() {

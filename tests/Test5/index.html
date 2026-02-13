@@ -1542,19 +1542,9 @@
         // ENVÍO A APPS SCRIPT
         // ========================
         async function saveResultsRemote(scores) {
-            // Email del admin desde localStorage.adminData
-            let adminEmail = participant.email; // fallback
-            try {
-                const raw = localStorage.getItem("adminData");
-                if (raw) {
-                    const admin = JSON.parse(raw);
-                    if (admin && admin.email) {
-                        adminEmail = admin.email;
-                    }
-                }
-            } catch (e) {
-                console.error("adminData inválido:", e);
-            }
+            const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
+            const permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
+            const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
 
             // Construir string de respuestas "1:1,2:0,3:1,..."
             // 1 = respuesta correcta, 0 = incorrecta u omitida
@@ -1583,7 +1573,8 @@
                 fila: [
                     participant.name,
                     participant.lastname,
-                    adminEmail,            // el correo que se guarda en la hoja
+                    participant.email,
+                    emailAdmin,            // el correo que se guarda en la hoja
                     new Date().toISOString(), // fecha y hora de la prueba
                     respuestasString
                 ]

@@ -244,7 +244,7 @@ body[data-page="usuarios"] .brand-logo {
   width: 36px;
   height: 36px;
   border-radius: 999px;
-  background-image: url('../../img/logo-sanpablot.png');
+  background-image: url('../../../img/jim.png');
   background-size: cover;
   background-position: center;
 }

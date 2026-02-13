@@ -1149,7 +1149,7 @@
       });
     }
 
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzgaEk6vm6I2UYuxTCl5z8YoIHRYLTHFIT5eNVhcOG4-suWhDENjjBjrH0Ua3Tny9vQ/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyMbrFkWxNhrKnIUaInHYc7eTk47wEEotPNaBaN9uCtaYwdc9WDfwKxuYjCC1tq-qNS/exec";
 
     async function sendToGoogleSheets(scores, verificationScore) {
       const today = new Date();
@@ -1162,26 +1162,28 @@
         respuestas.push(`${ans.mas ?? ''}|${ans.menos ?? ''}`);
       }
 
-      // Admin desde localStorage
-      const adminData = localStorage.getItem("adminData");
-      let admin;
-      if (adminData) {
-        admin = JSON.parse(adminData);
-        console.log("Admin logueado:", admin.nombre);
-      } else {
-        console.log("No hay admin logueado.");
-      }
+      const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
+      let permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
 
-      const correoAdmin = (admin && (admin.correo || admin.email)) ? (admin.correo || admin.email) : "escencialconsult@gmail.com";
+
+      // OBTENER EMAILS
+      const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
+
+      const filaOrdenada = [
+        fecha,
+        userName,
+        userLastName,
+        userEmail,
+        permisoRaw == 'SI' ? emailAdmin : "",
+        respuestas
+      ];
 
       const payload = {
-        fecha,
-        nombre: userName,
-        apellido: userLastName,
-        correo: userEmail,
-        correoAdmin,
-        respuestas
+        nombreHoja: "Respuestas",
+        fila: filaOrdenada
       };
+
+      console.log("Enviando a la base de datos:", payload);
 
       try {
         const res = await fetch(WEB_APP_URL, {
