@@ -16,11 +16,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/main.css">
-
-
+    <link rel="stylesheet" href="./assets/css/pagination.css">
 </head>
-
-
 
 <body data-page="dashboard">
     <div class="bg" aria-hidden="true">
@@ -87,7 +84,7 @@
                         <span class="panel-meta" id="user-count-text">0 usuarios registrados</span>
                     </div>
 
-                    <!-- NUEVO: toolbar con buscador -->
+                    <!-- Toolbar con buscador -->
                     <div class="toolbar">
                         <div class="search-wrap" title="Buscar por usuario, puesto o test">
                             <div class="search-icon">🔎</div>
@@ -110,6 +107,33 @@
                             </thead>
                             <tbody id="user-table-body"></tbody>
                         </table>
+                    </div>
+
+                    <!-- PAGINACIÓN -->
+                    <div class="pagination-container" id="pagination-container">
+                        <div class="pagination-info">
+                            <span id="pagination-summary">Mostrando 0 de 0 usuarios</span>
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn pagination-prev" id="pagination-prev" disabled>
+                                <span class="pagination-arrow">‹</span>
+                                <span class="pagination-btn-text">Anterior</span>
+                            </button>
+                            <div class="pagination-pages" id="pagination-pages"></div>
+                            <button class="pagination-btn pagination-next" id="pagination-next" disabled>
+                                <span class="pagination-btn-text">Siguiente</span>
+                                <span class="pagination-arrow">›</span>
+                            </button>
+                        </div>
+                        <div class="pagination-per-page">
+                            <label for="rows-per-page">Filas:</label>
+                            <select id="rows-per-page">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -162,10 +186,6 @@
                                     <span>Test 3: IPP</span><br>
                                 </label>
 
-                                <!-- <label class="checkbox-item">
-                                    <input type="checkbox" name="test" value="4" />
-                                    <span>Test 4: WAIS</span><br>
-                                </label> -->
                                 <label class="checkbox-item">
                                     <input type="checkbox" name="test" value="4" />
                                     <span>Test 4: Domino 48</span><br>
@@ -223,6 +243,7 @@
     </div>
 
     <script type="module" src="./assets/js/main.js"></script>
+    <script src="./assets/js/pagination.js"></script>
 </body>
 
 </html>

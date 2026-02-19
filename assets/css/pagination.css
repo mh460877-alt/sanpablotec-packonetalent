@@ -1,0 +1,193 @@
+/* ===================================================
+   PAGINATION – matches dashboard glassmorphism theme
+   =================================================== */
+
+body[data-page="dashboard"] .pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.2rem;
+  padding: 1rem 1.2rem;
+  background: rgba(254, 254, 255, .04);
+  border: 1px solid rgba(198, 201, 215, .14);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(12px);
+}
+
+/* Info text "Mostrando X-Y de Z" */
+body[data-page="dashboard"] .pagination-info {
+  font-size: .82rem;
+  color: rgba(198, 201, 215, .78);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Central controls group */
+body[data-page="dashboard"] .pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+
+/* Prev / Next buttons */
+body[data-page="dashboard"] .pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .5rem .85rem;
+  font-size: .82rem;
+  font-weight: 700;
+  font-family: var(--font-sub);
+  color: var(--c-white);
+  background: rgba(254, 254, 255, .06);
+  border: 1px solid rgba(198, 201, 215, .20);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .15s ease;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+
+body[data-page="dashboard"] .pagination-btn:hover:not(:disabled) {
+  background: rgba(254, 254, 255, .10);
+  border-color: rgba(107, 225, 227, .40);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .30);
+}
+
+body[data-page="dashboard"] .pagination-btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+body[data-page="dashboard"] .pagination-arrow {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Page number buttons container */
+body[data-page="dashboard"] .pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+/* Individual page button */
+body[data-page="dashboard"] .pagination-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 .5rem;
+  font-size: .82rem;
+  font-weight: 700;
+  font-family: var(--font-sub);
+  color: rgba(198, 201, 215, .88);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+body[data-page="dashboard"] .pagination-page-btn:hover {
+  background: rgba(254, 254, 255, .08);
+  border-color: rgba(198, 201, 215, .18);
+}
+
+body[data-page="dashboard"] .pagination-page-btn.active {
+  background: rgba(107, 225, 227, .18);
+  border-color: rgba(107, 225, 227, .40);
+  color: var(--c-white);
+  box-shadow: 0 0 18px rgba(107, 225, 227, .15);
+}
+
+/* Ellipsis */
+body[data-page="dashboard"] .pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 36px;
+  font-size: .82rem;
+  color: rgba(198, 201, 215, .50);
+  cursor: default;
+  user-select: none;
+}
+
+/* Rows-per-page selector */
+body[data-page="dashboard"] .pagination-per-page {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .82rem;
+  color: rgba(198, 201, 215, .78);
+  font-weight: 600;
+}
+
+body[data-page="dashboard"] .pagination-per-page select {
+  padding: .4rem .65rem;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--c-white);
+  background: rgba(254, 254, 255, .06);
+  border: 1px solid rgba(198, 201, 215, .22);
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  backdrop-filter: blur(12px);
+  transition: border-color .2s ease, background .2s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='white' height='10' width='10' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .5rem center;
+  background-size: 10px;
+  padding-right: 1.5rem;
+}
+
+body[data-page="dashboard"] .pagination-per-page select:focus {
+  border-color: rgba(107, 225, 227, .55);
+  box-shadow: 0 0 0 3px rgba(107, 225, 227, .14);
+}
+
+body[data-page="dashboard"] .pagination-per-page select option {
+  background-color: #151318;
+  color: var(--c-white);
+}
+
+/* Hidden state when no data */
+body[data-page="dashboard"] .pagination-container.pagination-hidden {
+  display: none;
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 700px) {
+  body[data-page="dashboard"] .pagination-container {
+    flex-direction: column;
+    align-items: center;
+    gap: .65rem;
+    padding: .85rem;
+  }
+
+  body[data-page="dashboard"] .pagination-btn-text {
+    display: none;
+  }
+
+  body[data-page="dashboard"] .pagination-btn {
+    padding: .5rem .65rem;
+  }
+
+  body[data-page="dashboard"] .pagination-page-btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: .78rem;
+  }
+}

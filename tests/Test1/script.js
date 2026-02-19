@@ -474,7 +474,7 @@ import { URL_TEST1 } from "../../assets/js/config/constants.js";
   // ============================================================
   // ✅ UNIFICACIÓN DE NOMBRES (como IPP):
   // - finishTest()  -> finaliza y llama sendResults()
-  // - sendResults() -> envía a Google Sheets
+  // - sendResults() -> envía los datos
   // - formatTimeUsed(), formatAnswers() iguales
   // ============================================================
 
@@ -545,7 +545,7 @@ import { URL_TEST1 } from "../../assets/js/config/constants.js";
       document.getElementById('loadingMsg').innerText = "¡Datos guardados correctamente!";
       document.getElementById('loadingMsg').style.color = "#059669";
     } catch (error) {
-      console.error("Error enviando a Google Sheets:", error);
+      console.error("Error enviando los datos:", error);
       document.getElementById('loadingMsg').innerText = "⚠️ Error de conexión, avise al administrador.";
       document.getElementById('loadingMsg').style.color = "orange";
     }

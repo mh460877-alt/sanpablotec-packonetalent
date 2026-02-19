@@ -218,7 +218,7 @@ export const initDashboardPage = async () => {
 
       $('#submit-button').disabled = true;
       $('#submit-button').textContent = 'Guardando...';
-      $('#form-status').textContent = 'Actualizando usuario en Google Sheets...';
+      $('#form-status').textContent = 'Actualizando usuario...';
       try {
         await updateUser(updatePayload);
         users = await fetchAllUsers();
@@ -257,7 +257,7 @@ export const initDashboardPage = async () => {
 
     $('#submit-button').disabled = true;
     $('#submit-button').textContent = 'Enviando...';
-    $('#form-status').textContent = 'Guardando usuario en Google Sheets...';
+    $('#form-status').textContent = 'Guardando usuario...';
 
     try {
       await saveUser(newUser);
@@ -266,8 +266,8 @@ export const initDashboardPage = async () => {
         showMessage(error.message, 'error');
         $('#form-status').textContent = 'Se alcanzó el límite máximo de usuarios permitidos.';
       } else {
-        showMessage('Error al registrar usuario en Google Sheets', 'error');
-        $('#form-status').textContent = 'Error al guardar en Google Sheets.';
+        showMessage('Error al registrar usuario', 'error');
+        $('#form-status').textContent = 'Error al guardar.';
       }
       $('#submit-button').disabled = false;
       $('#submit-button').innerHTML = '<span><span class="btn-icon">＋</span> Guardar usuario</span>';
