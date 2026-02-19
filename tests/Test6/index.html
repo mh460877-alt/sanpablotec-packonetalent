@@ -29,7 +29,6 @@
         sans-serif;
       min-height: 100vh;
 
-      /* ✅ Responsive padding + safe areas */
       padding: clamp(12px, 3vw, 24px);
       padding-left: max(clamp(12px, 3vw, 24px), env(safe-area-inset-left));
       padding-right: max(clamp(12px, 3vw, 24px), env(safe-area-inset-right));
@@ -42,7 +41,6 @@
       background-size: cover;
       background-attachment: fixed;
 
-      /* ✅ avoids weird horizontal scroll on mobile */
       overflow-x: hidden;
     }
 
@@ -53,10 +51,7 @@
       backdrop-filter: blur(10px);
       border-radius: 24px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-
-      /* ✅ Responsive internal padding */
       padding: clamp(18px, 4vw, 48px);
-
       position: relative;
     }
 
@@ -200,14 +195,13 @@
       font-size: 14px;
       margin-bottom: 12px;
       font-weight: 600;
-      flex-wrap: wrap; /* ✅ prevent overlap on narrow screens */
+      flex-wrap: wrap;
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* Sistema de preguntas - MANTENER COMO ESTÁ (pero responsive de options mejorado) */
     .question-block {
       margin-bottom: 30px;
       padding: 20px;
@@ -246,7 +240,7 @@
       padding: 2px 8px;
       border-radius: 4px;
       font-size: 11px;
-      margin-left: 0; /* ✅ avoid pushing off-screen */
+      margin-left: 0;
       white-space: nowrap;
     }
 
@@ -259,7 +253,6 @@
       word-break: break-word;
     }
 
-    /* ✅ KEY FIX: grid responsive para las opciones */
     .options {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -289,7 +282,7 @@
       font-size: 14px;
       font-weight: 600;
       line-height: 1.15;
-      min-height: 44px; /* ✅ tap-friendly */
+      min-height: 44px;
       user-select: none;
       word-break: break-word;
     }
@@ -306,245 +299,31 @@
       background: #f0f9ff;
     }
 
-    /* Resultados - MANTENER COMO ESTÁ */
-    .result-summary {
+    .confirmation-box {
       background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-      padding: 30px;
+      padding: 40px 30px;
       border-radius: 16px;
-      margin-bottom: 30px;
+      margin: 30px 0;
       text-align: center;
       border: 2px solid #0b4a6e;
     }
 
-    .result-summary h3 {
+    .confirmation-box h3 {
       color: #020f27;
       margin-bottom: 15px;
       font-size: 22px;
     }
 
-    .result-summary p {
+    .confirmation-box p {
       font-size: 16px;
       line-height: 1.8;
       color: #475569;
     }
 
-    .radar-chart-container {
-      margin: 30px 0;
-      padding: 30px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .radar-chart-container h3 {
-      text-align: center;
+    .confirmation-icon {
+      font-size: 64px;
       margin-bottom: 20px;
-      color: #020f27;
-      font-size: 20px;
-    }
-
-    .comparison-chart {
-      margin: 30px 0;
-      padding: 30px;
-      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-      border-radius: 16px;
-    }
-
-    .comparison-chart h3 {
-      color: #020f27;
-      margin-bottom: 15px;
-      font-size: 20px;
-    }
-
-    .comparison-bar {
-      margin: 15px 0;
-    }
-
-    .comparison-bar-label {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-      font-size: 14px;
-      color: #475569;
-      font-weight: 600;
-      flex-wrap: wrap;
-    }
-
-    .comparison-bar-bg {
-      width: 100%;
-      height: 24px;
-      background: #e2e8f0;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .comparison-bar-user {
-      height: 100%;
-      background: linear-gradient(90deg, #0b4a6e 0%, #020f27 100%);
-      transition: width 0.5s ease;
-      border-radius: 12px;
-    }
-
-    .comparison-bar-avg {
-      position: absolute;
-      top: 0;
-      height: 100%;
-      width: 2px;
-      background: #dc2626;
-    }
-
-    .avg-label {
-      position: absolute;
-      top: -20px;
-      font-size: 12px;
-      color: #dc2626;
-      font-weight: bold;
-    }
-
-    .result-trait {
-      margin-bottom: 30px;
-      padding: 30px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .trait-name {
-      font-size: 22px;
-      font-weight: bold;
-      color: #020f27;
-      margin-bottom: 10px;
-      word-break: break-word;
-    }
-
-    .trait-score {
-      font-size: 16px;
-      margin-bottom: 15px;
-      color: #475569;
-      font-weight: 600;
-      word-break: break-word;
-    }
-
-    .percentile-badge {
-      background: #0b4a6e;
-      color: #fff;
-      padding: 5px 12px;
-      border-radius: 15px;
-      font-size: 14px;
-      margin-left: 10px;
-      display: inline-block;
-      margin-top: 6px;
-    }
-
-    .dimension-reliability {
-      font-size: 13px;
-      color: #059669;
-      margin-top: 5px;
-      font-weight: bold;
-    }
-
-    .progress-bar-result {
-      width: 100%;
-      height: 30px;
-      background: #e2e8f0;
-      border-radius: 15px;
-      overflow: hidden;
-      margin-bottom: 15px;
-    }
-
-    .progress-fill-result {
-      height: 100%;
-      background: linear-gradient(90deg, #0b4a6e 0%, #020f27 100%);
-      transition: width 0.5s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: bold;
-      padding: 0 10px;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .trait-description {
-      line-height: 1.7;
-      color: #475569;
-      font-size: 15px;
-    }
-
-    .interpretation-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      padding: 20px;
-      margin: 15px 0;
-      border-radius: 8px;
-    }
-
-    .interpretation-box h4 {
-      color: #0c4a6e;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    .percentile-table {
-      width: 100%;
-      margin: 20px 0;
-      border-collapse: collapse;
-      background: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .percentile-table th {
-      background: linear-gradient(135deg, #0b4a6e 0%, #020f27 100%);
-      color: #fff;
-      padding: 12px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .percentile-table td {
-      padding: 12px;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 14px;
-      word-break: break-word;
-    }
-
-    .percentile-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .percentile-table tr:hover {
-      background: #f8fafc;
-    }
-
-    .level-muy-alto {
-      color: #dc2626;
-      font-weight: 600;
-    }
-
-    .level-alto {
-      color: #ea580c;
-      font-weight: 600;
-    }
-
-    .level-mod-alto {
-      color: #ca8a04;
-      font-weight: 600;
-    }
-
-    .level-bajo {
-      color: #2563eb;
-      font-weight: 600;
-    }
-
-    .level-muy-bajo {
-      color: #7c3aed;
-      font-weight: 600;
+      display: block;
     }
 
     canvas {
@@ -567,15 +346,14 @@
       display: flex;
       gap: 15px;
       margin-top: 30px;
-      flex-wrap: wrap; /* ✅ wrap on mobile */
+      flex-wrap: wrap;
     }
 
     .page-buttons .btn {
-      flex: 1 1 220px; /* ✅ don’t overflow; wrap nicely */
+      flex: 1 1 220px;
       margin-top: 0;
     }
 
-    /* ✅ Back button styles (kept, but made responsive + safe-area) */
     .btn-back {
       position: fixed;
       top: max(12px, env(safe-area-inset-top));
@@ -617,30 +395,23 @@
       transform: translateX(-3px);
     }
 
-    /* ✅ Responsive tweaks */
     @media (max-width: 768px) {
       body {
-        background-attachment: scroll; /* ✅ iOS fix */
+        background-attachment: scroll;
       }
 
       .question-block:hover {
-        transform: none; /* ✅ avoid jumpiness on touch */
+        transform: none;
       }
 
       .options {
-        grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ 3 cols on tablet */
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
       }
 
       .option label {
         font-size: 13px;
         padding: 10px 6px;
-      }
-
-      .radar-chart-container,
-      .comparison-chart,
-      .result-trait {
-        padding: 18px;
       }
     }
 
@@ -651,11 +422,11 @@
       }
 
       .options {
-        grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ 2 cols on phones */
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .option label {
-        min-height: 46px; /* ✅ bigger tap target */
+        min-height: 46px;
       }
 
       .progress-text {
@@ -693,9 +464,6 @@
   <div class="container">
     <!-- PANTALLA DE INTRODUCCIÓN -->
     <div id="intro">
-      <!-- <div style="text-align: center; margin-bottom: 30px;">
-        <img src="../../img/logo-escencial.png" alt="one-logocolor" style="max-width: 150px; height: auto;" />
-      </div> -->
       <h1>Test de Personalidad Big Five</h1>
       <p class="subtitle">Versión IPIP-50 Validada Científicamente</p>
       <div style="text-align: center;">
@@ -790,9 +558,6 @@
 
     <!-- PANTALLA DEL TEST -->
     <div id="test" class="hidden">
-      <!-- <div style="text-align: center; margin-bottom: 20px;">
-        <img src="../../img/one-logocolor.png" alt="one-logocolor" style="max-width: 200px; height: auto;" />
-      </div> -->
       <h2>Test de Personalidad Big Five</h2>
 
       <div class="progress-text">
@@ -814,26 +579,26 @@
       <div class="page-buttons">
         <button type="button" class="btn hidden" id="prevBtn" onclick="previousPage()">⬅️ Anterior</button>
         <button type="button" class="btn" id="nextBtn" onclick="nextPage()">Siguiente ➡️</button>
-        <button type="button" class="btn hidden" id="submitBtn" onclick="submitTest()">✅ Ver Resultados</button>
+        <button type="button" class="btn hidden" id="submitBtn" onclick="submitTest()">📩 Enviar Respuestas</button>
       </div>
     </div>
 
-    <!-- PANTALLA DE RESULTADOS -->
+    <!-- PANTALLA DE CONFIRMACIÓN -->
     <div id="results" class="hidden">
-      <div style="text-align: center; margin-bottom: 30px;">
+      <!-- <div style="text-align: center; margin-bottom: 30px;">
         <img src="../../img/one-logocolor.png" alt="one-logocolor" style="max-width: 200px; height: auto;" />
-      </div>
+      </div> -->
       <h1>Big Five</h1>
       <p class="subtitle">Test validado</p>
 
-      <div class="radar-chart-container">
-        <h3>Resultados enviados</h3>
+      <div class="confirmation-box">
+        <span class="confirmation-icon">📩</span>
+        <h3>Respuestas Enviadas</h3>
         <p id="results-message">
-                    Tus respuestas han sido registradas y los resultados se han enviado correctamente.
-                </p>
-        <canvas id="radarChart" width="400" height="400"></canvas>
+          Enviando tus respuestas...
+        </p>
       </div>
-
+    </div>
   </div>
 
   <script type="module" src="./script.js"></script>
