@@ -722,8 +722,413 @@ body[data-page="dashboard"] .hidden {
   display: none !important;
 }
 
-@media (max-width: 900px) {
+/* ===================================================
+   DASHBOARD RESPONSIVE FIX v2
+   ===================================================
+   Reemplaza el @media (max-width: 900px) existente
+   en dashboard.css con todo este contenido.
+   =================================================== */
+
+/* ─── TABLET  ≤ 1024px ─── */
+@media (max-width: 1024px) {
   body[data-page="dashboard"] .main {
     grid-template-columns: 1fr;
+    padding: 1.5rem 1rem 2rem;
+    gap: 1.5rem;
+  }
+
+  body[data-page="dashboard"] .header-inner {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ─── MOBILE  ≤ 768px ─── */
+@media (max-width: 768px) {
+
+  /* ══════════════════════════════════
+     HEADER – compacto horizontal
+     ══════════════════════════════════ */
+  body[data-page="dashboard"] .header-inner {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  body[data-page="dashboard"] .brand {
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  body[data-page="dashboard"] .brand-logo {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  body[data-page="dashboard"] .brand-text-main {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  body[data-page="dashboard"] .brand-text-sub {
+    font-size: 0.68rem;
+  }
+
+  body[data-page="dashboard"] .header-actions {
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  /* Hide "Admin conectado" text on mobile */
+  body[data-page="dashboard"] .header-actions > span {
+    display: none;
+  }
+
+  body[data-page="dashboard"] .header-actions .btn-ghost {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  body[data-page="dashboard"] .status-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* ══════════════════════════════════
+     MAIN LAYOUT
+     ══════════════════════════════════ */
+  body[data-page="dashboard"] .main {
+    grid-template-columns: 1fr;
+    padding: 1rem 0.65rem 2rem;
+    gap: 1.2rem;
+  }
+
+  body[data-page="dashboard"] .section-title {
+    font-size: 1.2rem;
+  }
+
+  body[data-page="dashboard"] .section-subtitle {
+    font-size: 0.82rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* ══════════════════════════════════
+     PANEL
+     ══════════════════════════════════ */
+  body[data-page="dashboard"] .panel,
+  body[data-page="dashboard"] .form-panel {
+    padding: 1.1rem 0.85rem;
+  }
+
+  body[data-page="dashboard"] .panel-header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: baseline;
+  }
+
+  /* ══════════════════════════════════
+     TOOLBAR / SEARCH
+     ══════════════════════════════════ */
+  body[data-page="dashboard"] .toolbar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  body[data-page="dashboard"] .search-wrap {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  body[data-page="dashboard"] .search-wrap input {
+    font-size: 0.85rem;
+  }
+
+  body[data-page="dashboard"] .btn-clear {
+    margin-left: auto;
+  }
+
+  /* ══════════════════════════════════════════
+     TABLE → CARD LAYOUT
+     ══════════════════════════════════════════ */
+  body[data-page="dashboard"] .table-wrap {
+    border: none;
+    background: transparent;
+    overflow: visible;
+  }
+
+  body[data-page="dashboard"] .data-table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  /* Hide thead visually, keep for accessibility */
+  body[data-page="dashboard"] .data-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    white-space: nowrap;
+  }
+
+  /* Each row = card */
+  body[data-page="dashboard"] .data-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    background:
+      radial-gradient(500px 350px at 80% 20%, rgba(225, 123, 215, .07), transparent 60%),
+      radial-gradient(500px 350px at 20% 80%, rgba(107, 225, 227, .06), transparent 60%),
+      rgba(254, 254, 255, .04);
+    border: 1px solid rgba(198, 201, 215, .16);
+    border-radius: var(--radius-md, 12px);
+    padding: 0;
+    margin-bottom: 0.7rem;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+  }
+
+  body[data-page="dashboard"] .data-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  body[data-page="dashboard"] .data-table tbody tr:hover {
+    border-color: rgba(107, 225, 227, .30);
+    background:
+      radial-gradient(500px 350px at 80% 20%, rgba(225, 123, 215, .10), transparent 60%),
+      radial-gradient(500px 350px at 20% 80%, rgba(107, 225, 227, .09), transparent 60%),
+      rgba(254, 254, 255, .06);
+  }
+
+  /* Cells */
+  body[data-page="dashboard"] .data-table td {
+    display: flex;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(198, 201, 215, .08);
+    gap: 0.6rem;
+  }
+
+  body[data-page="dashboard"] .data-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Labels via data-label */
+  body[data-page="dashboard"] .data-table td::before {
+    content: attr(data-label);
+    display: inline-block;
+    min-width: 90px;
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: rgba(198, 201, 215, .55);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-title, 'Exo 2', sans-serif);
+  }
+
+  /* ── Username = card header ── */
+  body[data-page="dashboard"] .data-table td.col-username {
+    background: rgba(0, 0, 0, .15);
+    padding: 0.75rem 1rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--c-cyan, #6be1e3);
+    border-bottom: 1px solid rgba(198, 201, 215, .12);
+  }
+
+  body[data-page="dashboard"] .data-table td.col-username::before {
+    display: none;
+  }
+
+  /* ── Password cell ── */
+  body[data-page="dashboard"] .data-table td.col-password {
+    font-family: monospace;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Tests column ── */
+  body[data-page="dashboard"] .data-table td.col-tests {
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+  /* ── Actions = card footer ── */
+  body[data-page="dashboard"] .data-table td.col-actions {
+    background: rgba(0, 0, 0, .10);
+    padding: 0.65rem 1rem;
+    border-top: 1px solid rgba(198, 201, 215, .10);
+    border-bottom: none;
+    justify-content: stretch;
+    width: auto;
+    white-space: normal;
+  }
+
+  body[data-page="dashboard"] .data-table td.col-actions::before {
+    display: none;
+  }
+
+  /* Edit button full width in card */
+  body[data-page="dashboard"] .data-table td.col-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+  }
+
+  /* ══════════════════════════════════
+     FORM PANEL
+     ══════════════════════════════════ */
+  body[data-page="dashboard"] .form-title {
+    font-size: 1.15rem;
+  }
+
+  body[data-page="dashboard"] .form-subtitle {
+    font-size: 0.82rem;
+    margin-bottom: 1.2rem;
+  }
+
+  body[data-page="dashboard"] .field-group {
+    margin-bottom: 1.2rem;
+  }
+
+  body[data-page="dashboard"] .field-group input[type="text"],
+  body[data-page="dashboard"] .field-group input[type="password"] {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  body[data-page="dashboard"] .checkbox-item {
+    padding: 0.6rem 0.8rem;
+  }
+
+  body[data-page="dashboard"] .checkbox-item span {
+    font-size: 0.85rem;
+  }
+
+  /* ══════════════════════════════════
+     PAGINATION
+     ══════════════════════════════════ */
+  body[data-page="dashboard"] .pagination-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem;
+  }
+
+  body[data-page="dashboard"] .pagination-btn-text {
+    display: none;
+  }
+
+  body[data-page="dashboard"] .pagination-btn {
+    padding: 0.5rem 0.6rem;
+  }
+
+  body[data-page="dashboard"] .pagination-page-btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.78rem;
+  }
+
+  /* ══════════════════════════════════
+     FOOTER
+     ══════════════════════════════════ */
+  body[data-page="dashboard"] .page-footer {
+    padding: 1rem 0.7rem;
+    font-size: 0.72rem;
+  }
+
+  /* ══════════════════════════════════
+     SCROLL-TO-FORM HIGHLIGHT
+     ══════════════════════════════════ */
+  @keyframes formHighlight {
+    0% {
+      box-shadow:
+        var(--shadow-soft, 0 4px 20px rgba(0,0,0,.3)),
+        0 0 0 2px rgba(107, 225, 227, .55),
+        0 0 35px rgba(107, 225, 227, .25);
+    }
+    100% {
+      box-shadow: var(--shadow-soft, 0 4px 20px rgba(0,0,0,.3));
+    }
+  }
+
+  body[data-page="dashboard"] .form-panel.highlight-scroll {
+    animation: formHighlight 1.8s ease-out forwards;
+  }
+}
+
+/* ─── SMALL MOBILE  ≤ 420px ─── */
+@media (max-width: 420px) {
+
+  body[data-page="dashboard"] .header-inner {
+    gap: 0.3rem;
+    padding: 0.5rem 0.55rem;
+  }
+
+  body[data-page="dashboard"] .brand-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  body[data-page="dashboard"] .brand-text-main {
+    font-size: 0.75rem;
+  }
+
+  body[data-page="dashboard"] .brand-text-sub {
+    display: none;
+  }
+
+  body[data-page="dashboard"] .main {
+    padding: 0.8rem 0.4rem 1.5rem;
+  }
+
+  body[data-page="dashboard"] .panel,
+  body[data-page="dashboard"] .form-panel {
+    padding: 0.85rem 0.6rem;
+  }
+
+  body[data-page="dashboard"] .section-title {
+    font-size: 1.05rem;
+  }
+
+  body[data-page="dashboard"] .data-table td {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.82rem;
+  }
+
+  body[data-page="dashboard"] .data-table td::before {
+    min-width: 75px;
+    font-size: 0.68rem;
+  }
+
+  body[data-page="dashboard"] .data-table td.col-username {
+    padding: 0.6rem 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  body[data-page="dashboard"] .test-badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.68rem;
+  }
+
+  body[data-page="dashboard"] .login-card {
+    padding: 1.5rem 1rem;
+  }
+
+  body[data-page="dashboard"] .login-title {
+    font-size: 1.4rem;
+  }
+
+  body[data-page="dashboard"] .login-logo {
+    width: 60px;
+    height: 60px;
   }
 }

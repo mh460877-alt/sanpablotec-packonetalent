@@ -229,12 +229,228 @@ body[data-page="index"] .feature-card:hover{
 }
 
 /* Responsive index */
-@media (max-width: 980px){
-  body[data-page="index"] .hero{ grid-template-columns: 1fr; }
-  body[data-page="index"] .visual{ min-height: 460px; }
+/* ===================================================
+   INDEX PAGE RESPONSIVE FIX
+   ===================================================
+   Reemplaza los @media existentes al final de
+   index.css con todo este contenido.
+   =================================================== */
+
+/* ─── TABLET ≤ 980px ─── */
+@media (max-width: 980px) {
+  body[data-page="index"] .hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  body[data-page="index"] .visual {
+    min-height: 420px;
+  }
+
+  body[data-page="index"] .lead {
+    max-width: 100%;
+  }
 }
-@media (max-width: 560px){
-  body[data-page="index"] nav{ display:none; }
-  body[data-page="index"] .btn{ width:100%; justify-content:center; }
-  body[data-page="index"] .feature-grid{ grid-template-columns:1fr; padding:18px; }
+
+/* ─── MOBILE ≤ 680px ─── */
+@media (max-width: 680px) {
+
+  /* ══════════════════════════════════
+     HEADER
+     ══════════════════════════════════ */
+  body[data-page="index"] header {
+    padding: 14px 14px 6px;
+  }
+
+  body[data-page="index"] .nav {
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+
+  /* Hide nav links */
+  body[data-page="index"] nav {
+    display: none;
+  }
+
+  /* Brand */
+  body[data-page="index"] .brand {
+    gap: 8px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  body[data-page="index"] .brand .mark {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  body[data-page="index"] .brand .name {
+    font-size: 14px;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  body[data-page="index"] .brand .sub {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Admin button - compact */
+  body[data-page="index"] .header-cta a.btn-link {
+    min-height: 36px;
+    padding: 6px 14px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════
+     MAIN / HERO
+     ══════════════════════════════════ */
+  body[data-page="index"] main {
+    padding: 16px 14px 40px;
+    align-items: flex-start;
+  }
+
+  body[data-page="index"] .hero {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Eyebrow pill */
+  body[data-page="index"] .eyebrow {
+    font-size: 12px;
+    padding: 7px 12px;
+    gap: 7px;
+  }
+
+  body[data-page="index"] .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* Title */
+  body[data-page="index"] h1 {
+    font-size: clamp(32px, 8vw, 44px);
+    margin: 14px 0 10px;
+  }
+
+  /* Lead text */
+  body[data-page="index"] .lead {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    max-width: 100%;
+  }
+
+  /* CTA buttons */
+  body[data-page="index"] .cta {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  body[data-page="index"] .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  /* Hint */
+  body[data-page="index"] .hint {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* ══════════════════════════════════
+     VISUAL / FEATURE CARDS
+     ══════════════════════════════════ */
+  body[data-page="index"] .visual {
+    min-height: auto;
+    border-radius: var(--radius-lg, 18px);
+    padding: 4px;
+  }
+
+  body[data-page="index"] .feature-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+    width: 100%;
+  }
+
+  body[data-page="index"] .feature-card {
+    padding: 14px;
+    min-height: auto;
+    border-radius: 14px;
+  }
+
+  body[data-page="index"] .feature-top {
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  body[data-page="index"] .feature-ico {
+    font-size: 18px;
+  }
+
+  body[data-page="index"] .feature-title {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  body[data-page="index"] .feature-text {
+    font-size: 11px;
+    line-height: 1.45;
+    color: rgba(198, 201, 215, .72);
+  }
+}
+
+/* ─── SMALL MOBILE ≤ 400px ─── */
+@media (max-width: 400px) {
+
+  body[data-page="index"] header {
+    padding: 10px 10px 4px;
+  }
+
+  body[data-page="index"] .brand .name {
+    font-size: 13px;
+  }
+
+  body[data-page="index"] .brand .sub {
+    display: none;
+  }
+
+  body[data-page="index"] .header-cta a.btn-link {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  body[data-page="index"] main {
+    padding: 12px 10px 30px;
+  }
+
+  body[data-page="index"] h1 {
+    font-size: clamp(28px, 9vw, 38px);
+  }
+
+  body[data-page="index"] .lead {
+    font-size: 14px;
+  }
+
+  body[data-page="index"] .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  body[data-page="index"] .feature-card {
+    padding: 12px;
+  }
 }
