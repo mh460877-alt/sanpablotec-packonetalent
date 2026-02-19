@@ -1,0 +1,616 @@
+import { URL_TEST1 } from "../../assets/js/config/constants.js";
+  // ========== DATOS TEST 1: RAPIDEZ ==========
+  const RAW_TEXT_P1 = `1 nv nx xn vx xv 21 ar ra ro ar oa 41 7c 9b 9c 9e 7b 61 HN HZ ZH ZN NH 81 35 53 h3 3h 5h
+2 bl dl ld lb bd 22 lc la al ac ca 42 7c 2b 7b 2d 7d 62 RR BR RB BB RP 82 bl dl ld lb bd
+3 ar au ur ra ru 23 1s 13 31 3s s1 43 n3 Sn 3s ns 3n 63 CU UU UC US CC 83 fk lk kf lf kl
+4 wu vu vw wv uw 24 ma cm ca mc am 44 20 25 02 05 52 64 PR PB RB RP BP 84 69 6d 9d d6 d9
+5 wm um mu wu mw 25 xv vx vw wx wv 45 ec ac ca ce ae 65 CK KJ JC KC JK 85 XX VX VZ ZV XV
+6 79 76 67 69 97 26 ud un nd nu du 46 2h h4 42 4h 24 66 T1 1T 11 Tt TT 86 j8 a8 8a 8j ja
+7 ra na nr rn ar 27 fk lk kt lt kl 47 av va vo ao ov 67 SX sX sx Xs XS 87 79 76 67 69 97
+8 za mz zm az ma 28 pq qg gp gq qp 48 fa fr ra rf ar 68 LT Tt tT Tl tt 88 nr ne en rn re
+9 AV VN NV NA VA 29 2u 2q qu q2 u2 49 ma cm ca mc am 69 Zz NZ zZ zn ZN 89 4X 4V Vx V4 x4
+10 OQ CQ QC QO OC 30 41 44 14 11 40 50 rc cr co oc or 70 GQ Qg qq qg QG 90 vn vz zv nv zn
+11 CU UU UC US CC 31 nr ne en rn re 51 Ch ho hc ac oh 71 4c 1a 1c 4d 2d 91 B8 R8 8B RB 8R
+12 4H 4N NH N4 HN 32 bb dd ld db bd 52 se rs re es er 72 S8 C3 S3 C8 C5 92 oQ CQ QC QO OC
+13 Rr RP pR PP RR 33 RB RD DR BR BD 53 ar au ur ra ru 73 A9 7b 79 9b b7 93 OD OB BD DO BO
+14 Aa AB 8a 8A aA 34 MW MV VW VM WM 54 pq qg gp gq qp 74 18 81 71 78 17 94 ZY ZX XY YZ YX
+15 LT Tt tT Tl tt 35 OD OB BD DO BO 55 am na nm mn an 75 b4 4d db d4 bd 95 OU OC UC UD CO
+16 Av Vv av VV AA 36 PR PB RB RP BP 56 gj jg pg jp gp 76 u6 u4 4u 6u 46 96 Cc Oc OO cO cc
+17 4d 3c 4a 4c 3a 37 Dd Db dB bD DD 57 tp et ep pe pt 77 3x 7x 73 37 x7 97 Aa A8 8a 8A aA
+18 X7 V9 V5 X9 V7 38 EE Ef eF Fe FF 58 ra na nr rn ar 78 1s 13 31 3s s1 98 Ze Zz ZE zE eZ
+19 A9 7b 79 9b b7 39 Ze Zz ZE zE eZ 59 bb dd ld db bd 79 en dn de ed nd 99 BP Pb bP pp bB
+20 20 25 02 05 52 40 Zz NZ zZ zn ZN 60 18 81 1a 8a a8 80 ni fi fn in nf 100 Cz CZ Zc zC cz`;
+
+  const RAW_TEXT_P2 = `1 YZ VY VX XY ZY 21 Rr RP pR PP rr 41 WU VU VW WV UW 61 18 81 71 78 17 81 se rs re es er
+2 b9 C6 69 96 6C 22 LT IT IL TL TI 42 er ri ir ie re 62 Vv Ww Wv wV vv 82 4X 4V VX VA X4
+3 ou oa ua uo ao 23 MW MV VW VM WM 43 31 23 32 13 21 63 Mm MN NN nn mM 83 zn zz nz nn mn
+4 lc lo ol oc co 24 Uu Wu uW WW uU 44 2u 2q qu q2 u2 64 b9 c6 69 96 6c 84 LT IT IL TL TI
+5 X7 V9 V5 X9 V7 25 3x xc c3 cx 3c 45 XV VX VW WX WV 65 4c 1a 1c 4d 2d 85 41 44 14 11 40
+6 Sc 8c 8s cS c8 26 AV VN NV NA VA 46 ae et ea ta te 66 2h h4 42 4h 24 86 us ue se su eu
+7 ob bt ot tb bo 27 YX XX Yy Xy xX 47 VI SI SV VS IV 67 YZ VY VX XY ZX 87 PR PB RB RP BP
+8 5e 3d 4d 2e 2d 28 EL FL FE LF LE 48 th he et en ht 68 n3 Sn 3s ns 3n 88 Rr RP pR PP rr
+9 rc dc dr rd cr 29 MN NM VN MV NV 49 za mz zm az ma 69 WO ro rw ow wr 89 SX sX sx Xs XS
+10 ws sw st tw ts 30 EE Ef eF Fe FF 50 sx sa ax xs xa 70 ar ra ro or oa 90 ra na nr rn ar
+11 wm um mu wu mw 31 S8 C8 8C 8S S5 51 Av Vv aV VV AA 71 ni fi fn in nf 91 OU OC UC UO CO
+12 pp qq pq pg qp 32 h6 h8 86 8h 6h 52 Mw wW WM MM mW 72 wu vu vw wv uw 92 RB RD DR BR BD
+13 nv nx xn vx xv 33 4d 3c 4a 4c 3a 53 4H 4N NH N4 HN 73 th he et eh ht 93 XX XO OO OX OV
+14 nu un um mn mu 34 Z4 Z1 14 1Z 4Z 54 Dd Db dB bB DD 74 am na nm mn an 94 HN HZ ZH ZN NH
+15 zn zz nz nn mn 35 Qo Qq OQ oq QQ 55 s8 83 s3 38 3S 75 3x 7x 73 37 x7 95 Av Vv aV VV AA
+16 pg gy py yp yg 36 xc ex ec ce xe 56 XO OO OX OV XX 76 j8 a8 8a 8j ja 96 OQ CQ QC QO OC
+17 59 gY 5Y Y9 95 37 ar ra ro or oa 57 S8 C8 8C 8S S5 77 59 9Y 5Y Y9 95 97 2e Zz ZE zE eZ
+18 nu on ou un uo 38 8c 8a 7a 6c 7c 58 X7 V9 V5 x9 V7 78 fk lk kf lf kl 98 GQ Qg qq qg QG
+19 ud un nd nu du 39 us ue se su eu 59 L7 L1 17 1L 7L 79 ma cm ca mc am 99 Mm MN NN nn mM
+20 41 44 14 11 40 40 wo ro rw ow wr 60 RB RD DR BR BD 80 nv nx xn vx xv 100 Qo Qq OQ oq QQ`;
+
+  function parseText(text) {
+    const qs = [];
+    const lines = text.split('\n');
+    lines.forEach(line => {
+      const tokens = line.split(/\s+/).filter(t => t.trim() !== '');
+      let i = 0;
+      while (i < tokens.length) {
+        if (tokens[i].match(/^\d+$/)) {
+          const id = parseInt(tokens[i]);
+          if (i + 5 < tokens.length) {
+            const opts = tokens.slice(i + 1, i + 6);
+            qs.push({
+              id: id,
+              target: opts[0],
+              options: opts.sort(() => Math.random() - 0.5)
+            });
+            i += 6;
+          } else {
+            i++;
+          }
+        } else {
+          i++;
+        }
+      }
+    });
+    return qs.sort((a, b) => a.id - b.id);
+  }
+
+  const DB_TEST1 = {
+    1: parseText(RAW_TEXT_P1),
+    2: parseText(RAW_TEXT_P2)
+  };
+
+  // ========== DATOS TEST 2: RAZONAMIENTO VERBAL ==========
+  const QUESTIONS_TEST2 = [
+    { id: 1, text: "…es a olor como oído es a…", options: ["olfato – aroma", "nariz – sonido", "color – timbre", "percibir – armonía", "nariz – ojo"] },
+    { id: 2, text: "…es a sollozo como risa es a…", options: ["llanto – dolor", "lágrima – grito", "llanto – sonrisa", "tristeza – dolor", "gemido – pena"] },
+    { id: 3, text: "…es a después como arriba es a...", options: ["así – abajo", "sobre – mientras", "pronto – encima", "antes – abajo", "antes – mientras"] },
+    { id: 4, text: "…es a avión como maquinista es a...", options: ["hangar – estación", "comandante – piloto", "piloto – tren", "aeropuerto – locomotora", "hangar – vía"] },
+    { id: 5, text: "…es a prado como árbol es a...", options: ["hierba – bosque", "verde – fruta", "campo – flor", "vaca – hoja", "huerto – paisaje"] },
+    { id: 6, text: "…es a rama como pétalo es a…", options: ["tronco – semilla", "madera – color", "tronco – fruto", "pájaro – flor", "hoja – flor"] },
+    { id: 7, text: "…es a agrio como miel es a…", options: ["dulce – azúcar", "amargo – hiel", "pomelo – abeja", "vinagre – vino", "limón – dulce"] },
+    { id: 8, text: "…es a recluso como hospital es a…", options: ["inocente – enfermo", "criminal– cárcel", "cárcel – enfermo", "victima – salud", "reo – médico"] },
+    { id: 9, text: "…es a construir como demoler es a...", options: ["fabricar – urbanizar", "puente – ruina", "edificar – destruir", "derribar – conservar", "puente – escombro"] },
+    { id: 10, text: "…es a madera como sastre es a...", options: ["herramienta – coser", "mueble – tela", "carpintero – tela", "ebanista – modista", "serrar – cortar"] },
+    { id: 11, text: "…es a general como particular es a…", options: ["singular – raro", "común – propio", "ordinario – extraño", "habitual – universal", "exclusivo – peculiar"] },
+    { id: 12, text: "…es a funda como espada es a…", options: ["caja – herida", "cuero – corte", "pistola – vaina", "arma – acero", "desenvainar – luchar"] },
+    { id: 13, text: "…es a mano como pierna es a…", options: ["dedo – pie", "brazo – pie", "gesto – rodilla", "tocar – calzar", "dedo – zapato"] },
+    { id: 14, text: "…es a ciudad como rural es a...", options: ["multitud – aldea", "ruido – campesino", "pueblo – rústico", "urbano – campo", "civil – ganadero"] },
+    { id: 15, text: "…es a pluma como pesadez es a...", options: ["escribir – discurso", "aire – ligereza", "ligereza – tamaño", "tinta – piedra", "ligereza – plomo"] },
+    { id: 16, text: "…es a tarde como anticiparse es a…", options: ["mañana – madrugar", "ahora – nunca", "nunca – retrasarse", "pronto – retrasarse", "madrugar – ahora"] },
+    { id: 17, text: "…es a trópico como glacial es a...", options: ["cálido – ártico", "polo– frío", "Ecuador – frío", "polo – ártico", "selva – Ecuador"] },
+    { id: 18, text: "…es a autorizar como dificultar es a...", options: ["tolerar – impedir", "permitir – ceder", "prohibir – estorbar", "evitar – prohibir", "consentir – facilitar"] },
+    { id: 19, text: "…es a escuela como médico es a...", options: ["educación – sanidad", "estudiante – enfermo", "libro – medicina", "edificio – hospital", "maestro – hospital"] },
+    { id: 20, text: "…es a lealtad como perfidia es a...", options: ["patriotismo – envidia", "fidelidad – traición", "amistad – cobardía", "patriotismo – cobardía", "engaño – traición"] },
+    { id: 21, text: "…es a letra como diccionario es a…", options: ["abecedario – palabra", "escritura – definición", "palabra – libro", "vocal – consonante", "carta – libro"] },
+    { id: 22, text: "…es a historia como fábula es a...", options: ["geografía – mitología", "tradición – niño", "pasado – futuro", "crónica – leyenda", "geografía – poesía"] },
+    { id: 23, text: "…es a alabar como infamar es a...", options: ["ensalzar – informar", "elevar – ensalzar", "denigrar – injuriar", "elogiar – agraviar", "difamar – injuriar"] },
+    { id: 24, text: "…es a nuez como piel es a...", options: ["nogal – corteza", "cáscara – manzana", "fruta – pluma", "avellana – abrigo", "nogal – manzana"] },
+    { id: 25, text: "…es a tiempo como aquí es a...", options: ["año – hoy", "temperatura – allí", "ahora – lugar", "pronto – prisa", "siempre – nunca"] },
+    { id: 26, text: "…es a león como madriguera es a...", options: ["selva – refugio", "fiera – conejo", "tigre – refugio", "guarida – conejo", "garra – cueva"] },
+    { id: 27, text: "…es a árbol como cimiento es a...", options: ["madera – edificio", "pared – columna", "raíz – edificio", "madera – columna", "fruto – base"] },
+    { id: 28, text: "…es a amanecer como ocaso es a...", options: ["mañana – día", "madrugar – dormir", "luz – sol", "aurora – anochecer", "temprano – anochecer"] },
+    { id: 29, text: "…es a peso como siglo es a...", options: ["tonelada – cien", "kilo – año", "cantidad – espacio", "densidad – medida", "tonelada – tiempo"] },
+    { id: 30, text: "…es a pintar como buril es a...", options: ["artista – artesano", "pincel – grabar", "decorar – cincel", "cuadro – grabar", "cuadro – herramienta"] },
+    { id: 31, text: "…es a oveja como colmena es a...", options: ["animal – miel", "lana – avispa", "hierba – flor", "rebaño – enjambre", "redil – abeja"] },
+    { id: 32, text: "…es a certeza como vacilación es a...", options: ["falsedad – error", "seguridad – duda", "duda – titubeo", "confianza – seguridad", "afirmación – negación"] },
+    { id: 33, text: "…es a vender como adquirir es a...", options: ["comprar – enajenar", "alquilar – comprar", "poseer – tener", "comerciar – pagar", "negociar – arrendar"] },
+    { id: 34, text: "…es a nieve como riada es a...", options: ["frío – río", "hielo – inundación", "alud – agua", "avalancha – hielo", "granizo – amistad"] },
+    { id: 35, text: "…es a sacerdote como toga es a...", options: ["misa – juicio", "obispo – juez", "liturgia – prestigio", "iglesia – uniforme", "casulla – magistrado"] },
+    { id: 36, text: "…es a oveja como colmena es a...", options: ["animal – miel", "lana – avispa", "hierba – flor", "rebaño – enjambre", "redil – abeja"] },
+    { id: 37, text: "…es a piel como templar es a...", options: ["cuerpo – curtir", "animal – endurecer", "proteger – moldear", "curtir – afinar", "curtir – hierro"] },
+    { id: 38, text: "…es a año como tres es a...", options: ["trimestre – doce", "mes – cuatro", "siglo – trimestre", "día – uno", "calendario – impar"] },
+    { id: 39, text: "…es a fiesta como tristeza es a...", options: ["diversión – alegría", "reunión – dolor", "animación – ceremonia", "alegría – duelo", "regalo – pésame"] },
+    { id: 40, text: "…es a carga como yate es a...", options: ["trabajo – recreo", "pala – mar", "barco – pesca", "camión – ligero", "barcaza – recreo"] }
+  ];
+
+  // ========== DATOS TEST 3: ORTOGRAFÍA ==========
+  const QUESTIONS_TEST3 = [
+    { id: 1, options: ["significado", "hombro", "colunna", "santiguar"] },
+    { id: 2, options: ["vecindad", "proibir", "oscilar", "mejilla"] },
+    { id: 3, options: ["vestido", "patruya", "abrir", "levantar"] },
+    { id: 4, options: ["gimnasia", "tobillo", "irreductible", "automóbil"] },
+    { id: 5, options: ["volver", "cabello", "albergue", "immediato"] },
+    { id: 6, options: ["ciudad", "huéspez", "turbina", "espanto"] },
+    { id: 7, options: ["sez", "recoger", "cabecera", "colección"] },
+    { id: 8, options: ["adtitud", "excesivo", "civil", "claridad"] },
+    { id: 9, options: ["resbalar", "libertad", "ebidencia", "huevo"] },
+    { id: 10, options: ["desechar", "embargo", "adtuación", "intuir"] },
+    { id: 11, options: ["acoger", "extraño", "codorniz", "alegria"] },
+    { id: 12, options: ["horgía", "advertir", "horizonte", "zueco"] },
+    { id: 13, options: ["avusivo", "voraz", "salvar", "convicción"] },
+    { id: 14, options: ["quehacer", "onnipotencia", "acabar", "imaginar"] },
+    { id: 15, options: ["próximo", "bíscera", "vejez", "malla"] },
+    { id: 16, options: ["vergüenza", "horadado", "ensayo", "clavo"] },
+    { id: 17, options: ["abrevadero", "elecho", "mágico", "calavera"] },
+    { id: 18, options: ["escurrir", "espulsar", "cadáver", "cebolla"] },
+    { id: 19, options: ["servicio", "arriba", "trasluz", "ornacina"] },
+    { id: 20, options: ["desorbitado", "horizontal", "privacion", "desmayo"] },
+    { id: 21, options: ["origen", "ahora", "ingerto", "privilegio"] },
+    { id: 22, options: ["huella", "esbelto", "subrallar", "adversario"] },
+    { id: 23, options: ["bidón", "humillación", "agujero", "seberidad"] },
+    { id: 24, options: ["alevín", "baticinio", "dentellada", "abeja"] },
+    { id: 25, options: ["decepción", "malhumor", "retaíla", "bombilla"] },
+    { id: 26, options: ["constatar", "luz", "agobiado", "zizaña"] },
+    { id: 27, options: ["observar", "hurgar", "balsa", "zunbido"] },
+    { id: 28, options: ["deshacer", "relucir", "congetura", "yacimiento"] },
+    { id: 29, options: ["bugía", "débil", "ceño", "mandíbula"] },
+    { id: 30, options: ["accidente", "embalage", "sonreír", "barquillo"] },
+    { id: 31, options: ["ambiguo", "guijarro", "cobarde", "collote"] },
+    { id: 32, options: ["conminar", "ájil", "arcilla", "rigidez"] },
+    { id: 33, options: ["huerto", "estrecho", "torvo", "espléndido"] },
+    { id: 34, options: ["extracción", "hechizo", "uraño", "insobornable"] },
+    { id: 35, options: ["enarbolar", "efecto", "abellana", "horror"] },
+    { id: 36, options: ["exámen", "ahí", "envío", "alivio"] },
+    { id: 37, options: ["vidrio", "orificio", "nariz", "esquisito"] },
+    { id: 38, options: ["habituar", "voz", "orilla", "incapié"] },
+    { id: 39, options: ["desorbitado", "visillo", "expontáneo", "aborrecer"] },
+    { id: 40, options: ["enrrollar", "laúd", "pared", "ávido"] }
+  ];
+
+  // ========== DATOS TEST 4: RAZONAMIENTO NUMÉRICO ==========
+  const QUESTIONS_TEST4 = [
+    { id: 1, text: "¿Qué número continúa esta serie? 2  5  8  11  ?", options: ["24", "22", "19", "14", "Ninguna de ellas"] },
+    { id: 2, text: "¿Qué cifra debería sustituir a la B en esta multiplicación? 27B × 2 = 552", options: ["0", "1", "4", "6", "Ninguna de ellas"] },
+    { id: 3, text: "5 − 12 =", options: ["−12 + 5", "12 − 5", "−(5 − 12)", "−(12 + 5)", "Ninguna de ellas"] },
+    { id: 4, text: "¿Qué cifra debería ir en lugar de la P en esta suma? 4PPP4 + 4PP7 = 47671", options: ["9", "8", "3", "2", "Ninguna de ellas"] },
+    { id: 5, text: "¿Cuánto es ½ de 1,39 euros redondeados a los diez céntimos más próximos?", options: ["0,60", "0,70", "1,40", "2,80", "Ninguna de ellas"] },
+    { id: 6, text: "¿Qué número puede sustituir a la L para que la proporción sea correcta? 4/L = L/36", options: ["3", "9", "12", "18", "Ninguna de ellas"] },
+    { id: 7, text: "¿Qué cifra debería sustituir a la F en esta resta? 112 − F4 = 18", options: ["9", "7", "6", "5", "Ninguna de ellas"] },
+    { id: 8, text: "¿Por qué número es divisible exactamente la suma de 132 más 402?", options: ["4", "6", "8", "9", "Ninguna de ellas"] },
+    { id: 9, text: "¿Qué número debería sustituir a la R para que esta operación sea correcta? 38 + R + 67 = 180", options: ["85", "95", "105", "285", "Ninguna de ellas"] },
+    { id: 10, text: "4 = 10% de ______", options: ["0,4", "4", "40", "400", "Ninguna de ellas"] },
+    { id: 11, text: "¿Cuál de estas expresiones es mayor que la unidad?", options: ["3/6 + 5/10", "3/5 + 6/10", "2/4 + 1/2", "1/3 + 1/3", "Ninguna de ellas"] },
+    { id: 12, text: "¿Qué número debe sustituir a la N para que la proporción sea correcta? 6/N = 12/8", options: ["16", "5", "4", "2", "Ninguna de ellas"] },
+    { id: 13, text: "Si y = 7, entonces 3 + 4y será =", options: ["49", "31", "25", "14", "Ninguna de ellas"] },
+    { id: 14, text: "¿Qué cifra debería sustituir a la E en esta multiplicación? 2EE6 × 8 = 16E48", options: ["0", "3", "5", "7", "Ninguna de ellas"] },
+    { id: 15, text: "¿Qué número continúa esta serie? 11  16  13  18  15  ?", options: ["23", "20", "16", "13", "Ninguna de ellas"] },
+    { id: 16, text: "¿Qué cifra debería sustituir a la A en esta resta? 8A788 − 7AA7 = 773A1", options: ["9", "6", "5", "0", "Ninguna de ellas"] },
+    { id: 17, text: "¿Qué cifra podría sustituir a la F en esta suma? F0F + 20F = 710", options: ["1", "3", "5", "9", "Ninguna de ellas"] },
+    { id: 18, text: "¿Qué cifra podría sustituir a la N en esta resta? 3N3N3 − 3NN3 = 32700", options: ["1", "4", "5", "6", "Ninguna de ellas"] },
+    { id: 19, text: "¿Qué número podría sustituir a la K? K/7 = 28/K", options: ["7/14", "15", "28", "112", "Ninguna de ellas"] },
+    { id: 20, text: "¿Qué cifra podría sustituir a la L en esta suma? 87L9 + 9L89 = 18128", options: ["28", "24", "20", "16", "Ninguna de ellas"] },
+    { id: 21, text: "¿Cuál de las expresiones vale MENOS que la unidad?", options: ["1/2 + 5/9", "7/8 + 1/4", "2/3 + 4/12", "2/5 + 1/4", "Ninguna de ellas"] },
+    { id: 22, text: "¿Qué número es divisible exactamente entre 3?", options: ["766", "768", "796", "976", "Ninguna de ellas"] },
+    { id: 23, text: "¿Qué cifra debería sustituir a la H en esta multiplicación? 3H3 × H3 = 4069", options: ["2", "5", "7", "8", "Ninguna de ellas"] },
+    { id: 24, text: "¿Qué número falta en esta serie? 25  36  49  ?  81", options: ["56", "62", "64", "75", "Ninguna de ellas"] },
+    { id: 25, text: "¿Cuál es el resultado de 710 × 80 redondeando al millar más próximo?", options: ["50.000", "55.000", "57.000", "60.000", "Ninguna de ellas"] },
+    { id: 26, text: "¿Qué cifra debería sustituir a la C en esta suma? 457C7 + 3C7C7 = 77434", options: ["1", "2", "6", "8", "Ninguna de ellas"] },
+    { id: 27, text: "20 × (18 × 5) tiene el mismo valor que…", options: ["20 × 23", "100 × 18", "(20×18) × (20×5)", "(20×18) + (20×5)", "Ninguna de ellas"] },
+    { id: 28, text: "(5 × 2) / (4 × 15) =", options: ["6", "5/6", "2/3", "1/6", "Ninguna de ellas"] },
+    { id: 29, text: "¿Qué número debe sustituir a la T en esta división? T2T3 : 1039 = T", options: ["4", "5", "7", "8", "Ninguna de ellas"] },
+    { id: 30, text: "50% de 6.300 =", options: ["50", "126", "315", "3.500", "Ninguna de ellas"] },
+    { id: 31, text: "¿Cuál es el número MÁS PEQUEÑO que es divisible exactamente por 10 y por 15?", options: ["60", "30", "25", "15", "Ninguna de ellas"] },
+    { id: 32, text: "¿Qué cifra debería sustituir a la A en esta resta? 1A31 − 3A9 = 1352", options: ["0", "6", "7", "8", "Ninguna de ellas"] },
+    { id: 33, text: "¿Qué cifra debería sustituir a la J en esta multiplicación? 1J56 × J = 582J", options: ["3", "4", "7", "9", "Ninguna de ellas"] },
+    { id: 34, text: "¿Qué número debería sustituir a la T? 11/55 = 101/T", options: ["115", "505", "550", "555", "Ninguna de ellas"] },
+    { id: 35, text: "¿Por qué número es exactamente divisible el producto de 423 × 26?", options: ["8", "11", "17", "18", "Ninguna de ellas"] },
+    { id: 36, text: "(7/3) ÷ (2 4/5) =", options: ["15/98", "5/6", "35/24", "6 8/15", "Ninguna de ellas"] },
+    { id: 37, text: "¿Qué cifra debería sustituir a la N en esta división exacta? 9N29 : 20N = 4N", options: ["3", "5", "7", "8", "Ninguna de ellas"] },
+    { id: 38, text: "¿Por qué número es divisible exactamente el resultado de: 123 + 204 + 504 + 28?", options: ["12", "8", "6", "4", "Ninguna de ellas"] },
+    { id: 39, text: "Diagrama de flujo: Si introduce el número 4, ¿cuál será el número al final? (Pasos: Sumar 6, si >12 dividir entre 2, si ≤3 multiplicar por 4)", options: ["8", "4", "2", "1", "Ninguna de ellas"] },
+    { id: 40, text: "Diagrama de flujo: Si introduce el número 2, ¿cuántas veces pasará por el paso 4 para llegar al final?", options: ["1", "2", "3", "4", "Ninguna de ellas"] }
+  ];
+
+  // ========== ESTADO GLOBAL ==========
+  let user = {};
+  let currentTest1Part = 1;
+  let answersT1P1 = {};
+  let answersT1P2 = {};
+  let answersT2 = {};
+  let answersT3 = {};
+  let answersT4 = {};
+  let timerInterval;
+  let timeLeft = 180;
+
+  // Variables para almacenar tiempos de cada test
+  let timeTest1P1Start = 0, timeTest1P1End = 0;
+  let timeTest1P2Start = 0, timeTest1P2End = 0;
+  let timeTest2Start = 0, timeTest2End = 0;
+  let timeTest3Start = 0, timeTest3End = 0;
+  let timeTest4Start = 0, timeTest4End = 0;
+
+  // URL DE GOOGLE APPS SCRIPT (la misma que ya tenías)
+  const WEB_APP_URL = URL_TEST1;
+
+  // ========== NAVEGACIÓN ==========
+  function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+  }
+
+  function goToInstructions() {
+    const n = document.getElementById('userName').value.trim();
+    const l = document.getElementById('userLast').value.trim();
+    const e = document.getElementById('userEmail').value.trim();
+    if (!n || !l || !e) return alert("Complete todos los campos");
+    user = { name: n, lastname: l, email: e };
+    showSection('instSection1');
+  }
+
+  // ========== TEST 1: RAPIDEZ ==========
+  function startTest1Part(partNum) {
+    currentTest1Part = partNum;
+    timeLeft = 180;
+
+    if (partNum === 1) timeTest1P1Start = Date.now();
+    else timeTest1P2Start = Date.now();
+
+    const grid = document.getElementById('testGrid1');
+    grid.innerHTML = '';
+    const qs = DB_TEST1[partNum];
+
+    qs.forEach(q => {
+      const row = document.createElement('div');
+      row.className = 'test-row';
+
+      let optsHtml = '';
+      q.options.forEach(opt => {
+        optsHtml += `<button class="opt-btn" onclick="selectOptT1(${q.id}, '${opt}', this)">${opt}</button>`;
+      });
+
+      row.innerHTML = `
+        <div class="q-id">${q.id}</div>
+        <div class="q-target">${q.target}</div>
+        <div class="q-options">${optsHtml}</div>
+      `;
+      grid.appendChild(row);
+    });
+
+    showSection('testSection1');
+    document.getElementById('partTitle1').innerText = "PARTE " + (partNum === 1 ? "I" : "II");
+    document.getElementById('timerDisplay').style.display = 'block';
+    document.getElementById('pageTitle').innerText = 'Test 1: Rapidez y Exactitud Perceptiva';
+
+    startTimer();
+  }
+
+  function selectOptT1(qId, val, btn) {
+    if (currentTest1Part === 1) answersT1P1[qId] = val;
+    else answersT1P2[qId] = val;
+
+    const siblings = btn.parentElement.children;
+    for (let s of siblings) s.classList.remove('selected');
+    btn.classList.add('selected');
+  }
+
+  function finishTest1Part() {
+    clearInterval(timerInterval);
+
+    if (currentTest1Part === 1) {
+      timeTest1P1End = Date.now();
+      showSection('intermissionSection1');
+    } else {
+      timeTest1P2End = Date.now();
+      showSection('transitionSection1to2');
+    }
+    document.getElementById('timerDisplay').style.display = 'none';
+  }
+
+  // ========== TEST 2: RAZONAMIENTO VERBAL ==========
+  function showInstructions2() {
+    showSection('instSection2');
+    document.getElementById('pageTitle').innerText = 'Test 2: Razonamiento Verbal';
+  }
+
+  function startTest2() {
+    timeTest2Start = Date.now();
+    renderTest2Questions();
+    showSection('testSection2');
+    document.getElementById('timerDisplay').style.display = 'block';
+    timeLeft = 1500;
+    startTimer();
+  }
+
+  function renderTest2Questions() {
+    const container = document.getElementById('questionsContainer2');
+    container.innerHTML = '';
+    const LETTERS = ['A', 'B', 'C', 'D', 'E'];
+
+    QUESTIONS_TEST2.forEach((q, index) => {
+      const div = document.createElement('div');
+      div.className = 'question-item';
+
+      let optionsHtml = '';
+      q.options.forEach((optText, i) => {
+        optionsHtml += `
+          <div class="opt-btn-verbal" onclick="selectOptT2(${q.id}, '${LETTERS[i]}', this)">
+            <span class="opt-letter">${LETTERS[i]}.</span> ${optText}
+          </div>
+        `;
+      });
+
+      div.innerHTML = `
+        <span class="q-number">Pregunta ${index + 1}</span>
+        <div class="q-text">${q.text}</div>
+        <div class="options-list">${optionsHtml}</div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function selectOptT2(qId, val, btnElem) {
+    answersT2[qId] = val;
+    const parent = btnElem.parentElement;
+    Array.from(parent.children).forEach(child => child.classList.remove('selected'));
+    btnElem.classList.add('selected');
+  }
+
+  function finishTest2() {
+    clearInterval(timerInterval);
+    timeTest2End = Date.now();
+    document.getElementById('timerDisplay').style.display = 'none';
+    showSection('transitionSection2to3');
+  }
+
+  // ========== TEST 3: ORTOGRAFÍA ==========
+  function showInstructions3() {
+    showSection('instSection3');
+    document.getElementById('pageTitle').innerText = 'Test 3: Ortografía';
+  }
+
+  function startTest3() {
+    timeTest3Start = Date.now();
+    renderTest3Questions();
+    showSection('testSection3');
+    document.getElementById('timerDisplay').style.display = 'block';
+    timeLeft = 600;
+    startTimer();
+  }
+
+  function renderTest3Questions() {
+    const container = document.getElementById('questionsContainer3');
+    container.innerHTML = '';
+    const LETTERS = ['A', 'B', 'C', 'D'];
+
+    QUESTIONS_TEST3.forEach((q, index) => {
+      const div = document.createElement('div');
+      div.className = 'question-item-ortografia';
+
+      let optionsHtml = '<div class="options-grid">';
+      q.options.forEach((optText, i) => {
+        optionsHtml += `
+          <div class="opt-btn-verbal" onclick="selectOptT3(${q.id}, '${LETTERS[i]}', this)">
+            <span class="opt-letter">${LETTERS[i]}.</span> ${optText}
+          </div>
+        `;
+      });
+      optionsHtml += '</div>';
+
+      div.innerHTML = `
+        <div class="q-number">${index + 1}.</div>
+        ${optionsHtml}
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function selectOptT3(qId, val, btnElem) {
+    answersT3[qId] = val;
+    const parent = btnElem.parentElement;
+    Array.from(parent.children).forEach(child => child.classList.remove('selected'));
+    btnElem.classList.add('selected');
+  }
+
+  function finishTest3() {
+    clearInterval(timerInterval);
+    timeTest3End = Date.now();
+    document.getElementById('timerDisplay').style.display = 'none';
+    showSection('transitionSection3to4');
+  }
+
+  // ========== TEST 4: RAZONAMIENTO NUMÉRICO ==========
+  function showInstructions4() {
+    showSection('instSection4');
+    document.getElementById('pageTitle').innerText = 'Test 4: Razonamiento Numérico';
+  }
+
+  function startTest4() {
+    timeTest4Start = Date.now();
+    renderTest4Questions();
+    showSection('testSection4');
+    document.getElementById('timerDisplay').style.display = 'block';
+    timeLeft = 1800;
+    startTimer();
+  }
+
+  function renderTest4Questions() {
+    const container = document.getElementById('questionsContainer4');
+    container.innerHTML = '';
+    const LETTERS = ['A', 'B', 'C', 'D', 'E'];
+
+    QUESTIONS_TEST4.forEach((q, index) => {
+      const div = document.createElement('div');
+      div.className = 'question-item';
+
+      let optionsHtml = '';
+      q.options.forEach((optText, i) => {
+        optionsHtml += `
+          <div class="opt-btn-verbal" onclick="selectOptT4(${q.id}, '${LETTERS[i]}', this)">
+            <span class="opt-letter">${LETTERS[i]}.</span> ${optText}
+          </div>
+        `;
+      });
+
+      div.innerHTML = `
+        <span class="q-number">Pregunta ${index + 1}</span>
+        <div class="q-text">${q.text}</div>
+        <div class="options-list">${optionsHtml}</div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function selectOptT4(qId, val, btnElem) {
+    answersT4[qId] = val;
+    const parent = btnElem.parentElement;
+    Array.from(parent.children).forEach(child => child.classList.remove('selected'));
+    btnElem.classList.add('selected');
+  }
+
+  function finishTest4() {
+    clearInterval(timerInterval);
+    timeTest4End = Date.now();
+    document.getElementById('timerDisplay').style.display = 'none';
+    // finaliza y envía
+    finishTest();
+  }
+
+  // ============================================================
+  // ✅ UNIFICACIÓN DE NOMBRES (como IPP):
+  // - finishTest()  -> finaliza y llama sendResults()
+  // - sendResults() -> envía a Google Sheets
+  // - formatTimeUsed(), formatAnswers() iguales
+  // ============================================================
+
+  function finishTest() {
+    showSection('finalSection');
+    sendResults();
+  }
+
+  async function sendResults() {
+    // tiempos
+    const tiempoTest1P1 = formatTimeUsed(timeTest1P1Start, timeTest1P1End);
+    const tiempoTest1P2 = formatTimeUsed(timeTest1P2Start, timeTest1P2End);
+    const tiempoTest2 = formatTimeUsed(timeTest2Start, timeTest2End);
+    const tiempoTest3 = formatTimeUsed(timeTest3Start, timeTest3End);
+    const tiempoTest4 = formatTimeUsed(timeTest4Start, timeTest4End);
+
+    // respuestas en el MISMO FORMATO STRING que pediste:
+    // {0m 26s - 2;A, 3;D, ...}
+    // y para test 1 se conserva tu formato con PI/PII dentro de un solo string
+    const respuestasT1P1 = formatAnswers(answersT1P1);
+    const respuestasT1P2 = formatAnswers(answersT1P2);
+    const respuestasTest1 = `{PI: ${tiempoTest1P1} - ${respuestasT1P1}} {PII: ${tiempoTest1P2} - ${respuestasT1P2}}`;
+
+    const respuestasTest2 = `{${tiempoTest2} - ${formatAnswers(answersT2)}}`;
+    const respuestasTest3 = `{${tiempoTest3} - ${formatAnswers(answersT3)}}`;
+    const respuestasTest4 = `{${tiempoTest4} - ${formatAnswers(answersT4)}}`;
+
+    // fecha (igual que IPP/Kuder: solo fecha)
+    const today = new Date();
+    const fecha = today.toLocaleDateString("es-ES", { year: "numeric", month: "2-digit", day: "2-digit" });
+
+    // permiso + email admin (igual que Kuder/IPP actualizado)
+    const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
+    const permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
+    const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
+
+    // ✅ fila estilo Kuder + respuestas como strings
+    // (ajustado a “mismo patrón” que IPP actualizado: fecha primero y adminEmail condicional)
+    const filaOrdenada = [
+      user.name || "SinNombre",
+      user.lastname || "SinApellido",
+      user.email || "SinEmail",
+      permisoRaw === "SI" ? emailAdmin : "",
+      fecha,
+      respuestasTest1,
+      respuestasTest2,
+      respuestasTest3,
+      respuestasTest4
+    ];
+
+    const payload = {
+      nombreHoja: "Respuestas",
+      fila: filaOrdenada
+    };
+
+    console.log("Enviando a la base de datos:", payload);
+
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      const txt = await res.text().catch(() => "");
+      console.log("GAS Response:", txt);
+
+      document.getElementById('loadingMsg').innerText = "¡Datos guardados correctamente!";
+      document.getElementById('loadingMsg').style.color = "#059669";
+    } catch (error) {
+      console.error("Error enviando a Google Sheets:", error);
+      document.getElementById('loadingMsg').innerText = "⚠️ Error de conexión, avise al administrador.";
+      document.getElementById('loadingMsg').style.color = "orange";
+    }
+  }
+
+  // ========== FUNCIONES DE UTILIDAD (mismos nombres que IPP) ==========
+  function formatTimeUsed(startTime, endTime) {
+    if (!startTime || !endTime) return "0m 0s";
+    const diffMs = endTime - startTime;
+    const totalSeconds = Math.floor(diffMs / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}m ${seconds}s`;
+  }
+
+  // Mantiene: "2;A, 3;D, ..."
+  // Ordenado ascendente y SOLO respondidas (como tu ejemplo)
+  function formatAnswers(answersObj) {
+    const sortedIds = Object.keys(answersObj).map(Number).sort((a, b) => a - b);
+    const formatted = sortedIds.map(id => `${id};${answersObj[id]}`).join(', ');
+    return formatted || "Sin respuestas";
+  }
+
+  // ========== TIMER ==========
+  function startTimer() {
+    updateTimer();
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimer();
+      if (timeLeft <= 0) {
+        if (document.getElementById('testSection1').classList.contains('active')) {
+          finishTest1Part();
+        } else if (document.getElementById('testSection2').classList.contains('active')) {
+          finishTest2();
+        } else if (document.getElementById('testSection3').classList.contains('active')) {
+          finishTest3();
+        } else if (document.getElementById('testSection4').classList.contains('active')) {
+          finishTest4();
+        }
+      }
+    }, 1000);
+  }
+
+  function updateTimer() {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+  }
+window.goToInstructions = goToInstructions;
+window.startTest1Part = startTest1Part;
+window.finishTest1Part = finishTest1Part;
+
+window.showInstructions2 = showInstructions2;
+window.startTest2 = startTest2;
+window.finishTest2 = finishTest2;
+
+window.showInstructions3 = showInstructions3;
+window.startTest3 = startTest3;
+window.finishTest3 = finishTest3;
+
+window.showInstructions4 = showInstructions4;
+window.startTest4 = startTest4;
+window.finishTest4 = finishTest4;
+
+window.selectOptT1 = selectOptT1;
+window.selectOptT2 = selectOptT2;
+window.selectOptT3 = selectOptT3;
+window.selectOptT4 = selectOptT4;

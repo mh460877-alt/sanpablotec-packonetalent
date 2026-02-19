@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test de Kuder - Registro de Preferencias Vocacionales</title>
+  <title>Test de Orientación Vocacional CHASIDE</title>
   <style>
     * {
       margin: 0;
@@ -23,7 +23,7 @@
       min-height: 100vh;
       padding: 24px;
       overflow: auto;
-      background-image: url(./img/fondo-escencial.jpg);
+      background-image: url(../../img/fondo-escencial.jpg);
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -220,84 +220,79 @@
       margin-bottom: 0;
     }
 
-    .triad-item {
+    .question-item {
       background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
       padding: 24px;
       border-radius: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       border: 1px solid #e2e8f0;
-    }
-
-    .triad-number {
-      font-size: 14px;
-      color: #64748b;
-      font-weight: 700;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .activity-option {
       display: flex;
       align-items: center;
-      padding: 16px;
-      margin-bottom: 12px;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      cursor: pointer;
+      gap: 16px;
       transition: all 0.3s ease;
-      background: #fff;
     }
 
-    .activity-option:last-child {
-      margin-bottom: 0;
-    }
-
-    .activity-option:hover {
+    .question-item:hover {
       border-color: #0b4a6e;
       transform: translateX(4px);
     }
 
-    .activity-text {
+    .question-number {
+      font-size: 13px;
+      color: #fff;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0b4a6e 0%, #020f27 100%);
+      min-width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .question-text {
       flex: 1;
       color: #334155;
       font-size: 15px;
       line-height: 1.5;
-      padding: 0 16px;
     }
 
-    .choice-buttons {
+    .answer-buttons {
       display: flex;
       gap: 8px;
+      flex-shrink: 0;
     }
 
-    .choice-btn {
-      width: 50px;
-      height: 50px;
+    .answer-btn {
+      width: 56px;
+      height: 44px;
       border: 2px solid #e2e8f0;
       border-radius: 10px;
       background: #fff;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 700;
-      font-size: 18px;
+      font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #64748b;
     }
 
-    .choice-btn:hover {
+    .answer-btn:hover {
       border-color: #0b4a6e;
     }
 
-    .choice-btn.active-mas {
+    .answer-btn.active-si {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #fff;
       border-color: #059669;
       box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
     }
 
-    .choice-btn.active-menos {
+    .answer-btn.active-no {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       color: #fff;
       border-color: #dc2626;
@@ -314,156 +309,89 @@
       flex: 1;
     }
 
-    .area-card {
-      background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
-      padding: 24px;
-      border-radius: 16px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
+    /* Confirmation screen */
+    .confirmation-screen {
+      text-align: center;
+      padding: 40px 20px;
     }
 
-    .area-header {
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-radius: 50%;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: center;
+      margin: 0 auto 30px;
+      animation: scaleIn 0.5s ease;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+
+    .success-icon::after {
+      content: "✓";
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+    }
+
+    .confirmation-title {
+      color: #020f27;
+      font-size: 28px;
+      font-weight: 700;
       margin-bottom: 16px;
     }
 
-    .area-name {
-      font-size: 18px;
-      font-weight: 800;
-      color: #020f27;
-    }
-
-    .area-score-badge {
-      background: linear-gradient(135deg, #0b4a6e 0%, #020f27 100%);
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .area-bar {
-      width: 100%;
-      height: 12px;
-      background: #e2e8f0;
-      border-radius: 9999px;
-      overflow: hidden;
+    .confirmation-text {
+      color: #64748b;
+      font-size: 16px;
+      line-height: 1.7;
       margin-bottom: 12px;
     }
 
-    .area-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #0b4a6e 0%, #020f27 100%);
-      border-radius: 9999px;
-      transition: width 0.5s ease;
-    }
-
-    .area-percentile {
-      font-size: 14px;
-      color: #64748b;
-      font-weight: 600;
-    }
-
-    .area-description {
-      color: #475569;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .professions-list {
-      margin-top: 16px;
-      padding: 16px;
-      background: #f8fafc;
-      border-radius: 12px;
-    }
-
-    .professions-title {
-      font-size: 14px;
+    .confirmation-email {
+      color: #0b4a6e;
       font-weight: 700;
-      color: #020f27;
+      font-size: 18px;
+      margin: 16px 0 32px;
+    }
+
+    /* Loading spinner */
+    .loading-container {
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .spinner {
+      border: 6px solid #e2e8f0;
+      border-top: 6px solid #0b4a6e;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 24px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: #334155;
+      font-size: 18px;
+      font-weight: 600;
       margin-bottom: 8px;
     }
 
-    .professions-list ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .professions-list li {
-      padding: 6px 0;
-      color: #475569;
-      font-size: 13px;
-      padding-left: 16px;
-      position: relative;
-    }
-
-    .professions-list li:before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: #0b4a6e;
-      font-weight: 700;
-    }
-
-    .validity-warning {
-      background: #fef3c7;
-      border-left: 4px solid #f59e0b;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-    }
-
-    .validity-warning p {
-      color: #92400e;
+    .loading-subtext {
+      color: #64748b;
       font-size: 14px;
-      font-weight: 700;
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    .validity-success {
-      background: #ecfeff;
-      border-left: 4px solid #06b6d4;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-    }
-
-    .validity-success p {
-      color: #0e7490;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    .profile-summary {
-      background: linear-gradient(135deg, #0b4a6e 0%, #020f27 100%);
-      color: #fff;
-      padding: 32px;
-      border-radius: 16px;
-      margin: 24px 0;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(11, 74, 110, 0.4);
-    }
-
-    .profile-code {
-      font-size: 48px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      letter-spacing: 8px;
-    }
-
-    .profile-description {
-      font-size: 16px;
-      opacity: 0.95;
-      line-height: 1.6;
     }
 
     @media (max-width: 768px) {
@@ -483,19 +411,19 @@
         flex-direction: column;
       }
 
-      .choice-buttons {
+      .question-item {
         flex-direction: column;
-        gap: 6px;
-      }
-
-      .choice-btn {
-        width: 100%;
-        height: 40px;
-      }
-
-      .activity-option {
-        flex-direction: column;
+        align-items: flex-start;
         gap: 12px;
+      }
+
+      .answer-buttons {
+        align-self: flex-end;
+      }
+
+      .answer-btn {
+        width: 60px;
+        height: 40px;
       }
 
       .logo {
@@ -513,11 +441,12 @@
 
     <!-- REGISTRO -->
     <div id="registrationScreen">
-      <h1>Test de Kuder</h1>
+      <h1>Test de Orientación Vocacional</h1>
       <p class="subtitle">
-        <strong>Registro de Preferencias Vocacionales</strong><br>
-        Este cuestionario te ayudará a descubrir tus áreas de interés vocacional y profesional.
-        No hay respuestas correctas o incorrectas, solo tus preferencias personales.<br>
+        <strong>Método CHASIDE</strong><br>
+        Este test te ayudará a identificar tus áreas de interés vocacional mediante el método CHASIDE,
+        evaluando tus inclinaciones hacia 7 áreas: Cálculo, Humanidades, Arte, Servicio Social, Informática, Defensa y Ecología.<br>
+        No hay respuestas correctas o incorrectas, solo tus preferencias personales.
       </p>
       <p class="subtitle">Complete los datos para comenzar.</p>
 
@@ -549,9 +478,9 @@
 
       <div class="instructions">
         <p><strong>Instrucciones</strong></p>
-        <p>En cada grupo de actividades, debes elegir:</p>
-        <p><strong>La que MÁS te gusta (+)</strong> y <strong>la que MENOS te gusta (-)</strong></p>
-        <p>La tercera actividad quedará sin marcar.</p>
+        <p>Lee atentamente cada pregunta y responde con sinceridad.</p>
+        <p>Selecciona <strong>SÍ</strong> si la actividad te interesa o <strong>NO</strong> si no te interesa.</p>
+        <p>Responde a todas las preguntas sin omitir ninguna.</p>
       </div>
 
       <div id="sectionContainer"></div>
@@ -562,21 +491,26 @@
       </div>
     </div>
 
-    <!-- RESULTADOS -->
-    <div id="resultsScreen" class="hidden">
-      <h1>Resultados del Test de Kuder</h1>
-
-      <div id="validityBox"></div>
-
-      <div class="profile-summary">
-        <div class="profile-code" id="profileCode">--</div>
-        <div class="profile-description" id="profileDescription">Tu código de perfil vocacional</div>
+    <!-- CARGANDO -->
+    <div id="loadingScreen" class="hidden">
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <div class="loading-text">Procesando tus respuestas...</div>
+        <div class="loading-subtext">Estamos registrando tu perfil vocacional</div>
       </div>
+    </div>
 
-      <h2>Áreas de Interés Vocacional</h2>
-      <div id="areasContainer"></div>
-
-      <button class="btn" id="restartBtn" style="margin-top: 32px">Realizar Nuevo Test</button>
+    <!-- CONFIRMACIÓN -->
+    <div id="confirmationScreen" class="hidden">
+      <div class="confirmation-screen">
+        <div class="success-icon"></div>
+        <div class="confirmation-title">¡Test Completado!</div>
+        <p class="confirmation-text">Gracias por completar el Test de Orientación Vocacional CHASIDE.</p>
+        <p class="confirmation-text">Tus respuestas han sido registradas exitosamente y serán enviadas a:</p>
+        <div class="confirmation-email" id="confirmEmail"></div>
+        <p class="confirmation-text" style="color: #94a3b8; font-size: 14px;">Por favor revisa tu bandeja de entrada (y la carpeta de spam) en los próximos minutos.</p>
+        <button class="btn" id="restartBtn" style="margin-top: 32px">Realizar Nuevo Test</button>
+      </div>
     </div>
   </div>
 
