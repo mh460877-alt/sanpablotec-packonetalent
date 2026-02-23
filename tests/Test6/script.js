@@ -309,12 +309,13 @@ function displayResults(scores) {
 
   const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
   const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
+  const permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
 
   const dataForSheets = {
     fecha: new Date().toLocaleDateString('es-AR'),
     nombre: userFirstName,
     apellido: userLastName,
-    email: userEmail,
+    email: permisoRaw == "SI" ? userEmail : "",    
     email_admin: emailAdmin,
     respuestas: originalAnswers
   };

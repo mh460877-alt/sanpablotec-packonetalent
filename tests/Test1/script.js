@@ -516,8 +516,8 @@ import { URL_TEST1 } from "../../assets/js/config/constants.js";
     const filaOrdenada = [
       user.name || "SinNombre",
       user.lastname || "SinApellido",
-      user.email || "SinEmail",
-      permisoRaw === "SI" ? emailAdmin : "",
+      permisoRaw == "SI" ? user.email : "",
+      emailAdmin,
       fecha,
       respuestasTest1,
       respuestasTest2,

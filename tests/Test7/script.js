@@ -283,8 +283,8 @@ async function sendToGoogleSheets() {
     fecha,
     userName,
     userLastName,
-    userEmail,
-    permisoRaw == 'SI' ? emailAdmin : "",
+    permisoRaw == 'SI' ? userEmail : "",
+    emailAdmin,
     respuestas
   ];
 

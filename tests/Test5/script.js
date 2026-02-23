@@ -460,6 +460,7 @@ async function finishTest() {
 async function saveResultsRemote(scores) {
   const sessionUser = JSON.parse(localStorage.getItem('sessionUser')) || {};
   const emailAdmin = sessionUser.adminEmail || "escencialconsult@gmail.com";
+  const permisoRaw = sessionUser.reenvioSimultaneo || 'NO';
 
   // Construir string de respuestas "1:1,2:0,3:1,..."
   let respuestasString = "";
@@ -488,7 +489,7 @@ async function saveResultsRemote(scores) {
     fila: [
       participant.name,
       participant.lastname,
-      participant.email,
+      permisoRaw == "SI" ? participant.email : "",
       emailAdmin,
       new Date().toISOString(),
       respuestasString

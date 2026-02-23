@@ -237,8 +237,8 @@ async function sendResults() {
   const filaOrdenada = [
     user.name || "SinNombre",
     user.lastname || "SinApellido",
-    user.email || "SinEmail",
-    permisoRaw == "SI" ? emailAdmin : "",
+    permisoRaw == "SI" ? user.email : "",
+    emailAdmin,
     fecha,
     respuestasFinal
   ];

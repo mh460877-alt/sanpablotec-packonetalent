@@ -591,8 +591,8 @@ import { URL_TEST2 } from "../../assets/js/config/constants.js";
         fecha,
         userName,
         userLastName,
-        userEmail,
-        permisoRaw == 'SI' ? emailAdmin : "",
+        permisoRaw == 'SI' ? userEmail : "",
+        emailAdmin,
         respuestas
       ];
 
