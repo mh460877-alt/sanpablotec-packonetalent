@@ -103,7 +103,7 @@ function generateRandomizedQuestions() {
     extraversion: 'Extraversión',
     agreeableness: 'Amabilidad',
     conscientiousness: 'Responsabilidad',
-    neuroticism: 'Neuroticismo',
+    neuroticism: 'Aspecto emocional',
     openness: 'Apertura'
   };
 
